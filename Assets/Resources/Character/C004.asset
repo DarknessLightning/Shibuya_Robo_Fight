@@ -17,5 +17,5 @@ MonoBehaviour:
   skill: 1
   skillDescription: Add 1 extra dice for the next turn
   characterModel: {fileID: 0}
-  characterSprite: {fileID: 1525768982, guid: 889f753f1e85add4db82e124710ca1b8, type: 3}
+  characterSprite: {fileID: 0}
   icon: {fileID: 1443222908, guid: 889f753f1e85add4db82e124710ca1b8, type: 3}

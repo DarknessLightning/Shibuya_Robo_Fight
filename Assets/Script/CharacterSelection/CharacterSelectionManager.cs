@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,11 +11,13 @@ public class CharacterSelectionUi
     public Text CharacterHP;
     public Text SkillDescript;
     public bool confirm;
+    public int index = 0;
 }
 
 public class CharacterSelectionManager : MonoBehaviour
 {
-    public CharacterData[] availableChara;
+    public CharacterData[] allCharacter;
+    private List<CharacterData> availableCharacter = new();
     public Button chooseCharaButton;
     private string SpecialSkill = "Special Skill: \n";
     private int index = 0;
@@ -32,7 +35,7 @@ public class CharacterSelectionManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        availableChara = Resources.LoadAll<CharacterData>("Character");
+        allCharacter = Resources.LoadAll<CharacterData>("Character");
         foreach(Transform t in player.Selection)
         {
             Destroy(t.gameObject);
@@ -41,14 +44,15 @@ public class CharacterSelectionManager : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
-        foreach(CharacterData character in availableChara)
+        foreach(CharacterData character in allCharacter)
         {
             if (character.characterSprite == null) continue;
+            availableCharacter.Add(character);
             loadSelection(player, character);
             loadSelection(enemy, character);
         }
-        selectChara(availableChara[0], player);
-        selectChara(availableChara[0], enemy);
+        selectChara(allCharacter[0], player);
+        selectChara(allCharacter[0], enemy);
         selected = player;
 
     }
@@ -73,6 +77,7 @@ public class CharacterSelectionManager : MonoBehaviour
         selection.CharacterSprite.sprite = chara.characterSprite;
         selection.CharacterHP.text = chara.hp.ToString();
         selection.SkillDescript.text = SpecialSkill + chara.skillDescription.ToString();
+        selection.index = availableCharacter.IndexOf(chara);
     }
 
     public void confirmPlayer()
@@ -104,21 +109,23 @@ public class CharacterSelectionManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             index = Mathf.Max(index - 1, 0);
-            selectChara(availableChara[index], selected);
+            selectChara(allCharacter[index], selected);
 
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            index = Mathf.Min(index + 1, availableChara.Length - 1);
-            selectChara(availableChara[index], selected);
+            index = Mathf.Min(index + 1, availableCharacter.Count - 1);
+            selectChara(allCharacter[index], selected);
         }
         if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
             selected = player;
+            index = selected.index;
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             selected = enemy;
+            index = selected.index;
         }
     }
 }

@@ -1,6 +1,4 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 public class DiceManager : MonoBehaviour
