@@ -47,6 +47,7 @@ public class CharacterSelectionManager : MonoBehaviour
         foreach(CharacterData character in allCharacter)
         {
             if (character.characterSprite == null) continue;
+
             availableCharacter.Add(character);
             loadSelection(player, character);
             loadSelection(enemy, character);
@@ -99,8 +100,8 @@ public class CharacterSelectionManager : MonoBehaviour
     public void bothConfirmed()
     {
         if(!player.confirm || !enemy.confirm) return;
-        Debug.Log("Player Choose: " + player.character.name);
-        Debug.Log("AI Choose: " + enemy.character.name);
+        Debug.Log("Player Choose: " + player.character.name + "\n" + 
+            "AI Choose: " + enemy.character.name);
     }
 
     // Update is called once per frame
@@ -109,13 +110,13 @@ public class CharacterSelectionManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             index = Mathf.Max(index - 1, 0);
-            selectChara(allCharacter[index], selected);
+            selectChara(availableCharacter[index], selected);
 
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             index = Mathf.Min(index + 1, availableCharacter.Count - 1);
-            selectChara(allCharacter[index], selected);
+            selectChara(availableCharacter[index], selected);
         }
         if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -126,6 +127,16 @@ public class CharacterSelectionManager : MonoBehaviour
         {
             selected = enemy;
             index = selected.index;
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            selected.confirm = !selected.confirm;
+            if(selected.confirm)
+            {
+                selected = selected == player ? enemy : player;
+            }
+            index = selected.index;
+            bothConfirmed();
         }
     }
 }

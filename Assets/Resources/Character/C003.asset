@@ -17,5 +17,5 @@ MonoBehaviour:
   skill: 2
   skillDescription: When activated, deal 3 damage to enemy
   characterModel: {fileID: 0}
-  characterSprite: {fileID: 2053582782, guid: ca4fcdffac1a54c4692cdf1f52598772, type: 3}
+  characterSprite: {fileID: 0}
   icon: {fileID: -336899300, guid: ca4fcdffac1a54c4692cdf1f52598772, type: 3}
