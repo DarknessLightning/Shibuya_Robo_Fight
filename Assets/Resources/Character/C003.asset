@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c507edee390ab5247947fe2471b392d5, type: 3}
+  m_Name: C003
+  m_EditorClassIdentifier: 
+  characterName: 
+  hp: 13
+  skill: 2
+  skillDescription: When activated, deal 3 damage to enemy
+  characterModel: {fileID: 0}
+  characterSprite: {fileID: 2053582782, guid: ca4fcdffac1a54c4692cdf1f52598772, type: 3}
+  icon: {fileID: -336899300, guid: ca4fcdffac1a54c4692cdf1f52598772, type: 3}

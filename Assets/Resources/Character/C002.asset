@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c507edee390ab5247947fe2471b392d5, type: 3}
+  m_Name: C002
+  m_EditorClassIdentifier: 
+  characterName: 
+  hp: 14
+  skill: 1
+  skillDescription: For each Skill Point exceeding 1, gain ability point equal to
+    the number of abilty point faces in this turn
+  characterModel: {fileID: 0}
+  characterSprite: {fileID: 186501474, guid: afbbde126a36f2d428911070a5e87bf3, type: 3}
+  icon: {fileID: 2097761553, guid: afbbde126a36f2d428911070a5e87bf3, type: 3}

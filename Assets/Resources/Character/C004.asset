@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c507edee390ab5247947fe2471b392d5, type: 3}
+  m_Name: C004
+  m_EditorClassIdentifier: 
+  characterName: 
+  hp: 12
+  skill: 1
+  skillDescription: Add 1 extra dice for the next turn
+  characterModel: {fileID: 0}
+  characterSprite: {fileID: 1525768982, guid: 889f753f1e85add4db82e124710ca1b8, type: 3}
+  icon: {fileID: 1443222908, guid: 889f753f1e85add4db82e124710ca1b8, type: 3}
