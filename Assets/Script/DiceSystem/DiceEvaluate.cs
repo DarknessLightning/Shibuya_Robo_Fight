@@ -4,6 +4,7 @@ public class DiceEvaluate : MonoBehaviour
 {
     public Rigidbody rb;
     private Vector3 endPos;
+    public DiceFace[] results;
 
     [Header("Drop Settings")]
     public float force = 5f;
@@ -32,6 +33,11 @@ public class DiceEvaluate : MonoBehaviour
         return topNumber;
     }
 
+    public DiceFace GetTopFace(int index)
+    {
+        return results[index];
+    }
+
     void CheckSide(Vector3 dir, int number, ref float maxDot, ref int topNumber)
     {
         float dot = Vector3.Dot(dir, Vector3.up);
@@ -45,8 +51,17 @@ public class DiceEvaluate : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
+        Init();
+    }
+
+    public void Init()
+    {
+        if(rb == null)
+        {
+            rb = GetComponent<Rigidbody>();
+            rb.useGravity = false;
+
+        }
         resetEnd();
     }
 

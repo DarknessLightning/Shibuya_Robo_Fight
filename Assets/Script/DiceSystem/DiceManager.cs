@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum DiceFace
 {
-    Attack,       // Index 0 (Hasil dadu 1)
+    Attack,       // Index 0 (Hasil dadu 5)
     Heal,         // Index 1 (Hasil dadu 2)
     Charge,       // Index 2 (Hasil dadu 3)
     Destruction,  // Index 3 (Hasil dadu 4)
@@ -13,15 +13,61 @@ public enum DiceFace
 
 public class DiceManager : MonoBehaviour
 {
-    public DiceEvaluate[] dices;
+    public GameObject dicePrefab;
+    private List<DiceEvaluate> allDices = new();
     private List<DiceEvaluate> lockedDices = new();
+    public int diceAmount = 6;
     public Transform[] lockedPlaces;
-    public Vector3[] standardRotation; // Pastikan ukurannya ada 6 di Inspector
+    
+    public List<Vector3> standardRotations = new List<Vector3>
+    {
+        new Vector3(0,0,0),
+        new Vector3(90,0,0),
+        new Vector3(0,-90,90),
+        new Vector3(0,-90,-90),
+        new Vector3(-90,0,0),
+        new Vector3(180,0,0)
+    };
+
+    public List<DiceFace> diceFaces = new List<DiceFace>
+    {
+        DiceFace.Charge, 
+        DiceFace.Heal,
+        DiceFace.Attack,
+        DiceFace.Power,
+        DiceFace.Fame,
+        DiceFace.Destruction
+    };
 
     public List<DiceFace> result = new();
 
+
+    // Variabel baru untuk jangkauan acak posisi jatuh
+    public Vector3 centerPosition = new Vector3(15f, 5f, 0f); // Titik tengah di udara (Y=5)
+    public float dropRadius = 1.5f; // Seberapa luas jangkauan acak area jatuh
+
     void Start()
     {
+        for (int i = allDices.Count; i < Mathf.Min(diceAmount, lockedPlaces.Length); i++)
+        {
+            
+            // 1. Buat posisi acak di udara agar tidak dilahirkan di titik (0,0,0) yang sama
+            Vector2 randomOffset = Random.insideUnitCircle * dropRadius;
+            Vector3 spawnPos = new Vector3(
+                centerPosition.x + randomOffset.x,
+                centerPosition.y + (i * 0.1f), // Beri sedikit jeda tinggi (Y) antar dadu agar tidak jepit-jepitan
+                centerPosition.z + randomOffset.y
+            );
+
+            // 2. Buat rotasi acak total sejak awal lahir
+            Quaternion randomRot = Quaternion.Euler(Vector3.zero);
+
+            GameObject dice = Instantiate(dicePrefab, spawnPos, randomRot);
+            DiceEvaluate newDice = dice.GetComponent<DiceEvaluate>();
+            allDices.Add(newDice);
+            newDice.Init();
+        }
+        RollAllDice();
         // Inisialisasi jika diperlukan
     }
 
@@ -35,15 +81,15 @@ public class DiceManager : MonoBehaviour
         {
             result.Clear();
             string msg = "";
-            for (int i = 0; i < dices.Length; i++)
+            for (int i = 0; i < allDices.Count; i++)
             {
-                int faceResult = dices[i].GetTopNumber(); // Mengembalikan angka 1 - 6
+                int faceResult = allDices[i].GetTopNumber(); // Mengembalikan angka 1 - 6
 
                 // PERBAIKAN 1: Kurangi 1 angka agar sinkron dengan urutan Enum (0 - 5)
                 int enumIndex = faceResult - 1;
 
-                msg += "Dice " + (i + 1) + " Result: " + (DiceFace)enumIndex + " (" + faceResult + ")\n";
-                result.Add((DiceFace)enumIndex);
+                msg += "Dice " + (i + 1) + " Result: " + diceFaces[enumIndex].ToString() + " (" + faceResult + ")\n";
+                result.Add(diceFaces[enumIndex]);
             }
             Debug.Log(msg);
         }
@@ -53,20 +99,42 @@ public class DiceManager : MonoBehaviour
         }
 
         // Deteksi Klik Mouse untuk Lock / Unlock Dadu
-        if (Input.GetMouseButtonDown(0))
+        if (Input.touchCount > 0)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Touch touch = Input.GetTouch(0);
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            if (touch.phase == TouchPhase.Began)
             {
-                lockDice(hit);
+                CheckClick(touch.position);
             }
         }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            CheckClick(Input.mousePosition);
+        }
+    }
+
+    void CheckClick(Vector2 screenPos)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(screenPos);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            // object kena
+            lockDice(hit);
+        }
+    }
+
+    public void Reroll()
+    {
+        if (IsMoving()) return;
+
+        RollAllDice();
     }
 
     public void RollAllDice()
     {
-        foreach (DiceEvaluate dice in dices)
+        foreach (DiceEvaluate dice in allDices)
         {
             if (dice.locked) continue;
 
@@ -110,11 +178,11 @@ public class DiceManager : MonoBehaviour
                 dice.rb.isKinematic = true;
 
                 // Ambil rotasi standar berdasarkan angka teratas (faceResult - 1)
-                int rotationIndex = Mathf.Clamp(dice.GetTopNumber() - 1, 0, standardRotation.Length - 1);
+                int rotationIndex = Mathf.Clamp(dice.GetTopNumber() - 1, 0, standardRotations.Count - 1);
 
                 dice.setPosAndRot(
                     lockedPlaces[currentIndex].position,
-                    standardRotation[rotationIndex]
+                    standardRotations[rotationIndex]
                 );
             }
         }
@@ -147,9 +215,9 @@ public class DiceManager : MonoBehaviour
     public bool IsMoving()
     {
         // Cek apakah masih ada satu saja dadu yang menggelinding di arena pertarungan
-        for (int i = 0; i < dices.Length; i++)
+        for (int i = 0; i < allDices.Count; i++)
         {
-            if (dices[i].IsMoving()) return true;
+            if (allDices[i].IsMoving()) return true;
         }
         return false;
     }
