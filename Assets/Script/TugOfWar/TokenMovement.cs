@@ -11,12 +11,13 @@ public class TokenMovement : MonoBehaviour
 
     private GameObject selectedToken;
 
-    private int fameIndex = 4;
-    private int destructionIndex = 4;
+    private int fameIndex = 7;
+    private int destructionIndex = 7;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        fameIndex = Mathf.CeilToInt((float)FameTiles.Length/2);
+        destructionIndex = Mathf.CeilToInt((float)DestructionTiles.Length / 2);
     }
 
     // Update is called once per frame
@@ -60,8 +61,8 @@ public class TokenMovement : MonoBehaviour
     public void moveToken(ref int index, bool left, Transform[] tiles)
     {
         index += left ? -1 : 1;
-        index = Mathf.Clamp(index, 0, 8);
-        if(index > 0 && index < 8)
+        index = Mathf.Clamp(index, 0, 14);
+        if(index > 0 && index < 14)
         {
             selectedToken.transform.position = new Vector3(tiles[index - 1].position.x,
                 selectedToken.transform.position.y,
@@ -69,9 +70,9 @@ public class TokenMovement : MonoBehaviour
         }
         else
         {
-            selectedToken.transform.position = new Vector3(EndTiles[index/8].position.x,
+            selectedToken.transform.position = new Vector3(EndTiles[index/14].position.x,
                 selectedToken.transform.position.y,
-                EndTiles[index/8].position.z);
+                EndTiles[index/14].position.z);
         }
     }
 }

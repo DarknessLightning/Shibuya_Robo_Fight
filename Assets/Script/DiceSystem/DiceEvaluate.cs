@@ -3,12 +3,15 @@ using UnityEngine;
 public class DiceEvaluate : MonoBehaviour
 {
     public Rigidbody rb;
-    public Vector3 startingPos;
-
     private Vector3 endPos;
 
+    [Header("Drop Settings")]
     public float force = 5f;
     public float torque = 10f;
+
+    // Variabel baru untuk jangkauan acak posisi jatuh
+    public Vector3 centerPosition = new Vector3(15f, 5f, 0f); // Titik tengah di udara (Y=5)
+    public float dropRadius = 1.5f; // Seberapa luas jangkauan acak area jatuh
 
     public bool locked = false;
 
@@ -40,26 +43,11 @@ public class DiceEvaluate : MonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        startingPos = transform.localPosition;
         resetEnd();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        /*if (Input.GetKeyDown(KeyCode.X))
-        {
-            Debug.Log("Result: " + GetTopNumber());
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            RollDice();
-        }*/
     }
 
     private void OnMouseDown()
@@ -67,26 +55,49 @@ public class DiceEvaluate : MonoBehaviour
         Debug.Log("Mouse is on Dice. Result: " + GetTopNumber().ToString());
     }
 
+    // ====================================================
+    // PERUBAHAN UTAMA: ACAK POSISI AWAL SEBELUM DIJATUHKAN
+    // ====================================================
     public void RollDice()
     {
+        // 1. Acak posisi awal di udara (X dan Z) di dalam lingkaran radius tertentu
+        Vector2 randomCircle = Random.insideUnitCircle * dropRadius;
+        Vector3 randomSpawnPos = new Vector3(
+            centerPosition.x + randomCircle.x,
+            centerPosition.y + Random.Range(-0.2f, 0.2f), // Sedikit variasi tinggi agar tidak tabrakan di udara
+            centerPosition.z + randomCircle.y
+        );
+
+        // Terapkan posisi acak dan rotasi acak total sebelum jatuh
+        transform.localPosition = randomSpawnPos;
+        transform.localRotation = Quaternion.Euler(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
+
+        // 2. Aktifkan Fisika
         rb.useGravity = true;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        Vector3 randomForce =
-            Vector3.forward * force +
-            Random.insideUnitSphere * 2f;
+        // 3. Beri gaya dorong ke bawah dan sedikit dorongan acak ke samping agar memantul alami
+        Vector2 randomSpread = Random.insideUnitCircle * 1.5f;
+        Vector3 dropForce = new Vector3(randomSpread.x, -force, randomSpread.y);
+        rb.AddForce(dropForce, ForceMode.Impulse);
 
-        rb.AddForce(randomForce, ForceMode.Impulse);
-
+        // Beri efek putaran acak
         Vector3 randomTorque = Random.insideUnitSphere * torque;
         rb.AddTorque(randomTorque, ForceMode.Impulse);
     }
 
+    // Mengembalikan ke posisi acak baru di atas (bukan posisi awal yang kaku)
     public void back2Starting()
     {
-        transform.localPosition = startingPos;
-        transform.localRotation = Quaternion.Euler(Vector3.zero);
+        rb.useGravity = false;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        // Langsung acak posisi baru lagi di langit agar siap untuk roll berikutnya
+        Vector2 randomCircle = Random.insideUnitCircle * dropRadius;
+        transform.localPosition = new Vector3(centerPosition.x + randomCircle.x, centerPosition.y, centerPosition.y + randomCircle.y);
+        transform.localRotation = Quaternion.identity;
     }
 
     public void back2End()
@@ -102,9 +113,7 @@ public class DiceEvaluate : MonoBehaviour
 
     public bool IsMoving()
     {
-        bool moving = rb.linearVelocity.magnitude > 0.1f || rb.angularVelocity.magnitude > 0.1f;
-
-        return moving;
+        return rb.linearVelocity.sqrMagnitude > 0.01f || rb.angularVelocity.sqrMagnitude > 0.01f;
     }
 
     public void setEnd()
@@ -114,7 +123,7 @@ public class DiceEvaluate : MonoBehaviour
 
     public void resetEnd()
     {
-        endPos = startingPos;
+        // Karena startingPos dihapus, endPos default disetel ke centerPosition di awal game
+        endPos = centerPosition;
     }
-
 }

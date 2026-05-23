@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -8,6 +9,7 @@ public class CharacterSelectionUi
     public CharacterData character;
     public Transform Selection;
     public Image CharacterSprite;
+    public GameObject CharacterShowcase;
     public Text CharacterHP;
     public Text SkillDescript;
     public bool confirm;
@@ -30,30 +32,24 @@ public class CharacterSelectionManager : MonoBehaviour
     [Header("AI Selection Panel")]
     public CharacterSelectionUi enemy;
 
-
+    [Header("Session Data")]
+    public GameSessionData sessionData;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        allCharacter = Resources.LoadAll<CharacterData>("Character");
-        foreach(Transform t in player.Selection)
+        allCharacter = Resources.LoadAll<CharacterData>("Character"); 
+
+        foreach (CharacterData character in allCharacter)
         {
-            Destroy(t.gameObject);
-        }
-        foreach (Transform t in enemy.Selection)
-        {
-            Destroy(t.gameObject);
-        }
-        foreach(CharacterData character in allCharacter)
-        {
-            if (character.characterSprite == null) continue;
+            if (character.characterModel == null) continue;
 
             availableCharacter.Add(character);
             loadSelection(player, character);
             loadSelection(enemy, character);
         }
-        selectChara(allCharacter[0], player);
-        selectChara(allCharacter[0], enemy);
+        selectChara(availableCharacter[0], player);
+        selectChara(availableCharacter[0], enemy);
         selected = player;
 
     }
@@ -62,7 +58,8 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         CharacterData dt = chara;
         Button charaBtn = Instantiate(chooseCharaButton, selection.Selection);
-        Image charaImg = charaBtn.GetComponent<Image>();
+        Transform profile = charaBtn.transform.Find("Profile");
+        Image charaImg = profile.GetComponent<Image>();
         charaImg.sprite = dt.icon;
         charaImg.preserveAspect = true;
         charaBtn.onClick.AddListener(() =>
@@ -74,8 +71,10 @@ public class CharacterSelectionManager : MonoBehaviour
     public void selectChara(CharacterData chara, CharacterSelectionUi selection)
     {
         if (selection.confirm) return;
-        selection.character = chara;
-        selection.CharacterSprite.sprite = chara.characterSprite;
+        selection.character = chara; 
+        Destroy(selection.CharacterShowcase.transform.GetChild(0).gameObject);
+        GameObject model = Instantiate(chara.characterModel, selection.CharacterShowcase.transform);
+        //selection.CharacterSprite.sprite = chara.characterSprite;
         selection.CharacterHP.text = chara.hp.ToString();
         selection.SkillDescript.text = SpecialSkill + chara.skillDescription.ToString();
         selection.index = availableCharacter.IndexOf(chara);
@@ -102,6 +101,11 @@ public class CharacterSelectionManager : MonoBehaviour
         if(!player.confirm || !enemy.confirm) return;
         Debug.Log("Player Choose: " + player.character.name + "\n" + 
             "AI Choose: " + enemy.character.name);
+
+        sessionData.playerCharacter = player.character;
+        sessionData.enemyCharacter = enemy.character;
+
+        SceneManager.LoadScene("SimpleFight");
     }
 
     // Update is called once per frame
