@@ -11,7 +11,7 @@ public class DiceEvaluate : MonoBehaviour
     public float torque = 10f;
 
     // Variabel baru untuk jangkauan acak posisi jatuh
-    public Vector3 centerPosition = new Vector3(15f, 5f, 0f); // Titik tengah di udara (Y=5)
+    public Vector3 centerPosition = new Vector3(0f, 5f, -45f); // Titik tengah di udara (Y=5)
     public float dropRadius = 1.5f; // Seberapa luas jangkauan acak area jatuh
 
     public bool locked = false;

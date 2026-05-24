@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TokenMovement : MonoBehaviour
@@ -56,6 +57,32 @@ public class TokenMovement : MonoBehaviour
                 }
             }
         }
+    }
+
+    public IEnumerator MovePhase(int fameMovement, int destructionMovement)
+    {
+        fameIndex += fameMovement;
+        destructionIndex += destructionMovement;
+        yield return MoveToken(FameToken, FameTiles[fameIndex]);
+        yield return MoveToken(DestructionToken, DestructionTiles[destructionIndex]);
+    }
+
+    public IEnumerator MoveToken(GameObject token, Transform tile)
+    {
+        Vector3 start = token.transform.position;
+        Vector3 end = new Vector3(tile.position.x, start.y, tile.position.z);
+
+        float elapsed = 0f;
+        float duration = 1f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            token.transform.position = Vector3.Lerp(start, end, t);
+            yield return null;
+        }
+        token.transform.position = end;
     }
 
     public void moveToken(ref int index, bool left, Transform[] tiles)
