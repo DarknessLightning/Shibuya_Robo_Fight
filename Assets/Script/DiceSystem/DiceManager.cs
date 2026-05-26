@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum DiceFace
@@ -243,7 +242,14 @@ public class DiceManager : MonoBehaviour
 
                 // Ambil rotasi standar berdasarkan angka teratas (faceResult - 1)
                 int rotationIndex = Mathf.Clamp(dice.GetTopNumber() - 1, 0, standardRotations.Count - 1);
-
+                if(lockedDices.IndexOf(dice) < 3)
+                {
+                    rotationIndex = 0;
+                }
+                else
+                {
+                    rotationIndex = 3;
+                }
                 dice.setPosAndRot(
                     lockedPlaces[currentIndex].position,
                     standardRotations[rotationIndex]

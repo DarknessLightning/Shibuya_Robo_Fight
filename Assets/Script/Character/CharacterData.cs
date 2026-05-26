@@ -21,4 +21,5 @@ public class CharacterData : ScriptableObject
     public GameObject characterModel;
     public Sprite characterSprite;
     public Sprite icon;
+    public Sprite info;
 }

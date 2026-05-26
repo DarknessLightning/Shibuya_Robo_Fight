@@ -18,5 +18,6 @@ MonoBehaviour:
   skillDescription: For each Skill Point exceeding 1, gain ability point equal to
     the number of abilty point faces in this turn
   characterModel: {fileID: 5022989285876818883, guid: 1c22859e7ea5065479d63c32466ec138, type: 3}
-  characterSprite: {fileID: 186501474, guid: afbbde126a36f2d428911070a5e87bf3, type: 3}
-  icon: {fileID: 2097761553, guid: afbbde126a36f2d428911070a5e87bf3, type: 3}
+  characterSprite: {fileID: 21300000, guid: ca8146369df37f84397c6893f8e4415e, type: 3}
+  icon: {fileID: 21300000, guid: b40dd0e8a4a56374cb04e11bbeaa7f09, type: 3}
+  info: {fileID: 21300000, guid: 15b759e65d499bc4b95dae195da253e3, type: 3}

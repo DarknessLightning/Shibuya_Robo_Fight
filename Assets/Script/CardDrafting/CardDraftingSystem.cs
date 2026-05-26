@@ -90,6 +90,7 @@ public class CardDraftingSystem : MonoBehaviour
 
     public void selectCard(int index)
     {
+        if (usablePoints < openedCards[index].cost) return;
         FightManager.instance.BuyCardPanel.SetActive(true);
         selected = index;
         selectedCard = openedCards[index];
@@ -107,8 +108,15 @@ public class CardDraftingSystem : MonoBehaviour
         FightManager.instance.SetCameraPos(FightManager.instance.BirdsEyeView);
     }
 
+    public void closeCardDraftPanel()
+    {
+        FightManager.instance.CardDraftingPanel.SetActive(false);
+    }
+
     public void buyCard()
     {
+        usablePoints -= selectedCard.cost;
+        ExecuteCardEffect(selectedCard);
         //add or apply card
 
         openedCards[selected] = null;
@@ -123,7 +131,38 @@ public class CardDraftingSystem : MonoBehaviour
         }
         showCards(openedCardsUI, openedCards, openedCardsObject);
         closeBuyPanel();
+        closeCardDraftPanel();
 
+    }
+
+    public void ExecuteCardEffect(AbilityCard card)
+    {
+        int value = card.effectValue;
+        if (card.effectType == EffectType.Subtract) value *= -1;
+
+        int repeat = -1;
+        if (card.useForEach)
+        {
+            repeat = FightManager.instance.GetStateAmount(FightManager.instance.PlayerTurn, card.forEachTarget, card.forEachState);
+            if(repeat > -1)
+            {
+                value *= repeat;
+            }
+        }
+
+        if(card.triggerEvent == TriggerEvent.None)
+        {
+            FightManager.instance.ApplyEffect(
+                FightManager.instance.PlayerTurn,
+                card.effectTarget,
+                card.effectState, 
+                value
+                );
+        }
+        else
+        {
+            FightManager.instance.GivePermaCard(card);
+        }
     }
 
     public void ResetPool()
@@ -148,6 +187,8 @@ public class CardDraftingSystem : MonoBehaviour
             refreshCards();
         }
         showCards(openedCardsUI, openedCards, openedCardsObject);
+        closeBuyPanel();
+        closeCardDraftPanel();
     }
 
     public bool openIsEmpty()

@@ -59,14 +59,14 @@ public class FightManager : MonoBehaviour
     public TokenMovement tokenMovement;
 
     [Header("Other References")]
-    public Transform Camera;
+    public Transform Kamera;
     public Text PhaseAnnounce;
     public GameSessionData sessionData;
 
     [Header("Player Data")]
     public PlayerData Player;
     public PlayerData AI;
-    private PlayerData PlayerTurn;
+    public PlayerData PlayerTurn = null;
 
     private int GamePhase = -1;
     public int FameIndex = 7;
@@ -104,6 +104,10 @@ public class FightManager : MonoBehaviour
         instance = null;
     }
 
+    //------------//
+    //PHASE CHANGE//
+    //------------//
+
     private void ActionPhase()
     {
         if (isRunningCoroutine) return;
@@ -133,9 +137,13 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator NextPhase()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         ActionPhase();
     }
+
+    //----------//
+    //DICE PHASE//
+    //----------//
 
     private void StartDicePhase()
     {
@@ -161,6 +169,10 @@ public class FightManager : MonoBehaviour
         ActionPhase();
     }
 
+    //------------------//
+    //DICE RESOLVE PHASE//
+    //------------------//
+
     private void ResolveDiceEffect(int index)
     {
         SetCameraPos(BirdsEyeView);
@@ -174,12 +186,18 @@ public class FightManager : MonoBehaviour
                 break;
             case 3: Charge();
                 break;
-            case 4: //Tug Of War
+            case 4: TugOfWarStart();
                 break;
-            default: ActionPhase();
+            default: //ActionPhase();
                 return;
         }
-        ResolveDiceEffect(index + 1);
+        Enqueue(ResolveNextEffect(index + 1));
+    }
+
+    private IEnumerator ResolveNextEffect(int index)
+    {
+        yield return new WaitForSeconds(1f);
+        ResolveDiceEffect(index);
     }
 
     private void specialSkill()
@@ -199,10 +217,10 @@ public class FightManager : MonoBehaviour
                 if (count >= 3) MoveTracker(1, 1, PlayerTurn);
                 break;
             case SpecialSkill.SS002:
-                if (count >= 2) HpChange(PlayerTurn.opponent, -3);
+                if (count >= 1) EnergyMultiplier = count; 
                 break;
             case SpecialSkill.SS003:
-                if (count >= 1) EnergyMultiplier = count;
+                if (count >= 2) HpChange(PlayerTurn.opponent, -3);
                 break;
             case SpecialSkill.SS004:
                 if(count >= 3) PlayerTurn.additionalDice += 1;
@@ -326,10 +344,89 @@ public class FightManager : MonoBehaviour
 
     }
 
+    //-------------------//
+    //CARD DRAFTING PHASE//
+    //-------------------//
+
+    public void StartCardDraft()
+    {
+        if (isRunningCoroutine || GamePhase != 1) return;
+
+        ActionPhase();
+    }
+
     private void CardDraftingPhase()
     {
-
+        cardDraftingSystem.usablePoints = PlayerTurn.AbilityPoints;
+        CardDraftingPanel.SetActive(true);
     }
+
+    //------------------//
+    //CARD EFFECT HELPER//
+    //------------------//
+
+    public void ApplyEffect(PlayerData self, SubjectTarget target, PlayerState state, int value)
+    {
+        PlayerData targetPlayer;
+        if(target == SubjectTarget.Self)
+        {
+            targetPlayer = self;
+        }
+        else
+        {
+            targetPlayer = self == Player ? AI : Player;
+        }
+
+        switch (state)
+        {
+            case PlayerState.HealthPoint: 
+                HpChange(targetPlayer, value); 
+                break;
+            case PlayerState.AbilityPoints: 
+                ApChange(targetPlayer, value);
+                break;
+            case PlayerState.Fame:
+                MoveTracker(value, 0, targetPlayer);
+                break;
+            case PlayerState.Destruction:
+                MoveTracker(0, value, targetPlayer);
+                break;
+            case PlayerState.Reroll:
+                targetPlayer.additionalReroll += value;
+                break;
+            default: return;
+        }
+    }
+
+    public int GetStateAmount(PlayerData self, SubjectTarget target, PlayerState state)
+    {
+        PlayerData targetPlayer;
+        if(target == SubjectTarget.Self)
+        {
+            targetPlayer = self;
+        }
+        else
+        {
+            targetPlayer = self == Player ? AI : Player;
+        }
+
+        switch (state)
+        {
+            case PlayerState.HealthPoint: return targetPlayer.CurrentHP;
+            case PlayerState.AbilityPoints: return targetPlayer.AbilityPoints;
+            case PlayerState.AbilityCard: return targetPlayer.Cards.Count;
+            default: return -1;
+        }
+    }
+
+    public void GivePermaCard(AbilityCard card)
+    {
+        PlayerTurn.Cards.Add(card);
+    }
+
+    //----------//
+    //DICE PHASE//
+    //----------//
 
     private void BuzzTilePhase()
     {
@@ -338,8 +435,8 @@ public class FightManager : MonoBehaviour
 
     public void SetCameraPos(Transform pivot)
     {
-        Camera.position = pivot.position;
-        Camera.rotation = pivot.rotation;
+        Kamera.position = pivot.position;
+        Kamera.rotation = pivot.rotation;
     }
 
     private void LoadSessionCharacter(PlayerData player)
@@ -384,6 +481,40 @@ public class FightManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        // Deteksi Klik Mouse untuk Lock / Unlock Dadu
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                CheckClick(touch.position);
+            }
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            CheckClick(Input.mousePosition);
+        }
+    }
+
+    private void CheckClick(Vector2 position)
+    {
+
+        Ray ray = Camera.main.ScreenPointToRay(position);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            // object kena
+            checkHit(hit);
+        }
+    }
+
+    private void checkHit(RaycastHit hit)
+    {
+        if (hit.collider.gameObject.CompareTag("Cards"))
+        {
+            StartCardDraft();
+        }
     }
 }

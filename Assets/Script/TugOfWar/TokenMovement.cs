@@ -63,8 +63,23 @@ public class TokenMovement : MonoBehaviour
     {
         fameIndex += fameMovement;
         destructionIndex += destructionMovement;
-        yield return MoveToken(FameToken, FameTiles[fameIndex]);
-        yield return MoveToken(DestructionToken, DestructionTiles[destructionIndex]);
+        
+        if(fameIndex > 0 && fameIndex < 14)
+        {
+            yield return MoveToken(FameToken, FameTiles[fameIndex - 1]);
+        }
+        else
+        {
+            yield return MoveToken(FameToken, EndTiles[fameIndex / 14]);
+        }
+        if (destructionIndex > 0 && destructionIndex < 14)
+        {
+            yield return MoveToken(DestructionToken, DestructionTiles[destructionIndex - 1]);
+        }
+        else
+        {
+            yield return MoveToken(DestructionToken, EndTiles[destructionIndex / 14]);
+        }
     }
 
     public IEnumerator MoveToken(GameObject token, Transform tile)

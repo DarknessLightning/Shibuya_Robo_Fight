@@ -9,9 +9,8 @@ public class CharacterSelectionUi
     public CharacterData character;
     public Transform Selection;
     public Image CharacterSprite;
-    public GameObject CharacterShowcase;
-    public Text CharacterHP;
-    public Text SkillDescript;
+    public Image InfoImage;
+    public Transform Pointer;
     public bool confirm;
     public int index = 0;
 }
@@ -21,16 +20,18 @@ public class CharacterSelectionManager : MonoBehaviour
     public CharacterData[] allCharacter;
     private List<CharacterData> availableCharacter = new();
     public Button chooseCharaButton;
-    private string SpecialSkill = "Special Skill: \n";
+    //private string SpecialSkill = "Special Skill: \n";
     private int index = 0;
     private CharacterSelectionUi selected;
 
     [Header("Player Selection Panel")]
     public CharacterSelectionUi player;
+    private Transform firstPlayerBtn;
 
 
     [Header("AI Selection Panel")]
     public CharacterSelectionUi enemy;
+    private Transform firstEnemyBtn;
 
     [Header("Session Data")]
     public GameSessionData sessionData;
@@ -58,26 +59,49 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         CharacterData dt = chara;
         Button charaBtn = Instantiate(chooseCharaButton, selection.Selection);
-        Transform profile = charaBtn.transform.Find("Profile");
-        Image charaImg = profile.GetComponent<Image>();
-        charaImg.sprite = dt.icon;
-        charaImg.preserveAspect = true;
+        Image profile = charaBtn.GetComponent<Image>();
+        profile.sprite = dt.icon;
+        profile.preserveAspect = true;
         charaBtn.onClick.AddListener(() =>
         {
             selectChara(dt, selection);
+            selectUI(charaBtn.transform, selection);
         });
+        if(selection.Selection.childCount == 1)
+        {
+            Transform parent = charaBtn.transform.parent;
+            foreach (Transform child in parent)
+            {
+                child.Find("Profile").gameObject.SetActive(false);
+            }
+            Transform selectedTransform = charaBtn.transform.Find("Profile");
+            selectedTransform.gameObject.SetActive(true);
+        }
     }
 
     public void selectChara(CharacterData chara, CharacterSelectionUi selection)
     {
         if (selection.confirm) return;
         selection.character = chara; 
-        Destroy(selection.CharacterShowcase.transform.GetChild(0).gameObject);
-        GameObject model = Instantiate(chara.characterModel, selection.CharacterShowcase.transform);
-        //selection.CharacterSprite.sprite = chara.characterSprite;
-        selection.CharacterHP.text = chara.hp.ToString();
-        selection.SkillDescript.text = SpecialSkill + chara.skillDescription.ToString();
+        //Destroy(selection.CharacterShowcase.transform.GetChild(0).gameObject);
+        //GameObject model = Instantiate(chara.characterModel, selection.CharacterShowcase.transform);
+        selection.CharacterSprite.sprite = chara.characterSprite;
+        selection.InfoImage.sprite = chara.info;
+        //selection.CharacterHP.text = chara.hp.ToString();
+        //selection.SkillDescript.text = SpecialSkill + chara.skillDescription.ToString();
         selection.index = availableCharacter.IndexOf(chara);
+    }
+
+    public void selectUI(Transform charaBtn, CharacterSelectionUi selection)
+    {
+        Transform parent = charaBtn.transform.parent;
+        foreach (Transform child in parent)
+        {
+            child.Find("Profile").gameObject.SetActive(false);
+        }
+        Transform selectedTransform = charaBtn.transform.Find("Profile");
+        selectedTransform.gameObject.SetActive(true);
+        selection.Pointer.position = new Vector2(charaBtn.transform.position.x, selection.Pointer.position.y);
     }
 
     public void confirmPlayer()
