@@ -205,7 +205,10 @@ public class DiceManager : MonoBehaviour
             result.Add(diceFaces[enumIndex]);
         }
         rerollButton.SetActive(true);
-        FightManager.instance.ResolveDice(result);
+        if(FightManager.instance != null)
+        {
+            FightManager.instance.ResolveDice(result);
+        }
     }
 
     public void checkHit(RaycastHit hit)
@@ -242,13 +245,9 @@ public class DiceManager : MonoBehaviour
 
                 // Ambil rotasi standar berdasarkan angka teratas (faceResult - 1)
                 int rotationIndex = Mathf.Clamp(dice.GetTopNumber() - 1, 0, standardRotations.Count - 1);
-                if(lockedDices.IndexOf(dice) < 3)
+                if(lockedDices.IndexOf(dice) < 6)
                 {
                     rotationIndex = 0;
-                }
-                else
-                {
-                    rotationIndex = 3;
                 }
                 dice.setPosAndRot(
                     lockedPlaces[currentIndex].position,

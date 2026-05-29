@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [System.Serializable]
 public class PlayerUI
 {
     public Image Profile;
     public Transform ModelPos;
-    public Animator ModelAnimator;
+    public AnimationScript ModelAnimator;
     public Image HPBar;
     public Text APText;
     public Text SPText;
@@ -52,6 +51,8 @@ public class FightManager : MonoBehaviour
     public Transform OverPlayerShoulder;
     public Transform OverAIShoulder;
     public Transform AboveDiceTray;
+    public Transform InFronOfPlayer;
+    public Transform InFrontOfAI;
 
     [Header("Script References")]
     public DiceManager diceManager;
@@ -89,6 +90,9 @@ public class FightManager : MonoBehaviour
         AI.character = sessionData.enemyCharacter;
 
         LoadSessionCharacter(Player);
+        Player.CurrentHP -= 7;
+        float fillAmount = (float)Player.CurrentHP/Player.character.hp; 
+        Player.ui.HPBar.fillAmount = fillAmount;
         LoadSessionCharacter(AI);
 
         ActionPhase();
@@ -172,6 +176,11 @@ public class FightManager : MonoBehaviour
     //------------------//
     //DICE RESOLVE PHASE//
     //------------------//
+
+    public void NextResolve(int index)
+    {
+        ResolveDiceEffect(index);
+    }
 
     private void ResolveDiceEffect(int index)
     {
@@ -258,15 +267,41 @@ public class FightManager : MonoBehaviour
 
     private IEnumerator HPBarChange(PlayerData target, int deltaHealth)
     {
-        int tempHealth = target.CurrentHP;
-
-        target.CurrentHP += deltaHealth;
-        while (Mathf.Abs(tempHealth - target.CurrentHP) > 0)
+        int currentHealth = target.CurrentHP;
+        target.CurrentHP = Mathf.Clamp(target.CurrentHP += deltaHealth, 0, target.character.hp);
+        if (deltaHealth < 0)
         {
-            tempHealth = tempHealth < target.CurrentHP ? tempHealth + 1 : tempHealth - 1;
-            float fillAmount = (float)tempHealth / target.character.hp;
+            SetCameraPos(target == Player ? OverAIShoulder : OverPlayerShoulder);
+            target.opponent.ui.ModelAnimator.PlayAttack();
+            float duration = target.opponent.ui.ModelAnimator.attack.length - PlayerTurn.ui.ModelAnimator.hitBeforeEnd;
+            yield return new WaitForSeconds(duration);
+            
+            float fillAmount = (float)target.CurrentHP / target.character.hp;
             target.ui.HPBar.fillAmount = fillAmount;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(PlayerTurn.ui.ModelAnimator.hitBeforeEnd);
+        }
+        else if (deltaHealth > 0)
+        {
+            SetCameraPos(target == Player ? InFronOfPlayer : InFrontOfAI);
+            target.ui.ModelAnimator.PlayHeal();
+            float elapsed = 0f;
+            float duration = target.ui.ModelAnimator.heal.length;
+
+            int startAmount = currentHealth;
+            float fillAmount;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float percentage = elapsed / duration;
+
+                currentHealth = Mathf.RoundToInt(Mathf.Lerp(startAmount, target.CurrentHP, percentage));
+
+                fillAmount = (float)currentHealth / target.character.hp;
+                target.ui.HPBar.fillAmount = fillAmount;
+                yield return null;
+            }
+            fillAmount = (float)target.CurrentHP / target.character.hp;
+            target.ui.HPBar.fillAmount = fillAmount;
         }
         /*
         if (deltaHealth != 0)
@@ -278,6 +313,13 @@ public class FightManager : MonoBehaviour
                 Mathf.Abs(deltaHealth));
         }
         */
+        Debug.Log("Done");
+        SetCameraPos(BirdsEyeView);
+        if(deltaHealth != 0)
+        {
+            yield return new WaitForSeconds(2f);
+        }
+
     }
 
     public void Charge()
@@ -297,17 +339,56 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator charge(PlayerData target, int ApAmount)
     {
-        int currentEnergy = target.AbilityPoints;
-        target.AbilityPoints = ApAmount * EnergyMultiplier;
+        if (ApAmount != 0)
+        {
+            SetCameraPos(target == Player ? InFronOfPlayer : InFrontOfAI);
+            target.ui.ModelAnimator.PlayCharge();
+
+            // 1. Hitung dulu berapa TOTAL energi yang mau ditambahkan
+            int totalTambah = Mathf.RoundToInt(ApAmount * EnergyMultiplier);
+            int currentEnergy = target.AbilityPoints;
+            target.AbilityPoints += totalTambah;
+
+            float elapsed = 0;
+            float duration = target.ui.ModelAnimator.charge.length;
+
+            // 2. Tentukan titik mulai dan titik akhir
+            int startEnergy = currentEnergy;
+            int targetEnergy = currentEnergy + totalTambah;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+
+                // Hitung persentase progress (0.0 sampai 1.0)
+                float percentage = elapsed / duration;
+
+                // Berpindah mulus dari startEnergy ke targetEnergy berdasarkan persentase waktu
+                currentEnergy = Mathf.RoundToInt(Mathf.Lerp(startEnergy, targetEnergy, percentage));
+
+                target.ui.APText.text = currentEnergy.ToString();
+                yield return null;
+            }
+
+            // 3. Pastikan angka terakhirnya tepat di target setelah loop selesai
+            currentEnergy = targetEnergy;
+            target.ui.APText.text = currentEnergy.ToString();
+        }
+        
 
         EnergyMultiplier = 1;
-
-        while(currentEnergy != target.AbilityPoints)
+        /*
+        while (currentEnergy != target.AbilityPoints)
         {
             currentEnergy = currentEnergy < target.AbilityPoints ? currentEnergy + 1 : currentEnergy - 1;
-            target.ui.APText.text = currentEnergy.ToString();
-            yield return new WaitForSeconds(0.2f);
+        }*/
+
+        SetCameraPos(BirdsEyeView);
+        if (ApAmount != 0)
+        {
+            yield return new WaitForSeconds(2f);
         }
+
     }
 
     public void TugOfWarStart()
@@ -359,6 +440,13 @@ public class FightManager : MonoBehaviour
     {
         cardDraftingSystem.usablePoints = PlayerTurn.AbilityPoints;
         CardDraftingPanel.SetActive(true);
+    }
+
+    public void SkipCardDrafting()
+    {
+        CardDraftingPanel.SetActive(false);
+        GamePhase++;
+        ActionPhase();
     }
 
     //------------------//
@@ -445,7 +533,7 @@ public class FightManager : MonoBehaviour
         player.CurrentHP = player.character.hp;
         Destroy(player.ui.ModelPos.GetChild(0).gameObject);
         GameObject model = Instantiate(player.character.characterModel, player.ui.ModelPos);
-        player.ui.ModelAnimator = model.GetComponent<Animator>();
+        player.ui.ModelAnimator = model.GetComponent<AnimationScript>();
     }
 
     private void ChangeTurn()
