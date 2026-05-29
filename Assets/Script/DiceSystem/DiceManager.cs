@@ -124,6 +124,7 @@ public class DiceManager : MonoBehaviour
 
     public void startDice()
     {
+        reroll = 3 + FightManager.instance.PlayerTurn.additionalReroll;
         if(allDices.Count == 0) 
         {
 
@@ -245,9 +246,13 @@ public class DiceManager : MonoBehaviour
 
                 // Ambil rotasi standar berdasarkan angka teratas (faceResult - 1)
                 int rotationIndex = Mathf.Clamp(dice.GetTopNumber() - 1, 0, standardRotations.Count - 1);
-                if(lockedDices.IndexOf(dice) < 6)
+                if(lockedDices.IndexOf(dice) < 2)
                 {
-                    rotationIndex = 0;
+                    rotationIndex = 3;
+                }
+                else if(lockedDices.IndexOf(dice) < 4)
+                {
+                    rotationIndex = 2;
                 }
                 dice.setPosAndRot(
                     lockedPlaces[currentIndex].position,

@@ -96,7 +96,10 @@ public class CardDraftingSystem : MonoBehaviour
         selectedCard = openedCards[index];
         ChosenCard.sprite = selectedCard.cardSprite;
         FightManager.instance.CardDraftingPanel.SetActive(false);
-        FightManager.instance.SetCameraPos(FightManager.instance.FacingPlayer);
+        FightManager.instance.SetCameraPos(
+            FightManager.instance.PlayerTurn == FightManager.instance.Player ? 
+            FightManager.instance.InFrontOfPlayer : 
+            FightManager.instance.InFrontOfAI);
     }
 
     public void closeBuyPanel()
@@ -105,7 +108,7 @@ public class CardDraftingSystem : MonoBehaviour
         selectedCard = null;
         FightManager.instance.BuyCardPanel.SetActive(false);
         FightManager.instance.CardDraftingPanel.SetActive(true);
-        FightManager.instance.SetCameraPos(FightManager.instance.BirdsEyeView);
+        //FightManager.instance.SetCameraPos(FightManager.instance.BirdsEyeView);
     }
 
     public void closeCardDraftPanel()
@@ -115,6 +118,7 @@ public class CardDraftingSystem : MonoBehaviour
 
     public void buyCard()
     {
+
         usablePoints -= selectedCard.cost;
         ExecuteCardEffect(selectedCard);
         //add or apply card

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
 public class PlayerUI
@@ -51,8 +52,16 @@ public class FightManager : MonoBehaviour
     public Transform OverPlayerShoulder;
     public Transform OverAIShoulder;
     public Transform AboveDiceTray;
-    public Transform InFronOfPlayer;
+    public Transform InFrontOfPlayer;
     public Transform InFrontOfAI;
+
+    [Header("Orbit Settings")]
+    public float orbitRadius = 5f;
+    public float orbitSpeed = 45f; // Derajat per detik
+    public float orbitDuration = 5f;
+
+    [Header("Transition Settings")]
+    public float transitionDuration = 3f;
 
     [Header("Script References")]
     public DiceManager diceManager;
@@ -95,10 +104,11 @@ public class FightManager : MonoBehaviour
         Player.ui.HPBar.fillAmount = fillAmount;
         LoadSessionCharacter(AI);
 
-        ActionPhase();
+        //ActionPhase();
         PlayerTurn = Player;
         Player.opponent = AI;
         AI.opponent = Player;
+        StartCoroutine(MoveCameraSequence());
     }
 
     
@@ -220,23 +230,54 @@ public class FightManager : MonoBehaviour
             }
         }
 
+        int cost = 0;
+
         switch (PlayerTurn.character.skill)
         {
-            case SpecialSkill.SS001:
-                if (count >= 3) MoveTracker(1, 1, PlayerTurn);
+            case SpecialSkill.SS001: cost = 3;
                 break;
-            case SpecialSkill.SS002:
-                if (count >= 1) EnergyMultiplier = count; 
+            case SpecialSkill.SS002: cost = 1;
                 break;
-            case SpecialSkill.SS003:
-                if (count >= 2) HpChange(PlayerTurn.opponent, -3);
+            case SpecialSkill.SS003: cost = 2;
                 break;
-            case SpecialSkill.SS004:
-                if(count >= 3) PlayerTurn.additionalDice += 1;
+            case SpecialSkill.SS004: cost = 3;
                 break;
             default:
                 break;
         }
+        if (count >= cost) Enqueue(executeSpecialSkill(count, PlayerTurn));
+    }
+
+    private IEnumerator executeSpecialSkill(int power, PlayerData target)
+    {
+        yield return new WaitForSeconds(1.5f);
+        SetCameraPos(target == Player ? FacingPlayer : FacingAI);
+        target.ui.ModelAnimator.PlaySpecialSkill();
+
+        float duration = target.ui.ModelAnimator.charge.length;
+        yield return new WaitForSeconds(duration);
+        SetCameraPos(target == Player ? InFrontOfPlayer : InFrontOfAI);
+        duration = target.ui.ModelAnimator.signal.length;
+        yield return new WaitForSeconds(duration);
+
+        switch(PlayerTurn.character.skill)
+        {
+            case SpecialSkill.SS001:
+                MoveTracker(1, 1, PlayerTurn);
+                break;
+            case SpecialSkill.SS002:
+                EnergyMultiplier = power;
+                break;
+            case SpecialSkill.SS003:
+                HpChange(PlayerTurn.opponent, -3);
+                break;
+            case SpecialSkill.SS004:
+                PlayerTurn.additionalDice += 1;
+                break;
+            default:
+                break;
+        }
+        target.ui.ModelAnimator.EndSpecialSkill();
     }
 
     private void HpManipulation(DiceFace face)
@@ -273,16 +314,17 @@ public class FightManager : MonoBehaviour
         {
             SetCameraPos(target == Player ? OverAIShoulder : OverPlayerShoulder);
             target.opponent.ui.ModelAnimator.PlayAttack();
-            float duration = target.opponent.ui.ModelAnimator.attack.length - PlayerTurn.ui.ModelAnimator.hitBeforeEnd;
+            float duration = target.opponent.ui.ModelAnimator.attack.length - target.ui.ModelAnimator.timingForAttack;
             yield return new WaitForSeconds(duration);
-            
+            target.ui.ModelAnimator.PlayHit();
+            //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForHit);
             float fillAmount = (float)target.CurrentHP / target.character.hp;
             target.ui.HPBar.fillAmount = fillAmount;
-            yield return new WaitForSeconds(PlayerTurn.ui.ModelAnimator.hitBeforeEnd);
+            yield return new WaitForSeconds(PlayerTurn.ui.ModelAnimator.timingForAttack);
         }
         else if (deltaHealth > 0)
         {
-            SetCameraPos(target == Player ? InFronOfPlayer : InFrontOfAI);
+            SetCameraPos(target == Player ? FacingPlayer : FacingAI);
             target.ui.ModelAnimator.PlayHeal();
             float elapsed = 0f;
             float duration = target.ui.ModelAnimator.heal.length;
@@ -341,7 +383,7 @@ public class FightManager : MonoBehaviour
     {
         if (ApAmount != 0)
         {
-            SetCameraPos(target == Player ? InFronOfPlayer : InFrontOfAI);
+            SetCameraPos(target == Player ? FacingPlayer : FacingAI);
             target.ui.ModelAnimator.PlayCharge();
 
             // 1. Hitung dulu berapa TOTAL energi yang mau ditambahkan
@@ -605,4 +647,56 @@ public class FightManager : MonoBehaviour
             StartCardDraft();
         }
     }
+
+    //--------------------------//
+    //Camera Movement in Opening//
+    //--------------------------//
+
+    private IEnumerator MoveCameraSequence()
+    {
+        // Fase 1: Orbit mengelilingi Titik A
+        float timer = 0f;
+        float currentAngle = 0f;
+
+        while (timer < orbitDuration)
+        {
+            timer += Time.deltaTime;
+            currentAngle += orbitSpeed * Time.deltaTime;
+
+            // Menghitung posisi baru secara fisik di koordinat X dan Z
+            Quaternion rotation = Quaternion.Euler(0f, currentAngle, 0f);
+            Vector3 offset = rotation * new Vector3(0f, 45f, -orbitRadius);
+
+            // Kamera benar-benar pindah posisi
+            Kamera.position = transform.position + offset;
+
+            // Kamera selalu menghadap ke Titik A
+            Kamera.LookAt(transform.position);
+
+            yield return null;
+        }
+
+        // Fase 2: Bergerak dari posisi terakhir ke Titik B
+        Vector3 startTransitionPos = Kamera.position;
+        Quaternion startTransitionRot = Kamera.rotation;
+        timer = 0f;
+
+        while (timer < transitionDuration)
+        {
+            timer += Time.deltaTime;
+            float progress = timer / transitionDuration;
+
+            // Menggunakan SmoothStep agar gerakan transisi lebih mulus
+            float t = Mathf.SmoothStep(0f, 1f, progress);
+
+            // Interpolasi posisi dan rotasi menuju Titik B
+            Kamera.position = Vector3.Lerp(startTransitionPos, AboveDiceTray.position, t);
+            Kamera.rotation = Quaternion.Slerp(startTransitionRot, AboveDiceTray.rotation, t);
+
+            yield return null;
+        }
+        ActionPhase();
+    }
 }
+
+

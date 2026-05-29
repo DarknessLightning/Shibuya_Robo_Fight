@@ -106,4 +106,6 @@ MonoBehaviour:
   attack: {fileID: -887982601649841707, guid: c0708f89a52f611438b6fd23ceaa2b6a, type: 3}
   heal: {fileID: -887982601649841707, guid: 2c8bac05576d8494dafea443017db92f, type: 3}
   charge: {fileID: -887982601649841707, guid: b8c543277e9bfc044b2b7ecece62bab7, type: 3}
-  hitBeforeEnd: 1.5
+  signal: {fileID: -887982601649841707, guid: 7466ceb8cde67664a9621761de13e897, type: 3}
+  timingForAttack: 1.5
+  timingForHit: 0.1

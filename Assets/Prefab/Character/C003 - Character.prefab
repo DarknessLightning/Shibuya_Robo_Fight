@@ -103,3 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4472017723419260436}
+  attack: {fileID: -887982601649841707, guid: 674cb34d935fd3f48a99a4688a52c3ea, type: 3}
+  heal: {fileID: -887982601649841707, guid: a28a4fcb66a68d4418302f8782b40a86, type: 3}
+  charge: {fileID: -887982601649841707, guid: 85038075f7783504db274967bbe9b957, type: 3}
+  signal: {fileID: -887982601649841707, guid: 7523e0e45ee1844488855051c3f21a7b, type: 3}
+  timingForAttack: 1.5
+  timingForHit: 0.5

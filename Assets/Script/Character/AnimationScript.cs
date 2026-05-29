@@ -6,8 +6,10 @@ public class AnimationScript : MonoBehaviour
     public AnimationClip attack;
     public AnimationClip heal;
     public AnimationClip charge;
+    public AnimationClip signal;
 
-    public float hitBeforeEnd = 0f;
+    public float timingForAttack = 0f;
+    public float timingForHit = 0f;
 
     public void PlaySpecialSkill()
     {
@@ -15,9 +17,19 @@ public class AnimationScript : MonoBehaviour
         animator.SetBool("Signal", true);
     }
 
+    public void EndSpecialSkill()
+    {
+        animator.SetBool("Signal", false);
+    }
+
     public void PlayAttack()
     {
         animator.SetTrigger("Attack");
+    }
+
+    public void PlayHit()
+    {
+        animator.SetTrigger("Hit");
     }
 
     public void PlayHeal()
