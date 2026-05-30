@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AbilityCard", menuName = "Scriptable Objects/AbilityCard")]
+[CreateAssetMenu(fileName = "AbilityCard", menuName = "Game/AbilityCard")]
 public class AbilityCard : ScriptableObject
 {
     [Header("Cost")]
@@ -41,7 +41,7 @@ public class AbilityCard : ScriptableObject
     public int forEachMax;
 
     //Buzz Tile
-    //public BaseBuzzTile tile;
+    public BuzzTile tile;
 
     [Header("Reference")]
     public Sprite cardSprite;

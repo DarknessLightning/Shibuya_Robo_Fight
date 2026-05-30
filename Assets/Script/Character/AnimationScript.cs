@@ -7,9 +7,11 @@ public class AnimationScript : MonoBehaviour
     public AnimationClip heal;
     public AnimationClip charge;
     public AnimationClip signal;
+    public AnimationClip destruction;
 
     public float timingForAttack = 0f;
     public float timingForHit = 0f;
+    public float timingForDestruction = 0f;
 
     public void PlaySpecialSkill()
     {
@@ -42,6 +44,10 @@ public class AnimationScript : MonoBehaviour
         animator.SetTrigger("Charge");
     }
 
+    public void PlayDestruction()
+    {
+        animator.SetTrigger("Destruction");
+    }
 
     public void finishAttack()
     {

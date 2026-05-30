@@ -248,11 +248,11 @@ public class DiceManager : MonoBehaviour
                 int rotationIndex = Mathf.Clamp(dice.GetTopNumber() - 1, 0, standardRotations.Count - 1);
                 if(lockedDices.IndexOf(dice) < 2)
                 {
-                    rotationIndex = 3;
+                    rotationIndex = 5;
                 }
-                else if(lockedDices.IndexOf(dice) < 4)
+                else 
                 {
-                    rotationIndex = 2;
+                    rotationIndex = 5;
                 }
                 dice.setPosAndRot(
                     lockedPlaces[currentIndex].position,

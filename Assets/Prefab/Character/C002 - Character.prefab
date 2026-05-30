@@ -107,5 +107,7 @@ MonoBehaviour:
   heal: {fileID: -887982601649841707, guid: 2c8bac05576d8494dafea443017db92f, type: 3}
   charge: {fileID: -887982601649841707, guid: b8c543277e9bfc044b2b7ecece62bab7, type: 3}
   signal: {fileID: -887982601649841707, guid: 7466ceb8cde67664a9621761de13e897, type: 3}
+  destruction: {fileID: -887982601649841707, guid: 466683824e2aff04faecc6253760eb13, type: 3}
   timingForAttack: 1.5
   timingForHit: 0.1
+  timingForDestruction: 2

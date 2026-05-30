@@ -82,6 +82,37 @@ public class TokenMovement : MonoBehaviour
         }
     }
 
+    public IEnumerator Move(DiceFace face, int delta)
+    {
+        if(face == DiceFace.Fame)
+        {
+            fameIndex += delta;
+
+            if (fameIndex > 0 && fameIndex < 14)
+            {
+                yield return MoveToken(FameToken, FameTiles[fameIndex - 1]);
+            }
+            else
+            {
+                yield return MoveToken(FameToken, EndTiles[fameIndex / 14]);
+            }
+        }
+
+        else if(face == DiceFace.Destruction)
+        {
+            destructionIndex += delta;
+
+            if (destructionIndex > 0 && destructionIndex < 14)
+            {
+                yield return MoveToken(DestructionToken, DestructionTiles[destructionIndex - 1]);
+            }
+            else
+            {
+                yield return MoveToken(DestructionToken, EndTiles[destructionIndex / 14]);
+            }
+        }
+    }
+
     public IEnumerator MoveToken(GameObject token, Transform tile)
     {
         Vector3 start = token.transform.position;

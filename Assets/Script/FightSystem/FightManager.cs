@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
@@ -27,6 +28,7 @@ public class PlayerData
     public int AbilityPoints = 0;
     public int SkillPoints = 0;
     public List<AbilityCard> Cards;
+    public BuzzTile Tile = null;
     //public List<BuzzTile> Tiles;
     public int additionalReroll = 0;
     public int additionalDice = 0;
@@ -44,6 +46,7 @@ public class FightManager : MonoBehaviour
     public GameObject PlaceTilePanel;
     public GameObject DicePanel;
     public GameObject HpPanel;
+    public GameObject PhaseAnnouncePanel;
 
     [Header("Camera Pivots")]
     public Transform BirdsEyeView;
@@ -54,6 +57,8 @@ public class FightManager : MonoBehaviour
     public Transform AboveDiceTray;
     public Transform InFrontOfPlayer;
     public Transform InFrontOfAI;
+    public Transform BehindPlayer;
+    public Transform BehindAI;
 
     [Header("Orbit Settings")]
     public float orbitRadius = 5f;
@@ -194,18 +199,41 @@ public class FightManager : MonoBehaviour
 
     private void ResolveDiceEffect(int index)
     {
+        int power = 0;
+        int heal = 0;
+        int attack = 0;
+        int energy = 0;
+        int fame = 0;
+        int destruction = 0;
+        foreach(DiceFace result in results)
+        {
+            if (result == DiceFace.Power) power++;
+            else if (result == DiceFace.Heal) heal++;
+            else if (result == DiceFace.Attack) attack++;
+            else if (result == DiceFace.Charge) energy++;
+            else if (result == DiceFace.Fame) fame++;
+            else if (result == DiceFace.Destruction) destruction++;
+        }
         SetCameraPos(BirdsEyeView);
         switch (index)
         {
-            case 0: specialSkill();
+            case 0: 
+                specialSkill(power);
                 break;
-            case 1: HpManipulation(DiceFace.Heal);
+            case 1: 
+                HpChange(PlayerTurn, heal);
                 break;
-            case 2: HpManipulation(DiceFace.Attack);
+            case 2: 
+                HpChange(PlayerTurn.opponent, -attack);
                 break;
-            case 3: Charge();
+            case 3: 
+                ApChange(PlayerTurn, energy);
                 break;
-            case 4: TugOfWarStart();
+            case 4:
+                TrackerMove(PlayerTurn, DiceFace.Fame, Mathf.Max(fame - 2, 0));
+                break;
+            case 5:
+                TrackerMove(PlayerTurn, DiceFace.Destruction, Mathf.Max(destruction - 2, 0));
                 break;
             default: //ActionPhase();
                 return;
@@ -219,16 +247,8 @@ public class FightManager : MonoBehaviour
         ResolveDiceEffect(index);
     }
 
-    private void specialSkill()
+    private void specialSkill(int count)
     {
-        int count = 0;
-        foreach(DiceFace result in results)
-        {
-            if(result == DiceFace.Power)
-            {
-                count++;
-            }
-        }
 
         int cost = 0;
 
@@ -236,7 +256,7 @@ public class FightManager : MonoBehaviour
         {
             case SpecialSkill.SS001: cost = 3;
                 break;
-            case SpecialSkill.SS002: cost = 1;
+            case SpecialSkill.SS002: cost = 2;
                 break;
             case SpecialSkill.SS003: cost = 2;
                 break;
@@ -263,10 +283,11 @@ public class FightManager : MonoBehaviour
         switch(PlayerTurn.character.skill)
         {
             case SpecialSkill.SS001:
-                MoveTracker(1, 1, PlayerTurn);
+                TrackerMove(PlayerTurn, DiceFace.Fame, 1);
+                TrackerMove(PlayerTurn, DiceFace.Destruction, 1);
                 break;
             case SpecialSkill.SS002:
-                EnergyMultiplier = power;
+                Charge(PlayerTurn, power);
                 break;
             case SpecialSkill.SS003:
                 HpChange(PlayerTurn.opponent, -3);
@@ -280,29 +301,19 @@ public class FightManager : MonoBehaviour
         target.ui.ModelAnimator.EndSpecialSkill();
     }
 
-    private void HpManipulation(DiceFace face)
+    public void Charge(PlayerData target, int power)
     {
-        int multiply = 1;
-        PlayerData target = PlayerTurn;
-        if(face == DiceFace.Attack)
-        {
-            multiply = -1;
-            target = PlayerTurn.opponent;
-        }
-        int count = 0;
+        int energy = 0;
         foreach(DiceFace result in results)
         {
-            if(result == face)
-            {
-                count++;
-            }
+            if(result == DiceFace.Charge) energy++;
         }
-        count *= multiply;
-        Enqueue(HPBarChange(target, count));
+        ApChange(target, energy*power);
     }
 
     public void HpChange(PlayerData target, int count)
     {
+        if (count == 0) return;
         Enqueue(HPBarChange(target, count));
     }
 
@@ -364,18 +375,9 @@ public class FightManager : MonoBehaviour
 
     }
 
-    public void Charge()
-    {
-        int count = 0;
-        foreach(DiceFace result in results)
-        {
-            if(result == DiceFace.Charge) { count++; }
-        }
-        Enqueue(charge(PlayerTurn, count));
-    }
-
     public void ApChange(PlayerData target, int ApAmount)
     {
+        if (ApAmount == 0) return;
         Enqueue(charge(target, ApAmount));
     }
 
@@ -433,38 +435,39 @@ public class FightManager : MonoBehaviour
 
     }
 
-    public void TugOfWarStart()
+    public void TrackerMove(PlayerData target, DiceFace face, int delta)
     {
-        int FameCount = 0;
-        int DestructionCount = 0;
-        foreach(DiceFace result in results)
+        if (delta == 0) return;
+        if (target == Player)
         {
-            if(result == DiceFace.Fame) { FameCount++; }
-            else if(result == DiceFace.Destruction) { DestructionCount++; }
+            delta *= -1;
         }
 
-        int FamePoint = Mathf.Max(FameCount - 2, 0);
-        int DestructionPoint = Mathf.Max(DestructionCount - 2, 0);
-
-        MoveTracker(FamePoint, DestructionPoint, PlayerTurn);
+        if(face == DiceFace.Fame)
+        {
+            FameIndex = Mathf.Clamp(FameIndex + delta, 0, 14);
+        }
+        else if(face == DiceFace.Destruction)
+        {
+            DestructionIndex = Mathf.Clamp(DestructionIndex + delta, 0, 14);
+        }
+        Enqueue(Move(target, face, delta));
     }
 
-    public void MoveTracker(int deltaFame, int deltaDestruction, PlayerData target)
+    public IEnumerator Move(PlayerData target, DiceFace face, int delta)
     {
-        if(target == Player)
-        {
-            deltaFame *= -1;
-            deltaDestruction *= -1;
-        }
+        PhaseAnnouncePanel.SetActive(false);
 
-        FameIndex = Mathf.Clamp(FameIndex + deltaFame, 0, 14);
-        DestructionIndex = Mathf.Clamp(DestructionIndex + deltaDestruction, 0, 14); 
+        SetCameraPos(target == Player ? FacingPlayer : FacingAI);
+        target.ui.ModelAnimator.PlayDestruction();
 
-        if(deltaFame != 0 ||  deltaDestruction != 0)
-        {
-            Enqueue(tokenMovement.MovePhase(deltaFame, deltaDestruction));
-        }
+        float waitDuration = target.ui.ModelAnimator.destruction.length - target.ui.ModelAnimator.timingForDestruction;
+        yield return new WaitForSeconds(waitDuration);
 
+        SetCameraPos(target == Player ? BehindPlayer : BehindAI);
+        yield return tokenMovement.Move(face, delta);
+
+        PhaseAnnouncePanel.SetActive(true);
     }
 
     //-------------------//
@@ -504,7 +507,7 @@ public class FightManager : MonoBehaviour
         }
         else
         {
-            targetPlayer = self == Player ? AI : Player;
+            targetPlayer = self.opponent;
         }
 
         switch (state)
@@ -516,10 +519,10 @@ public class FightManager : MonoBehaviour
                 ApChange(targetPlayer, value);
                 break;
             case PlayerState.Fame:
-                MoveTracker(value, 0, targetPlayer);
+                TrackerMove(targetPlayer, DiceFace.Fame, value);
                 break;
             case PlayerState.Destruction:
-                MoveTracker(0, value, targetPlayer);
+                TrackerMove(targetPlayer, DiceFace.Destruction, value);
                 break;
             case PlayerState.Reroll:
                 targetPlayer.additionalReroll += value;
@@ -537,7 +540,7 @@ public class FightManager : MonoBehaviour
         }
         else
         {
-            targetPlayer = self == Player ? AI : Player;
+            targetPlayer = self.opponent;
         }
 
         switch (state)
@@ -560,7 +563,7 @@ public class FightManager : MonoBehaviour
 
     private void BuzzTilePhase()
     {
-
+        if (PlayerTurn.Tile == null) ActionPhase(); return;
     }
 
     public void SetCameraPos(Transform pivot)
@@ -654,6 +657,7 @@ public class FightManager : MonoBehaviour
 
     private IEnumerator MoveCameraSequence()
     {
+        PhaseAnnouncePanel.SetActive(false);
         // Fase 1: Orbit mengelilingi Titik A
         float timer = 0f;
         float currentAngle = 0f;
@@ -695,6 +699,7 @@ public class FightManager : MonoBehaviour
 
             yield return null;
         }
+        PhaseAnnouncePanel.SetActive(true);
         ActionPhase();
     }
 }

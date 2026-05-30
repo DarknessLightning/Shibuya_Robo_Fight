@@ -69,12 +69,6 @@ public class AILogic : MonoBehaviour
         else
         {
             ResolveDice();
-
-            DecideBuyCard();
-
-            DecideBuzzTile();
-
-            EndTurn();
         }
     }
 
@@ -198,12 +192,12 @@ public class AILogic : MonoBehaviour
 
 
     void DecideBuyCard()
-    {/*
+    {
         AbilityCard bestCard = null;
 
         float highest = -999;
 
-        foreach (var card in CardShop.instance.cards)
+        foreach (var card in FightManager.instance.cardDraftingSystem.openedCards)
         {
             if (card.cost > self.AbilityPoints)
                 continue;
@@ -221,7 +215,7 @@ public class AILogic : MonoBehaviour
         if (bestCard != null)
         {
             Buy(bestCard);
-        }*/
+        }
     }
 
 
@@ -347,13 +341,13 @@ public class AILogic : MonoBehaviour
         //-----------------------------------
         // BUZZ BONUS
         //-----------------------------------
-        /*
+        
         if (card.tile != null)
         {
             score += 30;
         }
 
-        */
+        
 
         //-----------------------------------
         // CONDITION CHECK
@@ -425,7 +419,7 @@ public class AILogic : MonoBehaviour
 
     void DecideBuzzTile()
     {/*
-        Tile bestTile =
+        BuzzTile bestTile =
             BoardManager.instance
             .GetBestTile();
 
@@ -442,7 +436,7 @@ public class AILogic : MonoBehaviour
         Debug.Log("Buy " + card.name);
     }
     /*
-    void PlaceBuzz(Tile tile)
+    void PlaceBuzz(BuzzTile tile)
     {
         Debug.Log("Place " + tile.name);
     }*/

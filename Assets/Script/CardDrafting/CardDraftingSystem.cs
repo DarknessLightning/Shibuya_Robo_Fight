@@ -136,6 +136,8 @@ public class CardDraftingSystem : MonoBehaviour
         showCards(openedCardsUI, openedCards, openedCardsObject);
         closeBuyPanel();
         closeCardDraftPanel();
+        FightManager.instance.PlayerTurn.AbilityPoints = usablePoints;
+        FightManager.instance.PlayerTurn.ui.APText.text = usablePoints.ToString();
 
     }
 
@@ -176,6 +178,8 @@ public class CardDraftingSystem : MonoBehaviour
             return;
         }
 
+        usablePoints -= 2;
+
         for(int i = 0; i < openedCards.Length; i++)
         {
             openedCards[i] = null;
@@ -193,6 +197,8 @@ public class CardDraftingSystem : MonoBehaviour
         showCards(openedCardsUI, openedCards, openedCardsObject);
         closeBuyPanel();
         closeCardDraftPanel();
+        FightManager.instance.PlayerTurn.AbilityPoints = usablePoints;
+        FightManager.instance.PlayerTurn.ui.APText.text = usablePoints.ToString();
     }
 
     public bool openIsEmpty()
