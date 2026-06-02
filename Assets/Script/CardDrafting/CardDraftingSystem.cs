@@ -90,24 +90,23 @@ public class CardDraftingSystem : MonoBehaviour
 
     public void selectCard(int index)
     {
-        if (usablePoints < openedCards[index].cost) return;
-        FightManager.instance.BuyCardPanel.SetActive(true);
+        if (usablePoints < openedCards[index].cost)
+        {
+            return;
+        }
+        FightManager.instance.buyCardPhase(true);
         selected = index;
         selectedCard = openedCards[index];
         ChosenCard.sprite = selectedCard.cardSprite;
-        FightManager.instance.CardDraftingPanel.SetActive(false);
-        FightManager.instance.SetCameraPos(
-            FightManager.instance.PlayerTurn == FightManager.instance.Player ? 
-            FightManager.instance.InFrontOfPlayer : 
-            FightManager.instance.InFrontOfAI);
+        FightManager.instance.selectCardPhase(false);
     }
 
     public void closeBuyPanel()
     {
         selected = -1;
         selectedCard = null;
-        FightManager.instance.BuyCardPanel.SetActive(false);
-        FightManager.instance.CardDraftingPanel.SetActive(true);
+        FightManager.instance.buyCardPhase(false);
+        FightManager.instance.selectCardPhase(true);
         //FightManager.instance.SetCameraPos(FightManager.instance.BirdsEyeView);
     }
 
@@ -136,9 +135,19 @@ public class CardDraftingSystem : MonoBehaviour
         showCards(openedCardsUI, openedCards, openedCardsObject);
         closeBuyPanel();
         closeCardDraftPanel();
-        FightManager.instance.PlayerTurn.AbilityPoints = usablePoints;
-        FightManager.instance.PlayerTurn.ui.APText.text = usablePoints.ToString();
+        FightManager.instance.UpdateAbilityPoints(usablePoints);
+    }
 
+    public void AIBuyCard(AbilityCard card)
+    {
+        int index = System.Array.IndexOf(openedCards, card);
+        if (index < 0)
+            return;
+
+        selected = index;
+        selectedCard = card;
+
+        buyCard();
     }
 
     public void ExecuteCardEffect(AbilityCard card)
@@ -197,8 +206,7 @@ public class CardDraftingSystem : MonoBehaviour
         showCards(openedCardsUI, openedCards, openedCardsObject);
         closeBuyPanel();
         closeCardDraftPanel();
-        FightManager.instance.PlayerTurn.AbilityPoints = usablePoints;
-        FightManager.instance.PlayerTurn.ui.APText.text = usablePoints.ToString();
+        FightManager.instance.UpdateAbilityPoints(usablePoints);
     }
 
     public bool openIsEmpty()

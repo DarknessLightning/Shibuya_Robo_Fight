@@ -14,7 +14,7 @@ public enum DiceFace
 public class DiceManager : MonoBehaviour
 {
     public GameObject dicePrefab;
-    private List<DiceEvaluate> allDices = new();
+    public List<DiceEvaluate> allDices = new();
     private List<DiceEvaluate> lockedDices = new();
     public int diceAmount = 6;
     public Transform[] lockedPlaces;
@@ -49,6 +49,11 @@ public class DiceManager : MonoBehaviour
     public Transform diceTray;
     private int reroll = 3;
 
+    [Header("Testing Purpose")]
+    public bool forTest = false;
+    public DiceFace[] targetFace;
+    public int[] numberOfDiceForFace;
+
     void Start()
     {
         centerPosition = new Vector3(diceTray.position.x, 5f, diceTray.position.z);
@@ -65,35 +70,6 @@ public class DiceManager : MonoBehaviour
         // Jika dadu masih menggelinding/bergerak, hentikan pembacaan input
         if (IsMoving()) return;
 
-        // Tekan X untuk evaluasi hasil akhir dadu
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            result.Clear();
-            string msg = "";
-            for (int i = 0; i < allDices.Count; i++)
-            {
-                int faceResult = allDices[i].GetTopNumber(); // Mengembalikan angka 1 - 6
-
-                // PERBAIKAN 1: Kurangi 1 angka agar sinkron dengan urutan Enum (0 - 5)
-                int enumIndex = faceResult - 1;
-
-                msg += "Dice " + (i + 1) + " Result: " + diceFaces[enumIndex].ToString() + " (" + faceResult + ")\n";
-                result.Add(diceFaces[enumIndex]);
-            }
-            Debug.Log(msg);
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if(reroll == 3)
-            {
-                startDice();
-            }
-            else
-            {
-                RollAllDice();
-            }
-            reroll = reroll <= 1 ? 3 : reroll - 1;
-        }
 
         // Deteksi Klik Mouse untuk Lock / Unlock Dadu
         if (Input.touchCount > 0)
@@ -214,6 +190,7 @@ public class DiceManager : MonoBehaviour
 
     public void checkHit(RaycastHit hit)
     {
+        if (FightManager.instance.PlayerTurn.isAI) return;
         // Pastikan tidak bisa nge-lock dadu yang posisinya masih di langit/sedang jatuh
         if (hit.collider.transform.position.y > 3f) return;
 
@@ -246,14 +223,7 @@ public class DiceManager : MonoBehaviour
 
                 // Ambil rotasi standar berdasarkan angka teratas (faceResult - 1)
                 int rotationIndex = Mathf.Clamp(dice.GetTopNumber() - 1, 0, standardRotations.Count - 1);
-                if(lockedDices.IndexOf(dice) < 2)
-                {
-                    rotationIndex = 5;
-                }
-                else 
-                {
-                    rotationIndex = 5;
-                }
+                SetDiceForTesting(ref rotationIndex, lockedDices.IndexOf(dice));
                 dice.setPosAndRot(
                     lockedPlaces[currentIndex].position,
                     standardRotations[rotationIndex]
@@ -271,6 +241,26 @@ public class DiceManager : MonoBehaviour
             int starting = lockedDices.IndexOf(dice);
             lockedDices.Remove(dice);
             moveDicesToPreviousIndexPlace(starting);
+        }
+    }
+
+    public void SetDiceForTesting(ref int rotationIndex, int lockedDiceIndex)
+    {
+        if (!forTest) return;
+
+        int startIndex = 0;
+        for(int i = 0; i < numberOfDiceForFace.Length; i++)
+        {
+            if(lockedDiceIndex < startIndex + numberOfDiceForFace[i])
+            {
+                rotationIndex = diceFaces.IndexOf(targetFace[i]);
+                return;
+            }
+            startIndex += numberOfDiceForFace[i];
+        }
+        if(targetFace.Length > numberOfDiceForFace.Length)
+        {
+            rotationIndex = diceFaces.IndexOf(targetFace[numberOfDiceForFace.Length]);
         }
     }
 

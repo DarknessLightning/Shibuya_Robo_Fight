@@ -24,39 +24,7 @@ public class TokenMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            selectedToken = FameToken;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            selectedToken = DestructionToken;
-        }
-        if(selectedToken != null)
-        {
-            if(Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                if(selectedToken == FameToken) 
-                {
-                    moveToken(ref fameIndex, true, FameTiles);
-                }
-                else if (selectedToken == DestructionToken)
-                {
-                    moveToken(ref destructionIndex, true, DestructionTiles);
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                if (selectedToken == FameToken)
-                {
-                    moveToken(ref fameIndex, false, FameTiles);
-                }
-                else if (selectedToken == DestructionToken)
-                {
-                    moveToken(ref destructionIndex, false, DestructionTiles);
-                }
-            }
-        }
+        
     }
 
     public IEnumerator MovePhase(int fameMovement, int destructionMovement)

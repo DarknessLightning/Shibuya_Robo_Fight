@@ -18,15 +18,17 @@ public class AILogic : MonoBehaviour
     public PlayerData self;
     public PlayerData enemy;
 
-    public List<DiceFace> currentDice = new();
+    public List<DiceEvaluate> currentDice = new();
 
-    int rerollRemain = 2;
+    public int rerollRemain = 2;
 
-    public List<DiceFace> lockedDice = new();
+    public List<DiceEvaluate> lockedDice = new();
 
-    public void StartInput()
+    public void Init(PlayerData ai)
     {
-
+        self = ai;
+        enemy = ai.opponent;
+        rerollRemain = 2 + ai.additionalReroll;
     }
 
     public void StartAction(AIState state)
@@ -62,7 +64,7 @@ public class AILogic : MonoBehaviour
     {
         DecideDiceLock();
 
-        if (rerollRemain > 0 && lockedDice.Count < 6)
+        if (rerollRemain > 0 && lockedDice.Count < 6 + self.additionalDice)
         {
             RerollDice();
         }
@@ -80,7 +82,7 @@ public class AILogic : MonoBehaviour
 
         foreach (var dice in currentDice)
         {
-            float score = utility[dice];
+            float score = utility[dice.GetTopFace];
 
             if (score >= 70)
             {
@@ -178,6 +180,7 @@ public class AILogic : MonoBehaviour
         rerollRemain--;
 
         Debug.Log("AI reroll");
+        FightManager.instance.AIReply(lockedDice, true);
 
         // panggil sistem dadu
     }
@@ -187,6 +190,7 @@ public class AILogic : MonoBehaviour
     void ResolveDice()
     {
         Debug.Log("Resolve");
+        FightManager.instance.AIReply(lockedDice, false);
     }
 
 
@@ -215,6 +219,11 @@ public class AILogic : MonoBehaviour
         if (bestCard != null)
         {
             Buy(bestCard);
+            FightManager.instance.OnAISelectedCard(bestCard);
+        }
+        else
+        {
+            FightManager.instance.SkipCardDrafting();
         }
     }
 
@@ -435,6 +444,7 @@ public class AILogic : MonoBehaviour
     {
         Debug.Log("Buy " + card.name);
     }
+
     /*
     void PlaceBuzz(BuzzTile tile)
     {

@@ -33,9 +33,13 @@ public class DiceEvaluate : MonoBehaviour
         return topNumber;
     }
 
-    public DiceFace GetTopFace(int index)
+    public DiceFace GetTopFace
     {
-        return results[index];
+        get
+        {
+            int result = GetTopNumber();
+            return results[result - 1];
+        }
     }
 
     void CheckSide(Vector3 dir, int number, ref float maxDot, ref int topNumber)

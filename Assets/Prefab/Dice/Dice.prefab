@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  results: 
+  results: 020000000100000000000000050000000400000003000000
   force: 5
   torque: 10
   centerPosition: {x: 0, y: 5, z: -45}

@@ -22,4 +22,5 @@ public class CharacterData : ScriptableObject
     public Sprite characterSprite;
     public Sprite icon;
     public Sprite info;
+    public Sprite specialSkill;
 }

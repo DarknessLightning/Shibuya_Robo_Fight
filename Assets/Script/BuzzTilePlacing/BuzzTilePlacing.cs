@@ -16,6 +16,7 @@ public class BuzzTilePlacing : MonoBehaviour
     };
     public Sprite FameToken;
     public Sprite DestructionToken;
+    public Sprite Selectable;
 
     public Image[] FameTilesUI;
     public GameObject[] FameTiles;
@@ -24,6 +25,8 @@ public class BuzzTilePlacing : MonoBehaviour
 
     private PlayerState[] FameStates = new PlayerState[13];
     private PlayerState[] DestructionStates = new PlayerState[13];
+
+    private List<Image> option = new();
 
     public BuzzTile currentBuzzTile;
 
@@ -40,6 +43,10 @@ public class BuzzTilePlacing : MonoBehaviour
             DestructionStates[i] = PlayerState.None;
         }
         UpdateTileSprites();
+        OpenPanel(
+            FightManager.instance.FameIndex,
+            FightManager.instance.DestructionIndex,
+            FightManager.instance.Player.Tile);
     }
 
     public void UpdateTileSprites()
@@ -65,12 +72,14 @@ public class BuzzTilePlacing : MonoBehaviour
         else
         {
             tileObject.SetActive(true);
-            rend.material.mainTexture = TileTexture[states.IndexOf(state - 1)].texture;
+            rend.material.mainTexture = TileTexture[states.IndexOf(state) - 1].texture;
         }
     }
 
     public void OpenPanel(int fameIndex, int destructionIndex, BuzzTile bt)
     {
+        option.Clear();
+        UpdateTileSprites();
         FameTilesUI[fameIndex - 1].sprite = FameToken;
         DestructionTilesUI[destructionIndex - 1].sprite = DestructionToken;
         currentBuzzTile = bt;
@@ -81,7 +90,7 @@ public class BuzzTilePlacing : MonoBehaviour
             fameIndex - 1);
         if(fameClosestLeft > -1)
         {
-            FameTilesUI[fameClosestLeft].raycastTarget = true;
+            option.Add(FameTilesUI[fameClosestLeft]);
         }
 
         int fameClosestRight = GetValidTile(FameStates,
@@ -90,7 +99,7 @@ public class BuzzTilePlacing : MonoBehaviour
             fameIndex - 1);
         if (fameClosestRight > -1)
         {
-            FameTilesUI[fameClosestRight].raycastTarget = true;
+            option.Add(FameTilesUI[fameClosestRight]);
         }
 
         int destructClosestLeft = GetValidTile(DestructionStates,
@@ -99,7 +108,7 @@ public class BuzzTilePlacing : MonoBehaviour
             destructionIndex - 1);
         if(destructClosestLeft > -1)
         {
-            DestructionTilesUI[destructClosestLeft].raycastTarget = true;
+            option.Add(DestructionTilesUI[destructClosestLeft]);
         }
 
         int destructClosestRight = GetValidTile(DestructionStates,
@@ -108,9 +117,69 @@ public class BuzzTilePlacing : MonoBehaviour
             destructionIndex - 1);
         if (destructClosestRight > -1)
         {
-            DestructionTilesUI[destructClosestRight].raycastTarget = true;
+            option.Add(DestructionTilesUI[destructClosestRight]);
         }
 
+        if(option.Count == 0)
+        {
+            fameClosestLeft = GetBestValid(FameStates,
+            currentBuzzTile.tiles.Length,
+            true,
+            fameIndex - 1);
+            if (fameClosestLeft > -1)
+            {
+                option.Add(FameTilesUI[fameClosestLeft]);
+            }
+
+            fameClosestRight = GetBestValid(FameStates,
+                currentBuzzTile.tiles.Length,
+                false,
+                fameIndex - 1);
+            if (fameClosestRight > -1)
+            {
+                option.Add(FameTilesUI[fameClosestRight]);
+            }
+
+            destructClosestLeft = GetBestValid(DestructionStates,
+                currentBuzzTile.tiles.Length,
+                true,
+                destructionIndex - 1);
+            if (destructClosestLeft > -1)
+            {
+                option.Add(DestructionTilesUI[destructClosestLeft]);
+            }
+
+            destructClosestRight = GetBestValid(DestructionStates,
+                currentBuzzTile.tiles.Length,
+                false,
+                destructionIndex - 1);
+            if (destructClosestRight > -1)
+            {
+                option.Add(DestructionTilesUI[destructClosestRight]);
+            }
+        }
+
+        foreach(Image tile in option)
+        {
+            SelectableTiles(tile);
+        }
+    }
+
+    public void SelectableTiles(Image closestTile)
+    {
+        if (!FameTilesUI.Contains(closestTile) && !DestructionTilesUI.Contains(closestTile)) return;
+
+        Image[] field = FameTilesUI.Contains(closestTile) ? FameTilesUI : DestructionTilesUI;
+        int index = FameTilesUI.Contains(closestTile) ?
+            FightManager.instance.FameIndex - 1:
+            FightManager.instance.DestructionIndex - 1;
+        int closestIndex = Array.IndexOf(field, closestTile);
+        int dir = closestIndex < index ? -1 : 1;
+
+        for(int i = 0; i < currentBuzzTile.tiles.Length; i++)
+        {
+            field[closestIndex + (i * dir)].sprite = Selectable;
+        }
     }
 
     public int GetValidTile(PlayerState[] state, int length, bool descending, int tokenIndex)
@@ -166,10 +235,126 @@ public class BuzzTilePlacing : MonoBehaviour
         return -1;
     }
 
+    public int GetBestValid(PlayerState[] state, int length, bool descending, int tokenIndex)
+    {
+        int bestIndex = -1;
+        int leastOverlap = int.MaxValue;
+
+        if (descending)
+        {
+            for (int i = tokenIndex - 1; i >= 0; i--)
+            {
+                if (state[i] != PlayerState.None)
+                {
+                    continue;
+                }
+
+                int overlap = 0;
+                bool outOfBounds = false;
+
+                for (int j = 1; j < length; j++)
+                {
+                    int checkIndex = i - j;
+
+                    if (checkIndex < 0)
+                    {
+                        outOfBounds = true;
+                        break;
+                    }
+
+                    if (state[checkIndex] != PlayerState.None)
+                    {
+                        overlap += (length - j) * (length - j);
+                    }
+                }
+
+                // Muat penuh
+                if (!outOfBounds && overlap == 0)
+                {
+                    return i;
+                }
+
+                // Abaikan yang mentok ujung
+                if (outOfBounds)
+                {
+                    continue;
+                }
+
+                if (overlap < leastOverlap)
+                {
+                    leastOverlap = overlap;
+                    bestIndex = i;
+                }
+            }
+        }
+        else
+        {
+            for (int i = tokenIndex + 1; i < state.Length; i++)
+            {
+                if (state[i] != PlayerState.None)
+                {    
+                    continue;
+                }
+
+                int overlap = 0;
+                bool outOfBounds = false;
+
+                for (int j = 1; j < length; j++)
+                {
+                    int checkIndex = i + j;
+
+                    if (checkIndex >= state.Length)
+                    {
+                        outOfBounds = true;
+                        break;
+                    }
+
+                    if (state[checkIndex] != PlayerState.None)
+                    {
+                        overlap += (length - j) * (length - j);
+                    }
+                }
+
+                if (!outOfBounds && overlap == 0)
+                {
+                    return i;
+                }
+
+                if (outOfBounds)
+                {
+                    continue;
+                }
+
+                if (overlap < leastOverlap)
+                {
+                    leastOverlap = overlap;
+                    bestIndex = i;
+                }
+            }
+        }
+
+        return bestIndex;
+    }
+
     public void SetSpritePreview()
     {
         if(selectedField == null) return;
-        
+
+        int index = selectedField == FameStates ?
+            FightManager.instance.FameIndex - 1 :
+            FightManager.instance.DestructionIndex - 1;
+        Image[] field = selectedField == FameStates ?
+            FameTilesUI :
+            DestructionTilesUI;
+        int dir = selectedIndex < index ? -1 : 1;
+        int start = dir == -1 ? currentBuzzTile.tiles.Length - 1 : 0;
+        kiri = dir == -1;
+        for(int i = 0; i < currentBuzzTile.tiles.Length; i++)
+        {
+            SetSprite(field[selectedIndex + (i * dir)], currentBuzzTile.tiles[start + (i * dir)]);
+        }
+
+        /*
         if(selectedField == FameStates)
         {
             if(selectedIndex < FightManager.instance.FameIndex - 1)
@@ -216,6 +401,7 @@ public class BuzzTilePlacing : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     public void SetSprite(Image tile, PlayerState state)
@@ -227,8 +413,14 @@ public class BuzzTilePlacing : MonoBehaviour
 
     public void selectTile(Image tile)
     {
-        if (!FameTilesUI.Contains(tile) || !DestructionTilesUI.Contains(tile)) return;
 
+        if (!FameTilesUI.Contains(tile) && !DestructionTilesUI.Contains(tile)) return;
+        if (!option.Contains(tile)) return;
+
+        foreach (Image tiles in option)
+        {
+            SelectableTiles(tiles);
+        }
         if (FameTilesUI.Contains(tile))
         {
             selectedIndex = Array.IndexOf(FameTilesUI, tile);
@@ -239,6 +431,7 @@ public class BuzzTilePlacing : MonoBehaviour
             selectedIndex = Array.IndexOf(DestructionTilesUI, tile);
             selectedField = DestructionStates;
         }
+        SetSpritePreview();
     }
 
     public void confirm()
@@ -252,9 +445,22 @@ public class BuzzTilePlacing : MonoBehaviour
                 selectedField[fieldIndex] = currentBuzzTile.tiles[tileIndex - 1];
             }
         }
+        else
+        {
+            for (int i = 0; i < currentBuzzTile.tiles.Length; i++)
+            {
+                int fieldIndex = selectedIndex + i;
+                selectedField[fieldIndex] = currentBuzzTile.tiles[i];
+            }
+        }
+
+        UpdateTileSprites();
         currentBuzzTile = null;
         selectedField = null;
         kiri = false;
+
+        FightManager.instance.PlayerTurn.Tile = null;
+        FightManager.instance.EndBuzzTilePlacing();
     }
 
     // Update is called once per frame
