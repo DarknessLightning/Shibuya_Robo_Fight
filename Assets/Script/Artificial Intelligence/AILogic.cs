@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum AIState
@@ -145,29 +146,34 @@ public class AILogic : MonoBehaviour
         // CHARACTER BONUS
         //---------------------
 
-        switch (self.character.skill)
+        bool usePreference = !score.Any(x => x.Value > 20);
+
+        if(usePreference)
         {
-            case SpecialSkill.SS001:
+            switch (self.character.skill)
+            {
+                case SpecialSkill.SS001:
 
-                score[DiceFace.Power] += 50;
-                break;
+                    score[DiceFace.Power] += 50;
+                    break;
 
-            case SpecialSkill.SS002:
+                case SpecialSkill.SS002:
 
-                score[DiceFace.Charge] += 30;
-                score[DiceFace.Power] += 40;
-                break;
+                    score[DiceFace.Charge] += 50;
+                    score[DiceFace.Power] += 50;
+                    break;
 
-            case SpecialSkill.SS003:
+                case SpecialSkill.SS003:
 
-                score[DiceFace.Attack] += 40;
-                score[DiceFace.Power] += 40;
-                break;
+                    score[DiceFace.Attack] += 50;
+                    score[DiceFace.Power] += 50;
+                    break;
 
-            case SpecialSkill.SS004:
+                case SpecialSkill.SS004:
 
-                score[DiceFace.Power] += 30;
-                break;
+                    score[DiceFace.Power] += 50;
+                    break;
+            }
         }
 
 

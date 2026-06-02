@@ -43,10 +43,14 @@ public class BuzzTilePlacing : MonoBehaviour
             DestructionStates[i] = PlayerState.None;
         }
         UpdateTileSprites();
-        OpenPanel(
-            FightManager.instance.FameIndex,
-            FightManager.instance.DestructionIndex,
-            FightManager.instance.Player.Tile);
+        if(FightManager.instance != null)
+        {
+            /*OpenPanel(
+                FightManager.instance.FameIndex,
+                FightManager.instance.DestructionIndex,
+                FightManager.instance.Player.Tile);
+            */
+        }
     }
 
     public void UpdateTileSprites()

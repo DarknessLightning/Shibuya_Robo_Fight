@@ -13,10 +13,10 @@ public class AnimationScript : MonoBehaviour
     public float timingForHit = 0f;
     public float timingForDestruction = 0f;
 
-    public void PlaySpecialSkill()
+    public void PlaySpecialSkill(bool activate)
     {
         animator.SetTrigger("Charge");
-        animator.SetBool("Signal", true);
+        animator.SetBool("Signal", activate);
     }
 
     public void EndSpecialSkill()

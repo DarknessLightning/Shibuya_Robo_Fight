@@ -165,7 +165,6 @@ public class FightManager : MonoBehaviour
     {
         SetCameraPos(AboveDiceTray);
         HpPanel.SetActive(false);
-        DicePanel.SetActive(true);
         if(diceManager.centerPosition.x != diceManager.diceTray.position.x)
         {
             diceManager.Init();
@@ -327,14 +326,14 @@ public class FightManager : MonoBehaviour
             default:
                 break;
         }
-        if (count >= cost) Enqueue(executeSpecialSkill(count, PlayerTurn));
+        Enqueue(executeSpecialSkill(count, PlayerTurn, cost));
     }
 
-    private IEnumerator executeSpecialSkill(int power, PlayerData target)
+    private IEnumerator executeSpecialSkill(int power, PlayerData target, int cost)
     {
         yield return new WaitForSeconds(1.5f);
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
-        target.ui.ModelAnimator.PlaySpecialSkill();
+        target.ui.ModelAnimator.PlaySpecialSkill(power >= cost);
 
         int startPower = 0;
         int targetPower = power;
@@ -354,30 +353,34 @@ public class FightManager : MonoBehaviour
             target.ui.SPText.text = target.SkillPoints.ToString();
             yield return null;
         }
-        SetCameraPos(target == Player ? InFrontOfPlayer : InFrontOfAI);
-        duration = target.ui.ModelAnimator.signal.length;
-        SpecialSkillPanel.SetActive(true);
-        Image specialSkillImage = SpecialSkillPanel.GetComponent<Image>();
-        specialSkillImage.sprite = target.character.specialSkill;
-        yield return new WaitForSeconds(duration);
 
-        switch(PlayerTurn.character.skill)
+        if(power >= cost)
         {
-            case SpecialSkill.SS001:
-                TrackerMove(PlayerTurn, DiceFace.Fame, 1);
-                TrackerMove(PlayerTurn, DiceFace.Destruction, 1);
-                break;
-            case SpecialSkill.SS002:
-                Charge(PlayerTurn, power-1);
-                break;
-            case SpecialSkill.SS003:
-                HpChange(PlayerTurn.opponent, -3);
-                break;
-            case SpecialSkill.SS004:
-                PlayerTurn.additionalDice += 1;
-                break;
-            default:
-                break;
+            SetCameraPos(target == Player ? InFrontOfPlayer : InFrontOfAI);
+            duration = target.ui.ModelAnimator.signal.length;
+            SpecialSkillPanel.SetActive(true);
+            Image specialSkillImage = SpecialSkillPanel.GetComponent<Image>();
+            specialSkillImage.sprite = target.character.specialSkill;
+            yield return new WaitForSeconds(duration);
+
+            switch (PlayerTurn.character.skill)
+            {
+                case SpecialSkill.SS001:
+                    TrackerMove(PlayerTurn, DiceFace.Fame, 1);
+                    TrackerMove(PlayerTurn, DiceFace.Destruction, 1);
+                    break;
+                case SpecialSkill.SS002:
+                    Charge(PlayerTurn, power - 1);
+                    break;
+                case SpecialSkill.SS003:
+                    HpChange(PlayerTurn.opponent, -3);
+                    break;
+                case SpecialSkill.SS004:
+                    PlayerTurn.additionalDice += 1;
+                    break;
+                default:
+                    break;
+            }
         }
         SetCameraPos(BirdsEyeView);
         SpecialSkillPanel.SetActive(false);
