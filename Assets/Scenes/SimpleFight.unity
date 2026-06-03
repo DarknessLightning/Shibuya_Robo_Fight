@@ -2255,13 +2255,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192072831}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 20, z: -30}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 7, z: 16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &192072835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12482,7 +12482,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 450, y: -100}
-  m_SizeDelta: {x: 600, y: 900}
+  m_SizeDelta: {x: 600, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1244506964
 MonoBehaviour:
@@ -12504,7 +12504,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bedb29a4c9c06ed4b9b81720e39c7232, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9bccd0d404e321f4a835947e1fb773e8, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -16418,7 +16418,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612051914}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 25, z: -42.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -18946,6 +18946,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8739643423669547660, guid: 8b763bb95729f334a8da4100d4592611, type: 3}
+      propertyPath: brag
+      value: 
+      objectReference: {fileID: -887982601649841707, guid: 5a81fe982c8926143a65fd606eb2dcb6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21351,8 +21355,8 @@ MonoBehaviour:
   dropRadius: 1.5
   diceTray: {fileID: 849095300}
   forTest: 1
-  targetFace: 0500000000000000
-  numberOfDiceForFace: 01000000
+  targetFace: 02000000
+  numberOfDiceForFace: 06000000
 --- !u!114 &2065420432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21486,6 +21490,7 @@ MonoBehaviour:
   currentDice: []
   rerollRemain: 2
   lockedDice: []
+  alwaysLockAll: 0
 --- !u!1 &2098134311
 GameObject:
   m_ObjectHideFlags: 0

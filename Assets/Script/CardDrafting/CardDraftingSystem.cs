@@ -117,7 +117,10 @@ public class CardDraftingSystem : MonoBehaviour
 
     public void buyCard()
     {
-
+        if (!FightManager.instance.PlayerTurn.isAI)
+        {
+            FightManager.instance.buyCard(selectedCard);
+        }
         usablePoints -= selectedCard.cost;
         ExecuteCardEffect(selectedCard);
         //add or apply card

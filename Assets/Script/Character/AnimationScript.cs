@@ -8,10 +8,12 @@ public class AnimationScript : MonoBehaviour
     public AnimationClip charge;
     public AnimationClip signal;
     public AnimationClip destruction;
+    public AnimationClip brag;
 
     public float timingForAttack = 0f;
     public float timingForHit = 0f;
     public float timingForDestruction = 0f;
+    public float timingForLaugh = 0f;
 
     public void PlaySpecialSkill(bool activate)
     {
@@ -44,16 +46,26 @@ public class AnimationScript : MonoBehaviour
         animator.SetTrigger("Charge");
     }
 
+    public void PlayFame()
+    {
+        animator.SetTrigger("Fame");
+    }
+
     public void PlayDestruction()
     {
         animator.SetTrigger("Destruction");
+    }
+
+    public void PlayBuyCard()
+    {
+        animator.SetTrigger("Card");
     }
 
     public void finishAttack()
     {
         if (FightManager.instance != null)
         {
-            FightManager.instance.NextResolve(3);
+            //FightManager.instance.NextResolve(3);
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created

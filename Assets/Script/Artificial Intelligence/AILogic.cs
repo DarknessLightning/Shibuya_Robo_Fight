@@ -25,6 +25,8 @@ public class AILogic : MonoBehaviour
 
     public List<DiceEvaluate> lockedDice = new();
 
+    public bool alwaysLockAll = false;
+
     public void Init(PlayerData ai)
     {
         self = ai;
@@ -99,12 +101,14 @@ public class AILogic : MonoBehaviour
         Dictionary<DiceFace, float> score =
         new();
 
-        score[DiceFace.Attack] = 20;
-        score[DiceFace.Heal] = 20;
-        score[DiceFace.Charge] = 20;
-        score[DiceFace.Fame] = 20;
-        score[DiceFace.Destruction] = 20;
-        score[DiceFace.Power] = 20;
+        float defaultValue = alwaysLockAll ? 70 : 20;
+
+        score[DiceFace.Attack] = defaultValue;
+        score[DiceFace.Heal] = defaultValue;
+        score[DiceFace.Charge] = defaultValue;
+        score[DiceFace.Fame] = defaultValue;
+        score[DiceFace.Destruction] = defaultValue;
+        score[DiceFace.Power] = defaultValue;
 
 
         //---------------------
