@@ -234,7 +234,7 @@ public class AILogic : MonoBehaviour
         }
         else
         {
-            FightManager.instance.SkipCardDrafting();
+            FightManager.instance.AISkipCardDrafting();
         }
     }
 

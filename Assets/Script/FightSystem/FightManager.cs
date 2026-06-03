@@ -15,7 +15,6 @@ public class PlayerUI
     public AnimationScript ModelAnimator;
     public Image HPBar;
     public Text APText;
-    public Text SPText;
     public Text CardAmount;
 
 }
@@ -117,9 +116,13 @@ public class FightManager : MonoBehaviour
 
         LoadSessionCharacter(Player);
         LoadSessionCharacter(AI);
-
+        
+        /*
+        Player.CurrentHP = 4;
+        Player.ui.HPBar.fillAmount = (float)Player.CurrentHP / Player.character.hp;
         AI.CurrentHP = 4;
         AI.ui.HPBar.fillAmount = (float)AI.CurrentHP / AI.character.hp;
+        */
 
         //ActionPhase();
         PlayerTurn = Player;
@@ -354,6 +357,7 @@ public class FightManager : MonoBehaviour
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
         SkillPointPopUp.SetActive(true);
         target.ui.ModelAnimator.PlaySpecialSkill(power >= cost);
+        SkillPointText.text = "0";
 
         int startPower = 0;
         int targetPower = power;
@@ -759,6 +763,20 @@ public class FightManager : MonoBehaviour
         StartCoroutine(WaitCoroutine());
     }
 
+    public void AISkipCardDrafting()
+    {
+        Enqueue(ShowAISkipAction());
+    }
+
+    public IEnumerator ShowAISkipAction()
+    {
+        selectCardPhase(true);
+        yield return new WaitForSeconds(1.5f);
+
+        selectCardPhase(false);
+        SkipCardDrafting();
+    }
+
     public void SkipCardDrafting()
     {
         CardDraftingPanel.SetActive(false);
@@ -948,7 +966,6 @@ public class FightManager : MonoBehaviour
     {
         GamePhase = 0;
         PlayerTurn.SkillPoints = 0;
-        PlayerTurn.ui.SPText.text = "0";
         PlayerTurn = (PlayerTurn == null || PlayerTurn == AI) ? Player : AI;
         results.Clear();
         EnergyMultiplier = 1;

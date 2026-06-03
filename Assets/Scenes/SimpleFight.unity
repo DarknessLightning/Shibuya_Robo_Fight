@@ -9913,7 +9913,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &880978068
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11413,6 +11413,7 @@ RectTransform:
   - {fileID: 880978068}
   - {fileID: 821026475}
   - {fileID: 1244506963}
+  - {fileID: 1328433107}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13184,6 +13185,81 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &1328433106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1328433107}
+  - component: {fileID: 1328433109}
+  - component: {fileID: 1328433108}
+  m_Layer: 5
+  m_Name: GameOver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1328433107
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328433106}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1088146874}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1000, y: 200}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1328433108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328433106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 6f047ffee8cefb94a857721851d60d51, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1328433109
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328433106}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1331294643
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21207,7 +21283,8 @@ MonoBehaviour:
   HpPanel: {fileID: 982442443}
   PhaseAnnouncePanel: {fileID: 141444781}
   SpecialSkillPanel: {fileID: 1244506962}
-  GameOverPanel: {fileID: 0}
+  GameOverPanel: {fileID: 1328433106}
+  SkillPointPopUp: {fileID: 880978067}
   BirdsEyeView: {fileID: 39343584}
   FacingPlayer: {fileID: 999108288}
   FacingAI: {fileID: 181472121}
@@ -21234,7 +21311,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: bf3cdcdb0b5606e4d8243471c063c11b, type: 3}
   - {fileID: 21300000, guid: ab6713047c9f5bd4d90969762babdb1d, type: 3}
   - {fileID: 21300000, guid: aec8454ad2ec70143a187f8e5290526e, type: 3}
-  GameOver: {fileID: 0}
+  GameOver: {fileID: 1328433108}
+  SkillPointText: {fileID: 408031230}
   Player:
     ui:
       Profile: {fileID: 1884719978}
@@ -21242,7 +21320,6 @@ MonoBehaviour:
       ModelAnimator: {fileID: 0}
       HPBar: {fileID: 107522254}
       APText: {fileID: 1286589865}
-      SPText: {fileID: 74047221}
       CardAmount: {fileID: 457532365}
     character: {fileID: 0}
     CurrentHP: 0
@@ -21252,8 +21329,8 @@ MonoBehaviour:
     Tile: {fileID: 0}
     additionalReroll: 0
     additionalDice: 0
-    isAI: 1
-    win: {fileID: 0}
+    isAI: 0
+    win: {fileID: 21300000, guid: 6f047ffee8cefb94a857721851d60d51, type: 3}
   AI:
     ui:
       Profile: {fileID: 1134285446}
@@ -21261,7 +21338,6 @@ MonoBehaviour:
       ModelAnimator: {fileID: 0}
       HPBar: {fileID: 1709885387}
       APText: {fileID: 656209823}
-      SPText: {fileID: 408031230}
       CardAmount: {fileID: 1933279912}
     character: {fileID: 0}
     CurrentHP: 0
@@ -21272,7 +21348,7 @@ MonoBehaviour:
     additionalReroll: 0
     additionalDice: 0
     isAI: 1
-    win: {fileID: 0}
+    win: {fileID: 21300000, guid: e05247c989577b34aaf9fca815e4bbf3, type: 3}
   PlayerTurn:
     ui:
       Profile: {fileID: 0}
@@ -21280,7 +21356,6 @@ MonoBehaviour:
       ModelAnimator: {fileID: 0}
       HPBar: {fileID: 0}
       APText: {fileID: 0}
-      SPText: {fileID: 0}
       CardAmount: {fileID: 0}
     character: {fileID: 0}
     CurrentHP: 0
@@ -21360,8 +21435,8 @@ MonoBehaviour:
   dropRadius: 1.5
   diceTray: {fileID: 849095300}
   forTest: 1
-  targetFace: 02000000
-  numberOfDiceForFace: 06000000
+  targetFace: 0500000000000000
+  numberOfDiceForFace: 02000000
 --- !u!114 &2065420432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21463,7 +21538,6 @@ MonoBehaviour:
       ModelAnimator: {fileID: 0}
       HPBar: {fileID: 0}
       APText: {fileID: 0}
-      SPText: {fileID: 0}
       CardAmount: {fileID: 0}
     character: {fileID: 0}
     CurrentHP: 0
@@ -21482,7 +21556,6 @@ MonoBehaviour:
       ModelAnimator: {fileID: 0}
       HPBar: {fileID: 0}
       APText: {fileID: 0}
-      SPText: {fileID: 0}
       CardAmount: {fileID: 0}
     character: {fileID: 0}
     CurrentHP: 0
