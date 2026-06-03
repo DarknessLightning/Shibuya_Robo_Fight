@@ -211,8 +211,9 @@ public class AILogic : MonoBehaviour
 
         float highest = -999;
 
-        foreach (var card in FightManager.instance.cardDraftingSystem.openedCards)
+        foreach (AbilityCard card in FightManager.instance.cardDraftingSystem.openedCards)
         {
+            if (card == null) continue;
             if (card.cost > self.AbilityPoints)
                 continue;
 
