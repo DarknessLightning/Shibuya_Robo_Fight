@@ -925,8 +925,6 @@ public class FightManager : MonoBehaviour
     //BUZZ TILE PHASE//
     //---------------//
 
-    
-
     private void BuzzTilePhase()
     {
         if (PlayerTurn.Tile == null)
@@ -937,6 +935,11 @@ public class FightManager : MonoBehaviour
 
         PlaceTilePanel.SetActive(true);
         buzzTilePlacing.OpenPanel(FameIndex, DestructionIndex, PlayerTurn.Tile);
+
+        if (PlayerTurn.isAI)
+        {
+            AIBuzzTilePhase();
+        }
     }
 
     public void EndBuzzTilePlacing()
@@ -944,6 +947,37 @@ public class FightManager : MonoBehaviour
         PlaceTilePanel.SetActive(false);
         ActionPhase();
     }
+
+    //---------------------//
+    //BUZZ TILE - AI HELPER//
+    //---------------------//
+
+    public void AIBuzzTilePhase()
+    {
+        aiLogic.options = buzzTilePlacing.options;
+        aiLogic.StartAction(AIState.BuzzTile);
+    }
+
+    public void OnAIBuzzTileDecide(TilePlacementData selected, BuzzTile tile)
+    {
+        buzzTilePlacing.AIPlaceTile(selected.isFame, selected.index, tile, selected.kiri);
+        Enqueue(ShowAIBuzzTile());
+    }
+
+    public IEnumerator ShowAIBuzzTile()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        buzzTilePlacing.SetSpritePreview();
+
+        yield return new WaitForSeconds(1.5f);
+
+        buzzTilePlacing.confirm();
+    }
+
+    //-------------//
+    //MISCELLANEOUS//
+    //-------------//
 
     public void SetCameraPos(Transform pivot)
     {

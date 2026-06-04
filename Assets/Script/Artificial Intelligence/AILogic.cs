@@ -27,6 +27,8 @@ public class AILogic : MonoBehaviour
 
     public bool alwaysLockAll = false;
 
+    public List<TilePlacementData> options = new();
+
     public void Init(PlayerData ai)
     {
         self = ai;
@@ -438,7 +440,32 @@ public class AILogic : MonoBehaviour
 
 
     void DecideBuzzTile()
-    {/*
+    {
+        if (options.Count == 0)
+        {
+            FightManager.instance.EndBuzzTilePlacing();
+            return;
+        }
+        TilePlacementData selected = options[0];
+        foreach(TilePlacementData option in options)
+        {
+            if (!selected.kiri)
+            {
+                break;
+            }
+            if(option.isFame == selected.isFame && option.index == selected.index)
+            {
+                continue;
+            }
+            if (!option.kiri)
+            {
+                selected = option;
+            }
+        }
+        FightManager.instance.OnAIBuzzTileDecide(selected, self.Tile);
+        
+        
+        /*
         BuzzTile bestTile =
             BoardManager.instance
             .GetBestTile();

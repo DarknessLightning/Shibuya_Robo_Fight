@@ -21326,10 +21326,10 @@ MonoBehaviour:
     AbilityPoints: 0
     SkillPoints: 0
     Cards: []
-    Tile: {fileID: 0}
+    Tile: {fileID: 11400000, guid: 52b33e6676b37ce4fbbe4d6a07aed4d6, type: 2}
     additionalReroll: 0
     additionalDice: 0
-    isAI: 0
+    isAI: 1
     win: {fileID: 21300000, guid: 6f047ffee8cefb94a857721851d60d51, type: 3}
   AI:
     ui:
@@ -21435,7 +21435,7 @@ MonoBehaviour:
   dropRadius: 1.5
   diceTray: {fileID: 849095300}
   forTest: 1
-  targetFace: 0500000000000000
+  targetFace: 0200000002000000
   numberOfDiceForFace: 02000000
 --- !u!114 &2065420432
 MonoBehaviour:
