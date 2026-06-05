@@ -10,16 +10,27 @@ public class AudioManager : MonoBehaviour
     public AudioClip MainMenuMusic;
     public AudioClip BattleMusic;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
-        if(instance != this)
+
+        if (instance != this)
         {
             Destroy(gameObject);
         }
+
+        if (instance == this)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    void Start()
+    {
         PlayMainMenuMusic();
     }
 

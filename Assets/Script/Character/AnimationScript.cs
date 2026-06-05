@@ -9,6 +9,7 @@ public class AnimationScript : MonoBehaviour
     public AnimationClip signal;
     public AnimationClip destruction;
     public AnimationClip brag;
+    public AnimationClip lose;
 
     public float timingForAttack = 0f;
     public float timingForHit = 0f;
@@ -59,6 +60,11 @@ public class AnimationScript : MonoBehaviour
     public void PlayBuyCard()
     {
         animator.SetTrigger("Card");
+    }
+
+    public void PlayLose()
+    {
+        animator.SetTrigger("Lose");
     }
 
     public void finishAttack()

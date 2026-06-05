@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5703a4d41e80a6c44ba007c022675a6f, type: 3}
   m_Name: C002 - SFX
   m_EditorClassIdentifier: 
-  Attack: {fileID: 0}
-  Energize: {fileID: 0}
-  Heal: {fileID: 0}
-  Hurt: {fileID: 0}
+  Attack: {fileID: 8300000, guid: 55126dc8bed1d514ca3e7b143273ddb7, type: 3}
+  Energize: {fileID: 8300000, guid: 29faaa5cbf18d8643b1ad1aa4533771b, type: 3}
+  Heal: {fileID: 8300000, guid: 9d05c49c03e3a7c49a67a13d904d0711, type: 3}
+  Hurt: {fileID: 8300000, guid: b37f882fddd61a146b377beb40952be2, type: 3}
   Signal: {fileID: 0}
-  Destruction: {fileID: 0}
+  Destruction: {fileID: 8300000, guid: 3bb0c239c1c39b743a7a675ac74501cc, type: 3}
   Fame: {fileID: 0}

@@ -1,12 +1,8 @@
-using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEngine.EventSystems.EventTrigger;
-using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
 public class PlayerUI
@@ -17,7 +13,8 @@ public class PlayerUI
     public Image HPBar;
     public Text APText;
     public Text CardAmount;
-
+    public GameObject MainModel;
+    public GameObject VictoryModel;
 }
 
 [System.Serializable]
@@ -65,6 +62,10 @@ public class FightManager : MonoBehaviour
     public Transform InFrontOfAI;
     public Transform BehindPlayer;
     public Transform BehindAI;
+    public Transform PlayerLoseShot;
+    public Transform AILoseShot;
+    public Transform PlayerLost;
+    public Transform AILost;
 
     [Header("Orbit Settings")]
     public float orbitRadius = 5f;
@@ -698,9 +699,26 @@ public class FightManager : MonoBehaviour
 
     public void Over()
     {
-        SetCameraPos(BirdsEyeView);
+        WinPose(winner);
+        StartCoroutine(GameOverAnimation());
+    }
+
+    public void WinPose(PlayerData winPlayer)
+    {
+        winPlayer.ui.MainModel.SetActive(false);
+        winPlayer.ui.VictoryModel.SetActive(true);
+    }
+
+    public IEnumerator GameOverAnimation()
+    {
+        SetCameraPos(winner == Player ? AILoseShot : PlayerLoseShot);
+        winner.opponent.ui.ModelAnimator.PlayLose();
+        float duration = winner.opponent.ui.ModelAnimator.lose.length;
+        yield return new WaitForSeconds(duration);
+
         GameOverPanel.SetActive(true);
         GameOver.sprite = winner.win;
+        SetCameraPos(winner == Player ? AILost : PlayerLost);
     }
 
     //-------------------//
@@ -1006,6 +1024,10 @@ public class FightManager : MonoBehaviour
             Destroy(player.ui.ModelPos.GetChild(0).gameObject);
         }
         GameObject model = Instantiate(player.character.characterModel, player.ui.ModelPos);
+        player.ui.MainModel = model;
+        GameObject VModel = Instantiate(player.character.victoryModel, player.ui.ModelPos);
+        player.ui.VictoryModel = VModel;
+        VModel.SetActive(false);
         player.ui.ModelAnimator = model.GetComponent<AnimationScript>();
     }
 

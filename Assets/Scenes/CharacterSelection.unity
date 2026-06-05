@@ -1876,6 +1876,7 @@ MonoBehaviour:
     confirmButton: {fileID: 581707879}
     selected: {fileID: 1077794883}
   sessionData: {fileID: 11400000, guid: ef1868357c2d05946842af05721f3d49, type: 2}
+  SelectSfx: {fileID: 8300000, guid: 2c4978bf2ead01f4cb0ce5b787da112b, type: 3}
 --- !u!4 &1751391020
 Transform:
   m_ObjectHideFlags: 0

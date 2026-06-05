@@ -19,6 +19,7 @@ public class CharacterData : ScriptableObject
     public string skillDescription;
 
     public GameObject characterModel;
+    public GameObject victoryModel;
     public Sprite characterSprite;
     public Sprite icon;
     public Sprite info;
