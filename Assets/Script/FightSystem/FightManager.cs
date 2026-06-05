@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
@@ -43,7 +44,6 @@ public class FightManager : MonoBehaviour
     [Header("Panel References")]
     public GameObject CardDraftingPanel;
     public GameObject BuyCardPanel;
-    public GameObject ChooseFieldPanel;
     public GameObject PlaceTilePanel;
     public GameObject DicePanel;
     public GameObject HpPanel;
@@ -51,6 +51,8 @@ public class FightManager : MonoBehaviour
     public GameObject SpecialSkillPanel;
     public GameObject GameOverPanel;
     public GameObject SkillPointPopUp;
+    public GameObject PausePanel;
+    public GameObject ExitConfirmationPanel;
 
     [Header("Camera Pivots")]
     public Transform BirdsEyeView;
@@ -86,6 +88,8 @@ public class FightManager : MonoBehaviour
     public Sprite[] PhaseAnnounceSprite;
     public Image GameOver;
     public Text SkillPointText;
+    public AudioClip AbilityCardEffect;
+    public AudioClip ChangeTurnSfx;
 
     [Header("Player Data")]
     public PlayerData Player;
@@ -357,6 +361,7 @@ public class FightManager : MonoBehaviour
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
         SkillPointPopUp.SetActive(true);
         target.ui.ModelAnimator.PlaySpecialSkill(power >= cost);
+        AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
         SkillPointText.text = "0";
 
         int startPower = 0;
@@ -439,6 +444,8 @@ public class FightManager : MonoBehaviour
             float duration = target.opponent.ui.ModelAnimator.attack.length - target.ui.ModelAnimator.timingForAttack;
             yield return new WaitForSeconds(duration);
             target.ui.ModelAnimator.PlayHit();
+            AudioManager.instance.PlaySfx(target.opponent.character.soundEffects.Attack);
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Hurt);
             //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForHit);
             float fillAmount = (float)target.CurrentHP / target.character.hp;
             target.ui.HPBar.fillAmount = fillAmount;
@@ -448,6 +455,7 @@ public class FightManager : MonoBehaviour
         {
             SetCameraPos(target == Player ? FacingPlayer : FacingAI);
             target.ui.ModelAnimator.PlayHeal();
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Heal);
             float elapsed = 0f;
             float duration = target.ui.ModelAnimator.heal.length;
 
@@ -504,6 +512,7 @@ public class FightManager : MonoBehaviour
         {
             SetCameraPos(target == Player ? FacingPlayer : FacingAI);
             target.ui.ModelAnimator.PlayCharge();
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
 
             // 1. Hitung dulu berapa TOTAL energi yang mau ditambahkan
             int totalTambah = Mathf.RoundToInt(ApAmount * EnergyMultiplier);
@@ -763,22 +772,10 @@ public class FightManager : MonoBehaviour
         StartCoroutine(WaitCoroutine());
     }
 
-    public void AISkipCardDrafting()
-    {
-        Enqueue(ShowAISkipAction());
-    }
-
-    public IEnumerator ShowAISkipAction()
-    {
-        selectCardPhase(true);
-        yield return new WaitForSeconds(1.5f);
-
-        selectCardPhase(false);
-        SkipCardDrafting();
-    }
-
     public void SkipCardDrafting()
     {
+        PlayerTurn.AbilityPoints += 1;
+        PlayerTurn.ui.APText.text = PlayerTurn.AbilityPoints.ToString();
         CardDraftingPanel.SetActive(false);
         GamePhase++;
         ActionPhase();
@@ -809,6 +806,21 @@ public class FightManager : MonoBehaviour
         yield return buyCardAnimation(card);
 
     }
+    
+
+    public void AISkipCardDrafting()
+    {
+        Enqueue(ShowAISkipAction());
+    }
+
+    public IEnumerator ShowAISkipAction()
+    {
+        selectCardPhase(true);
+        yield return new WaitForSeconds(1.5f);
+
+        selectCardPhase(false);
+        SkipCardDrafting();
+    }
 
     //------------------//
     //CARD EFFECT HELPER//
@@ -816,6 +828,7 @@ public class FightManager : MonoBehaviour
 
     public void ApplyEffect(PlayerData self, SubjectTarget target, PlayerState state, int value)
     {
+        AudioManager.instance.PlaySfx(AbilityCardEffect);
         PlayerData targetPlayer = self;
         if(target == SubjectTarget.Opponent)
         {
@@ -998,6 +1011,7 @@ public class FightManager : MonoBehaviour
 
     private void ChangeTurn()
     {
+        AudioManager.instance.PlaySfx(ChangeTurnSfx);
         GamePhase = 0;
         PlayerTurn.SkillPoints = 0;
         PlayerTurn = (PlayerTurn == null || PlayerTurn == AI) ? Player : AI;
@@ -1130,6 +1144,48 @@ public class FightManager : MonoBehaviour
         }
         PhaseAnnouncePanel.SetActive(true);
         ActionPhase();
+    }
+
+    public void PauseGame()
+    {
+        PausePanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        PausePanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void About2Exit(bool active)
+    {
+        ExitConfirmationPanel.SetActive(active);
+    }
+
+    public void ExitFight()
+    {
+        Time.timeScale = 1f;
+        AudioManager.instance.PlayMainMenuMusic();
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void Surrender()
+    {
+        gameOver = true;
+        winner = AI;
+        StopAllCoroutines();
+        routineQueue.Clear();
+        isRunningCoroutine = false;
+        StopAnimation();
+        ResumeGame();
+        Over();
+    }
+
+    public void StopAnimation()
+    {
+        Player.ui.ModelAnimator.animator.Rebind();
+        AI.ui.ModelAnimator.animator.Rebind();
     }
 }
 

@@ -16,6 +16,8 @@ public class CardDraftingSystem : MonoBehaviour
     private int selected = -1;
 
     public int usablePoints = -1;
+
+    public AudioClip buySfx;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -117,6 +119,7 @@ public class CardDraftingSystem : MonoBehaviour
 
     public void buyCard()
     {
+        AudioManager.instance.PlaySfx(buySfx);
         if (!FightManager.instance.PlayerTurn.isAI)
         {
             FightManager.instance.buyCard(selectedCard);

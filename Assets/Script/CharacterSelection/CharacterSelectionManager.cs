@@ -13,6 +13,8 @@ public class CharacterSelectionUi
     public Transform Pointer;
     public bool confirm;
     public int index = 0;
+    public Image confirmButton;
+    public GameObject selected;
 }
 
 public class CharacterSelectionManager : MonoBehaviour
@@ -20,6 +22,8 @@ public class CharacterSelectionManager : MonoBehaviour
     public CharacterData[] allCharacter;
     private List<CharacterData> availableCharacter = new();
     public Button chooseCharaButton;
+    public Sprite selectBtnSprite;
+    public Sprite cancelBtnSprite;
     //private string SpecialSkill = "Special Skill: \n";
     private int index = 0;
     private CharacterSelectionUi selected;
@@ -35,6 +39,8 @@ public class CharacterSelectionManager : MonoBehaviour
 
     [Header("Session Data")]
     public GameSessionData sessionData;
+
+    public AudioClip SelectSfx;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -108,6 +114,8 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         if (player.character == null) return;
         player.confirm = !player.confirm;
+        player.confirmButton.sprite = player.confirm ? cancelBtnSprite : selectBtnSprite;
+        player.selected.SetActive(player.confirm);
         bothConfirmed();
         
     }
@@ -116,12 +124,15 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         if (enemy.character == null) return;
         enemy.confirm = !enemy.confirm;
+        enemy.confirmButton.sprite = enemy.confirm ? cancelBtnSprite : selectBtnSprite;
+        enemy.selected.SetActive(enemy.confirm);
         bothConfirmed();
         
     }
 
     public void bothConfirmed()
     {
+        AudioManager.instance.PlaySfx(SelectSfx);
         if(!player.confirm || !enemy.confirm) return;
         Debug.Log("Player Choose: " + player.character.name + "\n" + 
             "AI Choose: " + enemy.character.name);
@@ -129,6 +140,7 @@ public class CharacterSelectionManager : MonoBehaviour
         sessionData.playerCharacter = player.character;
         sessionData.enemyCharacter = enemy.character;
 
+        AudioManager.instance.PlayBattleMusic();
         SceneManager.LoadScene("SimpleFight");
     }
 

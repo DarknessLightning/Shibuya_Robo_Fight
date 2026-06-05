@@ -9,8 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6667bdfde72e874fa80403df5497668, type: 3}
-  m_Name: SessionData
+  m_Script: {fileID: 11500000, guid: 5703a4d41e80a6c44ba007c022675a6f, type: 3}
+  m_Name: C003 - SFX
   m_EditorClassIdentifier: 
-  playerCharacter: {fileID: 11400000, guid: c29005be83f67e94db3210a7944ebb6a, type: 2}
-  enemyCharacter: {fileID: 11400000, guid: 51b058e2b9e399445b63b7d0223a5f3f, type: 2}
+  Attack: {fileID: 0}
+  Energize: {fileID: 0}
+  Heal: {fileID: 0}
+  Hurt: {fileID: 0}
+  Signal: {fileID: 0}
+  Destruction: {fileID: 0}
+  Fame: {fileID: 0}

@@ -54,6 +54,8 @@ public class DiceManager : MonoBehaviour
     public DiceFace[] targetFace;
     public int[] numberOfDiceForFace;
 
+    public AudioClip DiceRollSfx;
+    public AudioClip DiceLockSfx;
     void Start()
     {
         centerPosition = new Vector3(diceTray.position.x, 5f, diceTray.position.z);
@@ -142,6 +144,7 @@ public class DiceManager : MonoBehaviour
     {
         if (IsMoving()) return;
 
+        AudioManager.instance.PlaySfx(DiceRollSfx);
         RollAllDice();
     }
 
@@ -205,6 +208,7 @@ public class DiceManager : MonoBehaviour
     {
         dice.locked = !dice.locked;
 
+        AudioManager.instance.PlaySfx(DiceLockSfx);
         if (dice.locked)
         {
             dice.setEnd(); // Simpan posisi terakhir di meja sebelum dipindah ke slot kunci

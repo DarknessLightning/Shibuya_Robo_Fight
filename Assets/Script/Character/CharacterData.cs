@@ -23,4 +23,6 @@ public class CharacterData : ScriptableObject
     public Sprite icon;
     public Sprite info;
     public Sprite specialSkill;
+
+    public CharacterSoundEffect soundEffects;
 }
