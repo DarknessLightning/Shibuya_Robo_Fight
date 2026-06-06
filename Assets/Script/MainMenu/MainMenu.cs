@@ -7,7 +7,9 @@ public class MainMenu : MonoBehaviour
     public GameObject PrevBtn;
     public GameObject NextBtn;
     public Image panel;
+    public Text title;
     public Sprite[] cards;
+    public string[] cardsName;
 
     private int index = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,6 +22,7 @@ public class MainMenu : MonoBehaviour
     {
         index = Mathf.Min(index + 1, cards.Length - 1);
         panel.sprite = cards[index];
+        title.text = cardsName[index];
         if(index == cards.Length - 1)
         {
             NextBtn.SetActive(false);
@@ -34,7 +37,8 @@ public class MainMenu : MonoBehaviour
     {
         index = Mathf.Max(index - 1, 0);
         panel.sprite = cards[index];
-        if(index == 0)
+        title.text = cardsName[index];
+        if (index == 0)
         {
             PrevBtn.SetActive(false);
         }

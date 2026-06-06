@@ -723,9 +723,15 @@ public class FightManager : MonoBehaviour
             Over();
         }
     }
-
+    
     public void Over()
     {
+        HpPanel.SetActive(false);
+        DicePanel.SetActive(false);
+        CardDraftingPanel.SetActive(false);
+        PlaceTilePanel.SetActive(false);
+        BuyCardPanel.SetActive(false);
+        SkillPointPopUp.SetActive(false);
         WinPose(winner);
         StartCoroutine(GameOverAnimation());
     }

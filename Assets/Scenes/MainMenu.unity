@@ -249,9 +249,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6e87d0168a2c65d489b484712ab6154d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6cc2492a28f3f4443a62acd3bb941999, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -281,10 +281,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1908504773}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 10}
+  m_SizeDelta: {x: 990, y: 655}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &175164141
 GameObject:
@@ -601,6 +601,85 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 336586799}
+  m_CullTransparentMesh: 1
+--- !u!1 &404833987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 404833988}
+  - component: {fileID: 404833990}
+  - component: {fileID: 404833989}
+  m_Layer: 5
+  m_Name: Text (Legacy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &404833988
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404833987}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1908504773}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -30}
+  m_SizeDelta: {x: 1000, y: 150}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &404833989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404833987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: d3cb895241a5b8e48b413bc85f489933, type: 3}
+    m_FontSize: 100
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 128
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: FIGHT AI
+--- !u!222 &404833990
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404833987}
   m_CullTransparentMesh: 1
 --- !u!1 &482926821
 GameObject:
@@ -1226,7 +1305,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1382,12 +1461,25 @@ MonoBehaviour:
   PrevBtn: {fileID: 1412215629}
   NextBtn: {fileID: 1583560155}
   panel: {fileID: 29955006}
+  title: {fileID: 404833989}
   cards:
-  - {fileID: 21300000, guid: 6e87d0168a2c65d489b484712ab6154d, type: 3}
-  - {fileID: 21300000, guid: 160469e7c530ad34a8d0e465e35b4879, type: 3}
-  - {fileID: 21300000, guid: bff6da543ef03074d941a51f12b9c506, type: 3}
-  - {fileID: 21300000, guid: a102f101e99b0b84f8d4d8b89ef4edab, type: 3}
-  - {fileID: 21300000, guid: 47b408621dc815b4a9b086eb11b81eeb, type: 3}
+  - {fileID: 21300000, guid: 6cc2492a28f3f4443a62acd3bb941999, type: 3}
+  - {fileID: 21300000, guid: c0ebff5ed07e0c94594fe2caab15b7ce, type: 3}
+  - {fileID: 21300000, guid: d798618343517614b923d92c9d62fdf4, type: 3}
+  - {fileID: 21300000, guid: 7ecb566694bb5494c8655b800070e43a, type: 3}
+  - {fileID: 21300000, guid: 54b0948b68d7b734982bd9d8eeccf068, type: 3}
+  - {fileID: 21300000, guid: e7f6d7c73006c904f9ffe3369b267f4b, type: 3}
+  - {fileID: 21300000, guid: 6e2e6b80094f2e343adc4c6a5dcfccc5, type: 3}
+  - {fileID: 21300000, guid: 2a94012184b9d864587bb63e9ccc16cc, type: 3}
+  cardsName:
+  - FIGHT AI
+  - TURN BASED BATTLE
+  - LOCK N ROLL DICE
+  - THE DICES
+  - DRAFT THE CARDS
+  - THE CARDS
+  - TUG OF WAR
+  - BUZZ TILE
 --- !u!114 &1362113489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2296,6 +2388,7 @@ RectTransform:
   - {fileID: 2131704642}
   - {fileID: 1583560159}
   - {fileID: 1412215630}
+  - {fileID: 404833988}
   m_Father: {fileID: 175164145}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
