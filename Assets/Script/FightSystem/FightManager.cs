@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -11,9 +12,9 @@ public class PlayerUI
     public AnimationScript ModelAnimator;
     public Image HPBar;
     public Text APText;
-    public Text SPText;
     public Text CardAmount;
-
+    public GameObject MainModel;
+    public GameObject VictoryModel;
 }
 
 [System.Serializable]
@@ -31,6 +32,7 @@ public class PlayerData
     public int additionalDice = 0;
     public bool isAI;
     public PlayerData opponent;
+    public Sprite win;
 }
 
 public class FightManager : MonoBehaviour
@@ -39,12 +41,15 @@ public class FightManager : MonoBehaviour
     [Header("Panel References")]
     public GameObject CardDraftingPanel;
     public GameObject BuyCardPanel;
-    public GameObject ChooseFieldPanel;
     public GameObject PlaceTilePanel;
     public GameObject DicePanel;
     public GameObject HpPanel;
     public GameObject PhaseAnnouncePanel;
     public GameObject SpecialSkillPanel;
+    public GameObject GameOverPanel;
+    public GameObject SkillPointPopUp;
+    public GameObject PausePanel;
+    public GameObject ExitConfirmationPanel;
 
     [Header("Camera Pivots")]
     public Transform BirdsEyeView;
@@ -57,6 +62,10 @@ public class FightManager : MonoBehaviour
     public Transform InFrontOfAI;
     public Transform BehindPlayer;
     public Transform BehindAI;
+    public Transform PlayerLoseShot;
+    public Transform AILoseShot;
+    public Transform PlayerLost;
+    public Transform AILost;
 
     [Header("Orbit Settings")]
     public float orbitRadius = 5f;
@@ -78,6 +87,10 @@ public class FightManager : MonoBehaviour
     public Image PhaseAnnounce;
     public GameSessionData sessionData;
     public Sprite[] PhaseAnnounceSprite;
+    public Image GameOver;
+    public Text SkillPointText;
+    public AudioClip AbilityCardEffect;
+    public AudioClip ChangeTurnSfx;
 
     [Header("Player Data")]
     public PlayerData Player;
@@ -93,7 +106,8 @@ public class FightManager : MonoBehaviour
     private readonly Queue<IEnumerator> routineQueue = new();
     private bool isRunningCoroutine = false;
     private List<DiceFace> results = new();
-    private bool isInActivePhase = false;
+    private bool gameOver = false;
+    private PlayerData winner = null;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -107,6 +121,13 @@ public class FightManager : MonoBehaviour
 
         LoadSessionCharacter(Player);
         LoadSessionCharacter(AI);
+        
+        /*
+        Player.CurrentHP = 4;
+        Player.ui.HPBar.fillAmount = (float)Player.CurrentHP / Player.character.hp;
+        AI.CurrentHP = 4;
+        AI.ui.HPBar.fillAmount = (float)AI.CurrentHP / AI.character.hp;
+        */
 
         //ActionPhase();
         PlayerTurn = Player;
@@ -128,7 +149,6 @@ public class FightManager : MonoBehaviour
 
     private void ActionPhase()
     {
-        if (isRunningCoroutine) return;
 
         GamePhase++;
         if(GamePhase > GamePhaseLimit)
@@ -139,7 +159,8 @@ public class FightManager : MonoBehaviour
         {
             case 0: StartDicePhase(); 
                 break;
-            case 1: ResolveDiceEffect(0); 
+            case 1: 
+                ResolveDiceEffect(DiceFace.Power); 
                 break;
             case 2: CardDraftingPhase();
                 break;
@@ -153,8 +174,19 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator NextPhase()
     {
+        SetCameraPos(BirdsEyeView);
         yield return new WaitForSeconds(0.5f);
         ActionPhase();
+    }
+
+    public IEnumerator WaitCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        yield return new WaitUntil(
+            () => !isRunningCoroutine);
+
+        if (gameOver) yield break;
+        yield return NextPhase();
     }
 
     //----------//
@@ -193,8 +225,8 @@ public class FightManager : MonoBehaviour
         DicePanel.SetActive(false);
         HpPanel.SetActive(true);
         PlayerTurn.additionalReroll = 0;
-        //Enqueue(NextPhase());
-        ActionPhase();
+        StartCoroutine(NextPhase());
+        //ActionPhase();
     }
 
     //----------------//
@@ -234,83 +266,78 @@ public class FightManager : MonoBehaviour
         }
     }
 
-    public IEnumerator GoToCardDrafting()
-    {
-        yield return new WaitForSeconds(0.5f);
-        yield return new WaitUntil(
-            () => !isRunningCoroutine);
-
-        StartCardDraft();
-    }
 
     //------------------//
     //DICE RESOLVE PHASE//
     //------------------//
 
-    public void NextResolve(int index)
+    public void NextResolve(DiceFace next)
     {
-        ResolveDiceEffect(index);
+        ResolveDiceEffect(next);
     }
 
-    private void ResolveDiceEffect(int index)
+    public int Count(DiceFace face)
     {
-        if (index == 0) isInActivePhase = true;
-        int power = 0;
-        int heal = 0;
-        int attack = 0;
-        int energy = 0;
-        int fame = 0;
-        int destruction = 0;
+        int count = 0;
         foreach(DiceFace result in results)
         {
-            if (result == DiceFace.Power) power++;
-            else if (result == DiceFace.Heal) heal++;
-            else if (result == DiceFace.Attack) attack++;
-            else if (result == DiceFace.Charge) energy++;
-            else if (result == DiceFace.Fame) fame++;
-            else if (result == DiceFace.Destruction) destruction++;
+            if(result == face) count++;
         }
-        SetCameraPos(BirdsEyeView);
-        switch (index)
-        {
-            case 0: 
-                specialSkill(power);
-                break;
-            case 1: 
-                HpChange(PlayerTurn, heal);
-                break;
-            case 2: 
-                HpChange(PlayerTurn.opponent, -attack);
-                break;
-            case 3: 
-                ApChange(PlayerTurn, energy);
-                break;
-            case 4:
-                TrackerMove(PlayerTurn, DiceFace.Fame, Mathf.Max(fame - 2, 0));
-                break;
-            case 5:
-                TrackerMove(PlayerTurn, DiceFace.Destruction, Mathf.Max(destruction - 2, 0));
-                break;
-            default: //ActionPhase();
-                if (PlayerTurn.isAI)
-                {
-                    StartCoroutine(GoToCardDrafting());
-                }
-                isInActivePhase = false;
-                return;
-        }
-        Enqueue(ResolveNextEffect(index + 1));
+        return count;
     }
 
-    private IEnumerator ResolveNextEffect(int index)
+    private void ResolveDiceEffect(DiceFace face)
     {
-        yield return new WaitForSeconds(1f);
-        ResolveDiceEffect(index);
+        int count = Count(face);
+        DiceFace next = DiceFace.Power;
+        SetCameraPos(BirdsEyeView);
+
+        switch (face)
+        {
+
+            case DiceFace.Power: next = DiceFace.Heal;
+                if (count == 0) break;
+                specialSkill(count);
+                break;
+            case DiceFace.Heal: next = DiceFace.Attack;
+                if (count == 0) break;
+                HpChange(PlayerTurn, count);
+                break;
+            case DiceFace.Attack: next = DiceFace.Charge;
+                if (count == 0) break;
+                HpChange(PlayerTurn.opponent, -count);
+                break;
+            case DiceFace.Charge: next = DiceFace.Fame;
+                if (count == 0) break;
+                ApChange(PlayerTurn, count);
+                break;
+            case DiceFace.Fame: next = DiceFace.Destruction;
+                if (count == 0) break;
+                TrackerMove(PlayerTurn, DiceFace.Fame, Mathf.Max(count - 2, 0));
+                break;
+            case DiceFace.Destruction: next = face;
+                if (count == 0) break;
+                TrackerMove(PlayerTurn, DiceFace.Destruction, Mathf.Max(count - 2, 0));
+                break;
+        }
+        if(next == face)
+        {
+            StartCoroutine(WaitCoroutine());
+            return;
+        }
+        Enqueue(ResolveNextEffect(next));
+        //NextResolve(next);
+    }
+
+    private IEnumerator ResolveNextEffect(DiceFace face)
+    {
+        yield return null;
+        ResolveDiceEffect(face);
     }
 
     private void specialSkill(int count)
     {
-
+        if (count == 0) return;
         int cost = 0;
 
         switch (PlayerTurn.character.skill)
@@ -333,15 +360,25 @@ public class FightManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
+        SkillPointPopUp.SetActive(true);
         target.ui.ModelAnimator.PlaySpecialSkill(power >= cost);
+        AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
+        SkillPointText.text = "0";
 
         int startPower = 0;
         int targetPower = power;
 
         float elapsed = 0f;
         float duration = target.ui.ModelAnimator.charge.length;
+
+        bool sfxPlayed = false;
         while (elapsed < duration)
         {
+            if (elapsed >= target.character.soundEffects.timingForCharge && !sfxPlayed)
+            {
+                AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
+                sfxPlayed = true;
+            }
             elapsed += Time.deltaTime;
 
             // Hitung persentase progress (0.0 sampai 1.0)
@@ -350,9 +387,10 @@ public class FightManager : MonoBehaviour
             // Berpindah mulus dari startEnergy ke targetEnergy berdasarkan persentase waktu
             target.SkillPoints = Mathf.RoundToInt(Mathf.Lerp(startPower, targetPower, percentage));
 
-            target.ui.SPText.text = target.SkillPoints.ToString();
+            SkillPointText.text = target.SkillPoints.ToString();
             yield return null;
         }
+        SkillPointPopUp.SetActive(false);
 
         if(power >= cost)
         {
@@ -361,7 +399,9 @@ public class FightManager : MonoBehaviour
             SpecialSkillPanel.SetActive(true);
             Image specialSkillImage = SpecialSkillPanel.GetComponent<Image>();
             specialSkillImage.sprite = target.character.specialSkill;
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(target.character.soundEffects.timingForSignal);
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Signal);
+            yield return new WaitForSeconds(duration - target.character.soundEffects.timingForSignal);
 
             switch (PlayerTurn.character.skill)
             {
@@ -397,13 +437,13 @@ public class FightManager : MonoBehaviour
         ApChange(target, energy*power);
     }
 
-    public void HpChange(PlayerData target, int count)
+    public void HpChange(PlayerData target, int count, bool resolvingDice = false)
     {
         if (count == 0) return;
-        Enqueue(HPBarChange(target, count));
+        Enqueue(HPBarChange(target, count, resolvingDice));
     }
 
-    private IEnumerator HPBarChange(PlayerData target, int deltaHealth)
+    private IEnumerator HPBarChange(PlayerData target, int deltaHealth, bool resolvingDice)
     {
         int currentHealth = target.CurrentHP;
         target.CurrentHP = Mathf.Clamp(target.CurrentHP += deltaHealth, 0, target.character.hp);
@@ -411,9 +451,12 @@ public class FightManager : MonoBehaviour
         {
             SetCameraPos(target == Player ? OverAIShoulder : OverPlayerShoulder);
             target.opponent.ui.ModelAnimator.PlayAttack();
+            yield return new WaitForSeconds(target.opponent.character.soundEffects.timingForAttack);
+            AudioManager.instance.PlaySfx(target.opponent.character.soundEffects.Attack);
             float duration = target.opponent.ui.ModelAnimator.attack.length - target.ui.ModelAnimator.timingForAttack;
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(duration - target.opponent.character.soundEffects.timingForAttack);
             target.ui.ModelAnimator.PlayHit();
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Hurt);
             //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForHit);
             float fillAmount = (float)target.CurrentHP / target.character.hp;
             target.ui.HPBar.fillAmount = fillAmount;
@@ -428,8 +471,14 @@ public class FightManager : MonoBehaviour
 
             int startAmount = currentHealth;
             float fillAmount;
+            bool sfxPlayed = false;
             while (elapsed < duration)
             {
+                if(elapsed >= target.character.soundEffects.timingForHeal && !sfxPlayed)
+                {
+                    AudioManager.instance.PlaySfx(target.character.soundEffects.Heal);
+                    sfxPlayed = true;
+                }
                 elapsed += Time.deltaTime;
                 float percentage = elapsed / duration;
 
@@ -454,20 +503,26 @@ public class FightManager : MonoBehaviour
         */
         Debug.Log("Done");
         SetCameraPos(BirdsEyeView);
-        if(deltaHealth != 0)
-        {
-            yield return new WaitForSeconds(2f);
-        }
+        yield return new WaitForSeconds(0.5f);
 
+        CheckWinCondition();
+
+        if (!resolvingDice)
+        {
+            TriggerCardEffect(target, 
+                deltaHealth > 0 ? TriggerEvent.OnAdd : TriggerEvent.OnSubtract, 
+                PlayerState.HealthPoint,
+                Mathf.Abs(deltaHealth));
+        }
     }
 
-    public void ApChange(PlayerData target, int ApAmount)
+    public void ApChange(PlayerData target, int ApAmount, bool resolvingDice = false)
     {
         if (ApAmount == 0) return;
-        Enqueue(charge(target, ApAmount));
+        Enqueue(charge(target, ApAmount, resolvingDice));
     }
 
-    public IEnumerator charge(PlayerData target, int ApAmount)
+    public IEnumerator charge(PlayerData target, int ApAmount, bool resolvingDice)
     {
         if (ApAmount > 0)
         {
@@ -486,8 +541,15 @@ public class FightManager : MonoBehaviour
             int startEnergy = currentEnergy;
             int targetEnergy = currentEnergy + totalTambah;
 
+            bool sfxPlayed = false;
+
             while (elapsed < duration)
             {
+                if(elapsed >= target.character.soundEffects.timingForCharge && !sfxPlayed)
+                {
+                    AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
+                    sfxPlayed = true;
+                }
                 elapsed += Time.deltaTime;
 
                 // Hitung persentase progress (0.0 sampai 1.0)
@@ -537,21 +599,21 @@ public class FightManager : MonoBehaviour
         
 
         EnergyMultiplier = 1;
-        /*
-        while (currentEnergy != target.AbilityPoints)
-        {
-            currentEnergy = currentEnergy < target.AbilityPoints ? currentEnergy + 1 : currentEnergy - 1;
-        }*/
 
         SetCameraPos(BirdsEyeView);
-        if (ApAmount != 0)
+        yield return new WaitForSeconds(0.5f);
+
+        if (!resolvingDice)
         {
-            yield return new WaitForSeconds(2f);
+            TriggerCardEffect(target,
+                ApAmount > 0 ? TriggerEvent.OnAdd : TriggerEvent.OnSubtract,
+                PlayerState.AbilityPoints,
+                Mathf.Abs(ApAmount));
         }
 
     }
 
-    public void TrackerMove(PlayerData target, DiceFace face, int delta)
+    public void TrackerMove(PlayerData target, DiceFace face, int delta, bool resolvingDice = false)
     {
         if (delta == 0) return;
         if (target == Player)
@@ -567,17 +629,37 @@ public class FightManager : MonoBehaviour
         {
             DestructionIndex = Mathf.Clamp(DestructionIndex + delta, 0, 14);
         }
-        Enqueue(Move(target, face, delta));
+        Enqueue(Move(target, face, delta, resolvingDice));
     }
 
-    public IEnumerator Move(PlayerData target, DiceFace face, int delta)
+    public IEnumerator Move(PlayerData target, DiceFace face, int delta, bool resolvingDice)
     {
+        PlayerState state = PlayerState.Fame; 
         PhaseAnnouncePanel.SetActive(false);
+        HpPanel.SetActive(false);
 
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
-        target.ui.ModelAnimator.PlayDestruction();
 
-        float waitDuration = target.ui.ModelAnimator.destruction.length - target.ui.ModelAnimator.timingForDestruction;
+        float waitDuration = 0f;
+        if (face == DiceFace.Fame)
+        {
+            state = PlayerState.Fame;
+            target.ui.ModelAnimator.PlayFame();
+            waitDuration = target.ui.ModelAnimator.brag.length - target.ui.ModelAnimator.timingForLaugh;
+            yield return new WaitForSeconds(target.character.soundEffects.timingForFame);
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Fame);
+            waitDuration -= target.character.soundEffects.timingForFame;
+        }
+        else if (face == DiceFace.Destruction)
+        {
+            state = PlayerState.Destruction;
+            target.ui.ModelAnimator.PlayDestruction();
+            waitDuration = target.ui.ModelAnimator.destruction.length - target.ui.ModelAnimator.timingForLaugh;
+            yield return new WaitForSeconds(target.character.soundEffects.timingForDestruction);
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Destruction);
+            waitDuration -= target.character.soundEffects.timingForDestruction;
+        }
+
         yield return new WaitForSeconds(waitDuration);
 
         SetCameraPos(target == Player ? BehindPlayer : BehindAI);
@@ -586,22 +668,94 @@ public class FightManager : MonoBehaviour
         SetCameraPos(BirdsEyeView);
 
         PhaseAnnouncePanel.SetActive(true);
+        HpPanel.SetActive(true);
+
+        CheckWinCondition();
+
+        if (!resolvingDice)
+        {
+            TriggerCardEffect(target, 
+                TriggerEvent.OnAdd,
+                state,
+                Mathf.Abs(delta));
+        }
+
+    }
+
+    public void CheckWinCondition()
+    {
+        if (Player.CurrentHP == 0)
+        {
+            gameOver = true;
+            winner = AI;
+        }
+        else if (AI.CurrentHP == 0)
+        {
+            gameOver = true;
+            winner = Player;
+        }
+        else if (FameIndex == 0 || DestructionIndex == 0)
+        {
+            gameOver = true; 
+            winner = Player;
+
+        }
+        else if (FameIndex == 14 || DestructionIndex == 14)
+        {
+            gameOver = true; 
+            winner = AI;
+
+        }
+        else if (FameIndex == 2 && DestructionIndex == 2)
+        {
+            gameOver = true; 
+            winner = Player;
+
+        }
+        else if(FameIndex == 12 && DestructionIndex == 12)
+        {
+            gameOver = true; 
+            winner = AI;
+
+        }
+        if(gameOver)
+        {
+            Over();
+        }
+    }
+
+    public void Over()
+    {
+        WinPose(winner);
+        StartCoroutine(GameOverAnimation());
+    }
+
+    public void WinPose(PlayerData winPlayer)
+    {
+        winPlayer.ui.MainModel.SetActive(false);
+        winPlayer.ui.VictoryModel.SetActive(true);
+    }
+
+    public IEnumerator GameOverAnimation()
+    {
+        SetCameraPos(winner == Player ? AILoseShot : PlayerLoseShot);
+        winner.opponent.ui.ModelAnimator.PlayLose();
+        AudioManager.instance.PlaySfx(winner.opponent.character.soundEffects.Lose);
+        float duration = winner.opponent.ui.ModelAnimator.lose.length;
+        yield return new WaitForSeconds(duration);
+
+        GameOverPanel.SetActive(true);
+        GameOver.sprite = winner.win;
+        SetCameraPos(winner == Player ? AILost : PlayerLost);
     }
 
     //-------------------//
     //CARD DRAFTING PHASE//
     //-------------------//
 
-    public void StartCardDraft()
-    {
-        if (isRunningCoroutine || GamePhase != 1 ||isInActivePhase) return;
-
-        ActionPhase();
-    }
 
     private void CardDraftingPhase()
     {
-        isInActivePhase = true;
         cardDraftingSystem.usablePoints = PlayerTurn.AbilityPoints;
 
         if (!PlayerTurn.isAI)
@@ -614,12 +768,33 @@ public class FightManager : MonoBehaviour
         }
     }
 
-    public IEnumerator Next()
+    public void buyCard(AbilityCard card)
     {
-        yield return null;
-        StartBuzzTilePlacing();
-
+        Enqueue(buyCardAnimation(card));
+        TriggerCardEffect(PlayerTurn, TriggerEvent.OnAdd, PlayerState.AbilityCard, 1);
     }
+
+    public IEnumerator buyCardAnimation(AbilityCard card)
+    {
+        SetCameraPos(BirdsEyeView);
+        buyCardPhase(false);
+        yield return new WaitForSeconds(0.5f);
+
+        HpPanel.SetActive(false);
+        SetCameraPos(PlayerTurn == Player ? InFrontOfPlayer : InFrontOfAI);
+        PlayerTurn.ui.ModelAnimator.PlayBuyCard();
+        float duration = PlayerTurn.ui.ModelAnimator.signal.length;
+        SpecialSkillPanel.SetActive(true);
+        Image specialSkillImage = SpecialSkillPanel.GetComponent<Image>();
+        specialSkillImage.sprite = card.cardSprite;
+        yield return new WaitForSeconds(duration);
+
+
+        SetCameraPos(BirdsEyeView);
+        SpecialSkillPanel.SetActive(false);
+        HpPanel.SetActive(true);
+    }
+
 
     public void buyCardPhase(bool active)
     {
@@ -640,11 +815,13 @@ public class FightManager : MonoBehaviour
     {
         PlayerTurn.AbilityPoints = AP;
         PlayerTurn.ui.APText.text = AP.ToString();
-        isInActivePhase = false;
+        StartCoroutine(WaitCoroutine());
     }
 
     public void SkipCardDrafting()
     {
+        PlayerTurn.AbilityPoints += 1;
+        PlayerTurn.ui.APText.text = PlayerTurn.AbilityPoints.ToString();
         CardDraftingPanel.SetActive(false);
         GamePhase++;
         ActionPhase();
@@ -656,17 +833,39 @@ public class FightManager : MonoBehaviour
 
     public void OnAISelectedCard(AbilityCard card)
     {
+        Enqueue(ShowAIAction(card));
         cardDraftingSystem.AIBuyCard(card);
-        StartCoroutine(GoToBuzzTilePlacing());
+        StartCoroutine(WaitCoroutine());
     }
 
-    public IEnumerator GoToBuzzTilePlacing()
+    public IEnumerator ShowAIAction(AbilityCard card)
     {
-        yield return new WaitForSeconds(0.5f);
-        yield return new WaitUntil(
-            () => !isRunningCoroutine
-            );
-        StartBuzzTilePlacing();
+        selectCardPhase(true);
+        yield return new WaitForSeconds(1.5f);
+
+        selectCardPhase(false);
+        buyCardPhase(true);
+        cardDraftingSystem.ChosenCard.sprite = card.cardSprite;
+        SetCameraPos(PlayerTurn == Player ? InFrontOfPlayer : InFrontOfAI);
+        yield return new WaitForSeconds(1.5f);
+
+        yield return buyCardAnimation(card);
+
+    }
+    
+
+    public void AISkipCardDrafting()
+    {
+        Enqueue(ShowAISkipAction());
+    }
+
+    public IEnumerator ShowAISkipAction()
+    {
+        selectCardPhase(true);
+        yield return new WaitForSeconds(1.5f);
+
+        selectCardPhase(false);
+        SkipCardDrafting();
     }
 
     //------------------//
@@ -675,12 +874,9 @@ public class FightManager : MonoBehaviour
 
     public void ApplyEffect(PlayerData self, SubjectTarget target, PlayerState state, int value)
     {
-        PlayerData targetPlayer;
-        if(target == SubjectTarget.Self)
-        {
-            targetPlayer = self;
-        }
-        else
+        AudioManager.instance.PlaySfx(AbilityCardEffect);
+        PlayerData targetPlayer = self;
+        if(target == SubjectTarget.Opponent)
         {
             targetPlayer = self.opponent;
         }
@@ -688,19 +884,22 @@ public class FightManager : MonoBehaviour
         switch (state)
         {
             case PlayerState.HealthPoint: 
-                HpChange(targetPlayer, value); 
+                HpChange(targetPlayer, value, true); 
                 break;
             case PlayerState.AbilityPoints: 
-                ApChange(targetPlayer, value);
+                ApChange(targetPlayer, value, true);
                 break;
             case PlayerState.Fame:
-                TrackerMove(targetPlayer, DiceFace.Fame, value);
+                TrackerMove(targetPlayer, DiceFace.Fame, value, true);
                 break;
             case PlayerState.Destruction:
-                TrackerMove(targetPlayer, DiceFace.Destruction, value);
+                TrackerMove(targetPlayer, DiceFace.Destruction, value, true);
                 break;
             case PlayerState.Reroll:
                 targetPlayer.additionalReroll += value;
+                break;
+            case PlayerState.Dice:
+                targetPlayer.additionalDice += value;
                 break;
             default: return;
         }
@@ -732,16 +931,58 @@ public class FightManager : MonoBehaviour
         PlayerTurn.Cards.Add(card);
     }
 
+    public void TriggerCardEffect(PlayerData target, TriggerEvent trig, PlayerState trigState, int value = 0)
+    {
+        PlayerData opponent = target.opponent;
+
+        foreach(AbilityCard permaCard in target.Cards)
+        {
+            if (permaCard.triggerEvent == trig &&
+                permaCard.triggerState == trigState &&
+                permaCard.triggerSubject == SubjectTarget.Self)
+            {
+                ResolveCard(target, permaCard, value);
+            }
+        }
+        foreach(AbilityCard permaCard in opponent.Cards)
+        {
+            if (permaCard.triggerEvent == trig &&
+                permaCard.triggerState == trigState &&
+                permaCard.triggerSubject == SubjectTarget.Opponent)
+            {
+                ResolveCard(opponent, permaCard, value);
+            }
+        }
+    }
+
+    public void ResolveCard(PlayerData owner, AbilityCard card, int delta )
+    {
+        if(!card.useCondition ||
+            evaluateCondition(card.conditionComparative, card.conditionValue, delta))
+        {
+            int value = card.effectValue;
+            if (card.effectType == EffectType.Subtract) value *= -1;
+
+            ApplyEffect(owner, card.effectTarget, card.effectState, value);
+        }
+    }
+
+    public bool evaluateCondition(Comparative evaluation, int conditionValue, int value)
+    {
+        switch (evaluation)
+        {
+            case Comparative.More: return value > conditionValue;
+            case Comparative.Less: return value < conditionValue;
+            case Comparative.Equal: return value == conditionValue;
+            case Comparative.AtLeast: return value >= conditionValue;
+            case Comparative.NoMore: return value <= conditionValue;
+            default: return false;
+        }
+    }
+
     //---------------//
     //BUZZ TILE PHASE//
     //---------------//
-
-    public void StartBuzzTilePlacing()
-    {
-        if (isRunningCoroutine || GamePhase != 2 || 
-            isInActivePhase) return;
-        ActionPhase();
-    }
 
     private void BuzzTilePhase()
     {
@@ -753,6 +994,11 @@ public class FightManager : MonoBehaviour
 
         PlaceTilePanel.SetActive(true);
         buzzTilePlacing.OpenPanel(FameIndex, DestructionIndex, PlayerTurn.Tile);
+
+        if (PlayerTurn.isAI)
+        {
+            AIBuzzTilePhase();
+        }
     }
 
     public void EndBuzzTilePlacing()
@@ -760,6 +1006,37 @@ public class FightManager : MonoBehaviour
         PlaceTilePanel.SetActive(false);
         ActionPhase();
     }
+
+    //---------------------//
+    //BUZZ TILE - AI HELPER//
+    //---------------------//
+
+    public void AIBuzzTilePhase()
+    {
+        aiLogic.options = buzzTilePlacing.options;
+        aiLogic.StartAction(AIState.BuzzTile);
+    }
+
+    public void OnAIBuzzTileDecide(TilePlacementData selected, BuzzTile tile)
+    {
+        buzzTilePlacing.AIPlaceTile(selected.isFame, selected.index, tile, selected.kiri);
+        Enqueue(ShowAIBuzzTile());
+    }
+
+    public IEnumerator ShowAIBuzzTile()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        buzzTilePlacing.SetSpritePreview();
+
+        yield return new WaitForSeconds(1.5f);
+
+        buzzTilePlacing.confirm();
+    }
+
+    //-------------//
+    //MISCELLANEOUS//
+    //-------------//
 
     public void SetCameraPos(Transform pivot)
     {
@@ -775,14 +1052,18 @@ public class FightManager : MonoBehaviour
             Destroy(player.ui.ModelPos.GetChild(0).gameObject);
         }
         GameObject model = Instantiate(player.character.characterModel, player.ui.ModelPos);
+        player.ui.MainModel = model;
+        GameObject VModel = Instantiate(player.character.victoryModel, player.ui.ModelPos);
+        player.ui.VictoryModel = VModel;
+        VModel.SetActive(false);
         player.ui.ModelAnimator = model.GetComponent<AnimationScript>();
     }
 
     private void ChangeTurn()
     {
+        AudioManager.instance.PlaySfx(ChangeTurnSfx);
         GamePhase = 0;
         PlayerTurn.SkillPoints = 0;
-        PlayerTurn.ui.SPText.text = "0";
         PlayerTurn = (PlayerTurn == null || PlayerTurn == AI) ? Player : AI;
         results.Clear();
         EnergyMultiplier = 1;
@@ -805,7 +1086,12 @@ public class FightManager : MonoBehaviour
         isRunningCoroutine = true;
         
         while (routineQueue.Count > 0) 
-        { 
+        {
+            if (gameOver)
+            {
+                routineQueue.Clear();
+                break;
+            }
             yield return StartCoroutine(routineQueue.Dequeue());
         }
         isRunningCoroutine = false;
@@ -816,6 +1102,7 @@ public class FightManager : MonoBehaviour
     {
 
         // Deteksi Klik Mouse untuk Lock / Unlock Dadu
+        /*
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -829,6 +1116,7 @@ public class FightManager : MonoBehaviour
         {
             CheckClick(Input.mousePosition);
         }
+        */
     }
 
     private void CheckClick(Vector2 position)
@@ -848,11 +1136,11 @@ public class FightManager : MonoBehaviour
         if (PlayerTurn.isAI) return;
         if (hit.collider.gameObject.CompareTag("Cards"))
         {
-            StartCardDraft();
+            //StartCardDraft();
         }
         else if (hit.transform.root.CompareTag("Tug of War"))
         {
-            StartBuzzTilePlacing();
+            //StartBuzzTilePlacing();
         }
     }
 
@@ -906,6 +1194,48 @@ public class FightManager : MonoBehaviour
         }
         PhaseAnnouncePanel.SetActive(true);
         ActionPhase();
+    }
+
+    public void PauseGame()
+    {
+        PausePanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        PausePanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void About2Exit(bool active)
+    {
+        ExitConfirmationPanel.SetActive(active);
+    }
+
+    public void ExitFight()
+    {
+        Time.timeScale = 1f;
+        AudioManager.instance.PlayMainMenuMusic();
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void Surrender()
+    {
+        gameOver = true;
+        winner = AI;
+        StopAllCoroutines();
+        routineQueue.Clear();
+        isRunningCoroutine = false;
+        StopAnimation();
+        ResumeGame();
+        Over();
+    }
+
+    public void StopAnimation()
+    {
+        Player.ui.ModelAnimator.animator.Rebind();
+        AI.ui.ModelAnimator.animator.Rebind();
     }
 }
 

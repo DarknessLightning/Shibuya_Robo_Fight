@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5703a4d41e80a6c44ba007c022675a6f, type: 3}
+  m_Name: C002 - SFX
+  m_EditorClassIdentifier: 
+  Attack: {fileID: 8300000, guid: 55126dc8bed1d514ca3e7b143273ddb7, type: 3}
+  timingForAttack: 0.5
+  Energize: {fileID: 8300000, guid: 29faaa5cbf18d8643b1ad1aa4533771b, type: 3}
+  timingForCharge: 0
+  Heal: {fileID: 8300000, guid: 9d05c49c03e3a7c49a67a13d904d0711, type: 3}
+  timingForHeal: 0.5
+  Hurt: {fileID: 8300000, guid: b37f882fddd61a146b377beb40952be2, type: 3}
+  Signal: {fileID: 8300000, guid: 2d728a3f9a3d30e4bac98a647e50f712, type: 3}
+  timingForSignal: 0
+  Destruction: {fileID: 8300000, guid: 3bb0c239c1c39b743a7a675ac74501cc, type: 3}
+  timingForDestruction: 0.5
+  Fame: {fileID: 8300000, guid: b58e9c5ec956c7b4fb6f64acb4203c46, type: 3}
+  timingForFame: 0
+  Lose: {fileID: 8300000, guid: 4d391d85bbbe32a43aa3185549cfc47c, type: 3}

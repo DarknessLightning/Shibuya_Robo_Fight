@@ -4,6 +4,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+public struct TilePlacementData
+{
+    public bool isFame;
+    public int index;
+    public bool kiri;
+}
+
 public class BuzzTilePlacing : MonoBehaviour
 {
     public Sprite[] TileSprites;
@@ -27,6 +34,7 @@ public class BuzzTilePlacing : MonoBehaviour
     private PlayerState[] DestructionStates = new PlayerState[13];
 
     private List<Image> option = new();
+    public List<TilePlacementData> options = new(); 
 
     public BuzzTile currentBuzzTile;
 
@@ -95,7 +103,14 @@ public class BuzzTilePlacing : MonoBehaviour
         if(fameClosestLeft > -1)
         {
             option.Add(FameTilesUI[fameClosestLeft]);
+            options.Add(new TilePlacementData
+            {
+                isFame = true,
+                index = fameClosestLeft,
+                kiri = true
+            });
         }
+
 
         int fameClosestRight = GetValidTile(FameStates,
             currentBuzzTile.tiles.Length,
@@ -104,6 +119,12 @@ public class BuzzTilePlacing : MonoBehaviour
         if (fameClosestRight > -1)
         {
             option.Add(FameTilesUI[fameClosestRight]);
+            options.Add(new TilePlacementData
+            {
+                isFame = true,
+                index = fameClosestRight,
+                kiri = false
+            });
         }
 
         int destructClosestLeft = GetValidTile(DestructionStates,
@@ -113,6 +134,12 @@ public class BuzzTilePlacing : MonoBehaviour
         if(destructClosestLeft > -1)
         {
             option.Add(DestructionTilesUI[destructClosestLeft]);
+            options.Add(new TilePlacementData
+            {
+                isFame = false,
+                index = destructClosestLeft,
+                kiri = true
+            });
         }
 
         int destructClosestRight = GetValidTile(DestructionStates,
@@ -122,6 +149,12 @@ public class BuzzTilePlacing : MonoBehaviour
         if (destructClosestRight > -1)
         {
             option.Add(DestructionTilesUI[destructClosestRight]);
+            options.Add(new TilePlacementData
+            {
+                isFame = false,
+                index = destructClosestRight,
+                kiri = false
+            });
         }
 
         if(option.Count == 0)
@@ -133,6 +166,12 @@ public class BuzzTilePlacing : MonoBehaviour
             if (fameClosestLeft > -1)
             {
                 option.Add(FameTilesUI[fameClosestLeft]);
+                options.Add(new TilePlacementData
+                {
+                    isFame = true,
+                    index = fameClosestLeft,
+                    kiri = true
+                });
             }
 
             fameClosestRight = GetBestValid(FameStates,
@@ -142,6 +181,12 @@ public class BuzzTilePlacing : MonoBehaviour
             if (fameClosestRight > -1)
             {
                 option.Add(FameTilesUI[fameClosestRight]);
+                options.Add(new TilePlacementData
+                {
+                    isFame = true,
+                    index = fameClosestRight,
+                    kiri = false
+                });
             }
 
             destructClosestLeft = GetBestValid(DestructionStates,
@@ -151,6 +196,12 @@ public class BuzzTilePlacing : MonoBehaviour
             if (destructClosestLeft > -1)
             {
                 option.Add(DestructionTilesUI[destructClosestLeft]);
+                options.Add(new TilePlacementData
+                {
+                    isFame = false,
+                    index = destructClosestLeft,
+                    kiri = true
+                });
             }
 
             destructClosestRight = GetBestValid(DestructionStates,
@@ -160,6 +211,12 @@ public class BuzzTilePlacing : MonoBehaviour
             if (destructClosestRight > -1)
             {
                 option.Add(DestructionTilesUI[destructClosestRight]);
+                options.Add(new TilePlacementData
+                {
+                    isFame = false,
+                    index = destructClosestRight,
+                    kiri = false
+                });
             }
         }
 
@@ -417,7 +474,7 @@ public class BuzzTilePlacing : MonoBehaviour
 
     public void selectTile(Image tile)
     {
-
+        if (FightManager.instance.PlayerTurn.isAI) return;
         if (!FameTilesUI.Contains(tile) && !DestructionTilesUI.Contains(tile)) return;
         if (!option.Contains(tile)) return;
 
@@ -465,6 +522,14 @@ public class BuzzTilePlacing : MonoBehaviour
 
         FightManager.instance.PlayerTurn.Tile = null;
         FightManager.instance.EndBuzzTilePlacing();
+    }
+
+    public void AIPlaceTile(bool fameField, int index, BuzzTile tile, bool kiri)
+    {
+        selectedField = fameField ? FameStates : DestructionStates;
+        selectedIndex = index;
+        currentBuzzTile = tile;
+        this.kiri = kiri;
     }
 
     // Update is called once per frame

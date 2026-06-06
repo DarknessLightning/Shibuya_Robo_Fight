@@ -108,6 +108,8 @@ MonoBehaviour:
   charge: {fileID: -887982601649841707, guid: b8c543277e9bfc044b2b7ecece62bab7, type: 3}
   signal: {fileID: -887982601649841707, guid: 7466ceb8cde67664a9621761de13e897, type: 3}
   destruction: {fileID: -887982601649841707, guid: 466683824e2aff04faecc6253760eb13, type: 3}
+  brag: {fileID: -887982601649841707, guid: 79275b0172751a340bd81b8b04bda8eb, type: 3}
   timingForAttack: 1.5
   timingForHit: 0.1
   timingForDestruction: 2
+  timingForLaugh: 2

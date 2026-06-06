@@ -25,6 +25,10 @@ public class AILogic : MonoBehaviour
 
     public List<DiceEvaluate> lockedDice = new();
 
+    public bool alwaysLockAll = false;
+
+    public List<TilePlacementData> options = new();
+
     public void Init(PlayerData ai)
     {
         self = ai;
@@ -99,12 +103,14 @@ public class AILogic : MonoBehaviour
         Dictionary<DiceFace, float> score =
         new();
 
-        score[DiceFace.Attack] = 20;
-        score[DiceFace.Heal] = 20;
-        score[DiceFace.Charge] = 20;
-        score[DiceFace.Fame] = 20;
-        score[DiceFace.Destruction] = 20;
-        score[DiceFace.Power] = 20;
+        float defaultValue = alwaysLockAll ? 70 : 20;
+
+        score[DiceFace.Attack] = defaultValue;
+        score[DiceFace.Heal] = defaultValue;
+        score[DiceFace.Charge] = defaultValue;
+        score[DiceFace.Fame] = defaultValue;
+        score[DiceFace.Destruction] = defaultValue;
+        score[DiceFace.Power] = defaultValue;
 
 
         //---------------------
@@ -207,8 +213,9 @@ public class AILogic : MonoBehaviour
 
         float highest = -999;
 
-        foreach (var card in FightManager.instance.cardDraftingSystem.openedCards)
+        foreach (AbilityCard card in FightManager.instance.cardDraftingSystem.openedCards)
         {
+            if (card == null) continue;
             if (card.cost > self.AbilityPoints)
                 continue;
 
@@ -229,7 +236,7 @@ public class AILogic : MonoBehaviour
         }
         else
         {
-            FightManager.instance.SkipCardDrafting();
+            FightManager.instance.AISkipCardDrafting();
         }
     }
 
@@ -433,7 +440,32 @@ public class AILogic : MonoBehaviour
 
 
     void DecideBuzzTile()
-    {/*
+    {
+        if (options.Count == 0)
+        {
+            FightManager.instance.EndBuzzTilePlacing();
+            return;
+        }
+        TilePlacementData selected = options[0];
+        foreach(TilePlacementData option in options)
+        {
+            if (!selected.kiri)
+            {
+                break;
+            }
+            if(option.isFame == selected.isFame && option.index == selected.index)
+            {
+                continue;
+            }
+            if (!option.kiri)
+            {
+                selected = option;
+            }
+        }
+        FightManager.instance.OnAIBuzzTileDecide(selected, self.Tile);
+        
+        
+        /*
         BuzzTile bestTile =
             BoardManager.instance
             .GetBestTile();
