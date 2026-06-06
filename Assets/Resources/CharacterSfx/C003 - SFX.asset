@@ -13,9 +13,16 @@ MonoBehaviour:
   m_Name: C003 - SFX
   m_EditorClassIdentifier: 
   Attack: {fileID: 8300000, guid: 84faf7bddb4237f429eb860dfc7698b4, type: 3}
+  timingForAttack: 0.5
   Energize: {fileID: 8300000, guid: a0083d0f64a4db148881721429361cf3, type: 3}
+  timingForCharge: 0.5
   Heal: {fileID: 8300000, guid: f23a497a768298143ba759f0fa1e6afd, type: 3}
+  timingForHeal: 0.5
   Hurt: {fileID: 8300000, guid: 079d1f2ed6148af4d93e12d1ea5b0090, type: 3}
   Signal: {fileID: 8300000, guid: 3a09c376f5910a34cade4404a8c6722e, type: 3}
-  Destruction: {fileID: 0}
-  Fame: {fileID: 0}
+  timingForSignal: 0
+  Destruction: {fileID: 8300000, guid: ac9c73d5f5b2bc04889948530f28b9c6, type: 3}
+  timingForDestruction: 0.5
+  Fame: {fileID: 8300000, guid: ae7539b372aa4784dbc61c1a379aa537, type: 3}
+  timingForFame: 0
+  Lose: {fileID: 8300000, guid: 4d63f63aea09388429096768742701e4, type: 3}

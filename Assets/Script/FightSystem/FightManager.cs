@@ -370,8 +370,15 @@ public class FightManager : MonoBehaviour
 
         float elapsed = 0f;
         float duration = target.ui.ModelAnimator.charge.length;
+
+        bool sfxPlayed = false;
         while (elapsed < duration)
         {
+            if (elapsed >= target.character.soundEffects.timingForCharge && !sfxPlayed)
+            {
+                AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
+                sfxPlayed = true;
+            }
             elapsed += Time.deltaTime;
 
             // Hitung persentase progress (0.0 sampai 1.0)
@@ -392,7 +399,9 @@ public class FightManager : MonoBehaviour
             SpecialSkillPanel.SetActive(true);
             Image specialSkillImage = SpecialSkillPanel.GetComponent<Image>();
             specialSkillImage.sprite = target.character.specialSkill;
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(target.character.soundEffects.timingForSignal);
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Signal);
+            yield return new WaitForSeconds(duration - target.character.soundEffects.timingForSignal);
 
             switch (PlayerTurn.character.skill)
             {
@@ -442,10 +451,11 @@ public class FightManager : MonoBehaviour
         {
             SetCameraPos(target == Player ? OverAIShoulder : OverPlayerShoulder);
             target.opponent.ui.ModelAnimator.PlayAttack();
-            float duration = target.opponent.ui.ModelAnimator.attack.length - target.ui.ModelAnimator.timingForAttack;
-            yield return new WaitForSeconds(duration);
-            target.ui.ModelAnimator.PlayHit();
+            yield return new WaitForSeconds(target.opponent.character.soundEffects.timingForAttack);
             AudioManager.instance.PlaySfx(target.opponent.character.soundEffects.Attack);
+            float duration = target.opponent.ui.ModelAnimator.attack.length - target.ui.ModelAnimator.timingForAttack;
+            yield return new WaitForSeconds(duration - target.opponent.character.soundEffects.timingForAttack);
+            target.ui.ModelAnimator.PlayHit();
             AudioManager.instance.PlaySfx(target.character.soundEffects.Hurt);
             //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForHit);
             float fillAmount = (float)target.CurrentHP / target.character.hp;
@@ -456,14 +466,19 @@ public class FightManager : MonoBehaviour
         {
             SetCameraPos(target == Player ? FacingPlayer : FacingAI);
             target.ui.ModelAnimator.PlayHeal();
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Heal);
             float elapsed = 0f;
             float duration = target.ui.ModelAnimator.heal.length;
 
             int startAmount = currentHealth;
             float fillAmount;
+            bool sfxPlayed = false;
             while (elapsed < duration)
             {
+                if(elapsed >= target.character.soundEffects.timingForHeal && !sfxPlayed)
+                {
+                    AudioManager.instance.PlaySfx(target.character.soundEffects.Heal);
+                    sfxPlayed = true;
+                }
                 elapsed += Time.deltaTime;
                 float percentage = elapsed / duration;
 
@@ -513,7 +528,6 @@ public class FightManager : MonoBehaviour
         {
             SetCameraPos(target == Player ? FacingPlayer : FacingAI);
             target.ui.ModelAnimator.PlayCharge();
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
 
             // 1. Hitung dulu berapa TOTAL energi yang mau ditambahkan
             int totalTambah = Mathf.RoundToInt(ApAmount * EnergyMultiplier);
@@ -527,8 +541,15 @@ public class FightManager : MonoBehaviour
             int startEnergy = currentEnergy;
             int targetEnergy = currentEnergy + totalTambah;
 
+            bool sfxPlayed = false;
+
             while (elapsed < duration)
             {
+                if(elapsed >= target.character.soundEffects.timingForCharge && !sfxPlayed)
+                {
+                    AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
+                    sfxPlayed = true;
+                }
                 elapsed += Time.deltaTime;
 
                 // Hitung persentase progress (0.0 sampai 1.0)
@@ -625,12 +646,18 @@ public class FightManager : MonoBehaviour
             state = PlayerState.Fame;
             target.ui.ModelAnimator.PlayFame();
             waitDuration = target.ui.ModelAnimator.brag.length - target.ui.ModelAnimator.timingForLaugh;
+            yield return new WaitForSeconds(target.character.soundEffects.timingForFame);
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Fame);
+            waitDuration -= target.character.soundEffects.timingForFame;
         }
         else if (face == DiceFace.Destruction)
         {
             state = PlayerState.Destruction;
             target.ui.ModelAnimator.PlayDestruction();
             waitDuration = target.ui.ModelAnimator.destruction.length - target.ui.ModelAnimator.timingForLaugh;
+            yield return new WaitForSeconds(target.character.soundEffects.timingForDestruction);
+            AudioManager.instance.PlaySfx(target.character.soundEffects.Destruction);
+            waitDuration -= target.character.soundEffects.timingForDestruction;
         }
 
         yield return new WaitForSeconds(waitDuration);
@@ -713,6 +740,7 @@ public class FightManager : MonoBehaviour
     {
         SetCameraPos(winner == Player ? AILoseShot : PlayerLoseShot);
         winner.opponent.ui.ModelAnimator.PlayLose();
+        AudioManager.instance.PlaySfx(winner.opponent.character.soundEffects.Lose);
         float duration = winner.opponent.ui.ModelAnimator.lose.length;
         yield return new WaitForSeconds(duration);
 
