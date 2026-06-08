@@ -102,6 +102,8 @@ public class FightManager : MonoBehaviour
     public int DestructionIndex = 7;
     public int EnergyMultiplier = 1;
     public int GamePhaseLimit = 9;
+    public float playTime = 0f;
+    public bool playerWin = false;
 
     private readonly Queue<IEnumerator> routineQueue = new();
     private bool isRunningCoroutine = false;
@@ -726,6 +728,7 @@ public class FightManager : MonoBehaviour
     
     public void Over()
     {
+        playerWin = winner == Player;
         HpPanel.SetActive(false);
         DicePanel.SetActive(false);
         CardDraftingPanel.SetActive(false);
@@ -821,7 +824,10 @@ public class FightManager : MonoBehaviour
     {
         PlayerTurn.AbilityPoints = AP;
         PlayerTurn.ui.APText.text = AP.ToString();
-        StartCoroutine(WaitCoroutine());
+        if (!PlayerTurn.isAI)
+        {
+            StartCoroutine(WaitCoroutine());
+        }
     }
 
     public void SkipCardDrafting()
@@ -1106,7 +1112,10 @@ public class FightManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (!gameOver)
+        {
+            playTime += Time.deltaTime;
+        }
         // Deteksi Klik Mouse untuk Lock / Unlock Dadu
         /*
         if (Input.touchCount > 0)
@@ -1204,6 +1213,7 @@ public class FightManager : MonoBehaviour
 
     public void PauseGame()
     {
+        if (gameOver) return;
         PausePanel.SetActive(true);
         Time.timeScale = 0f;
     }
