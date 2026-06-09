@@ -61,6 +61,20 @@ public class BuzzTilePlacing : MonoBehaviour
         }
     }
 
+    public PlayerState GetTileState(int index, bool isFame)
+    {
+        PlayerState state = PlayerState.None;
+        if (isFame)
+        {
+            state = FameStates[index];
+        }
+        else
+        {
+            state = DestructionStates[index];
+        }
+        return state;
+    }
+
     public void UpdateTileSprites()
     {
         for (int i = 0; i < FameStates.Length; i++)

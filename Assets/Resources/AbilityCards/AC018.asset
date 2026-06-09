@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3ca53379febb26459b29edf835632bc, type: 3}
-  m_Name: AC005
+  m_Name: AC018
   m_EditorClassIdentifier: 
-  cost: 5
-  triggerEvent: 0
+  cost: 7
+  triggerEvent: 2
   triggerSubject: 0
   triggerState: 0
   useCondition: 0
@@ -21,14 +21,14 @@ MonoBehaviour:
   conditionState: 0
   conditionComparative: 0
   conditionValue: 0
-  effectTarget: 0
-  effectType: 0
+  effectTarget: 1
+  effectType: 1
   effectState: 0
   effectValue: 2
-  useForEach: 1
+  useForEach: 0
   forEachTarget: 0
-  forEachState: 1
-  forEachMax: 4
-  tile: {fileID: 0}
-  cardSprite: {fileID: 21300000, guid: ca6303146f5c5d548b2110ea71b9324e, type: 3}
-  cardName: Repair
+  forEachState: 0
+  forEachMax: 0
+  tile: {fileID: 11400000, guid: c47131f5510d3f547b6d10178043375a, type: 2}
+  cardSprite: {fileID: 21300000, guid: ba00cd46c2681e5439539412c7af1df7, type: 3}
+  cardName: My Gain Your Loss

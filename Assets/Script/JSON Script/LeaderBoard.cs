@@ -35,10 +35,27 @@ public class LeaderBoard : MonoBehaviour
 
             row.Setup(
                 i + 1,
-                data.records[i]
+                data.records[i],
+                this
             );
         }
     }
+
+    public void DeleteRow(int rank)
+    {
+        var data = SaveManager.instance.LoadRecords();
+        data.records = data.records
+            .OrderByDescending (x => x.isWin)
+            .ThenBy (x => x.playTime)
+            .ToList();
+
+        data.records.RemoveAt(rank);
+
+        string json = JsonUtility.ToJson(data);
+
+        SaveManager.instance.UpdateRecord(json);
+    }
+
     // Update is called once per frame
     void Update()
     {

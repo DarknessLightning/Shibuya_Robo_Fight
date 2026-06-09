@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3ca53379febb26459b29edf835632bc, type: 3}
-  m_Name: AC005
+  m_Name: AC012
   m_EditorClassIdentifier: 
-  cost: 5
+  cost: 9
   triggerEvent: 0
   triggerSubject: 0
   triggerState: 0
@@ -21,14 +21,14 @@ MonoBehaviour:
   conditionState: 0
   conditionComparative: 0
   conditionValue: 0
-  effectTarget: 0
-  effectType: 0
+  effectTarget: 1
+  effectType: 1
   effectState: 0
   effectValue: 2
-  useForEach: 1
+  useForEach: 0
   forEachTarget: 0
-  forEachState: 1
-  forEachMax: 4
-  tile: {fileID: 0}
-  cardSprite: {fileID: 21300000, guid: ca6303146f5c5d548b2110ea71b9324e, type: 3}
-  cardName: Repair
+  forEachState: 0
+  forEachMax: 0
+  tile: {fileID: 11400000, guid: c953f1473fa177d4da8e2fea222c3efd, type: 2}
+  cardSprite: {fileID: 21300000, guid: c66a15130a8e965428e3dd6908940d3b, type: 3}
+  cardName: Trapping Damage

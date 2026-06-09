@@ -15764,7 +15764,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 500, y: -100}
-  m_SizeDelta: {x: 1000, y: 200}
+  m_SizeDelta: {x: 920, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1328433108
 MonoBehaviour:
@@ -16546,9 +16546,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2065420434}
-        m_TargetAssemblyTypeName: SaveResult, Assembly-CSharp
-        m_MethodName: OpenPanel
+      - m_Target: {fileID: 2065420429}
+        m_TargetAssemblyTypeName: FightManager, Assembly-CSharp
+        m_MethodName: EndFight
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1783427406}
@@ -25673,11 +25673,12 @@ MonoBehaviour:
     AbilityPoints: 0
     SkillPoints: 0
     Cards: []
-    Tile: {fileID: 11400000, guid: 52b33e6676b37ce4fbbe4d6a07aed4d6, type: 2}
+    Tile: {fileID: 0}
     additionalReroll: 0
     additionalDice: 0
     isAI: 0
     win: {fileID: 21300000, guid: 6f047ffee8cefb94a857721851d60d51, type: 3}
+    EndTileIndex: 0
   AI:
     ui:
       Profile: {fileID: 1134285446}
@@ -25698,6 +25699,7 @@ MonoBehaviour:
     additionalDice: 0
     isAI: 1
     win: {fileID: 21300000, guid: e05247c989577b34aaf9fca815e4bbf3, type: 3}
+    EndTileIndex: 14
   PlayerTurn:
     ui:
       Profile: {fileID: 0}
@@ -25718,12 +25720,14 @@ MonoBehaviour:
     additionalDice: 0
     isAI: 0
     win: {fileID: 0}
+    EndTileIndex: 0
   FameIndex: 7
   DestructionIndex: 7
   EnergyMultiplier: 1
   GamePhaseLimit: 3
   playTime: 0
   playerWin: 0
+  simulasi: 0
 --- !u!114 &2065420430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25789,8 +25793,8 @@ MonoBehaviour:
   dropRadius: 1.5
   diceTray: {fileID: 849095300}
   forTest: 0
-  targetFace: 03000000
-  numberOfDiceForFace: 06000000
+  targetFace: 0200000005000000
+  numberOfDiceForFace: 03000000
   DiceRollSfx: {fileID: 8300000, guid: c830890f12518be4b9118f26bd30ea88, type: 3}
   DiceLockSfx: {fileID: 8300000, guid: 394a64f35623e11479c8dde1f387498e, type: 3}
 --- !u!114 &2065420432
@@ -25907,6 +25911,7 @@ MonoBehaviour:
     additionalDice: 0
     isAI: 0
     win: {fileID: 0}
+    EndTileIndex: 0
   enemy:
     ui:
       Profile: {fileID: 0}
@@ -25927,6 +25932,7 @@ MonoBehaviour:
     additionalDice: 0
     isAI: 0
     win: {fileID: 0}
+    EndTileIndex: 0
   currentDice: []
   rerollRemain: 2
   lockedDice: []

@@ -165,6 +165,10 @@ public class CardDraftingSystem : MonoBehaviour
         if (card.useForEach)
         {
             repeat = FightManager.instance.GetStateAmount(FightManager.instance.PlayerTurn, card.forEachTarget, card.forEachState);
+            if(card.forEachMax > 0)
+            {
+                repeat = Mathf.Min(card.forEachMax, repeat);
+            }
             if(repeat > -1)
             {
                 value *= repeat;

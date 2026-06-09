@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -134,7 +135,14 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(SelectSfx);
         if(!player.confirm || !enemy.confirm) return;
-        Debug.Log("Player Choose: " + player.character.name + "\n" + 
+        StartCoroutine(startFight());
+    }
+
+    public IEnumerator startFight()
+    {
+        yield return new WaitForSeconds(2f);
+
+        Debug.Log("Player Choose: " + player.character.name + "\n" +
             "AI Choose: " + enemy.character.name);
 
         sessionData.playerCharacter = player.character;
@@ -142,6 +150,12 @@ public class CharacterSelectionManager : MonoBehaviour
 
         AudioManager.instance.PlayBattleMusic();
         SceneManager.LoadScene("SimpleFight");
+
+    }
+
+    public void Back2Menu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     // Update is called once per frame

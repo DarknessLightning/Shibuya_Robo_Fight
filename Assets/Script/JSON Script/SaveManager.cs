@@ -66,6 +66,11 @@ public class SaveManager : MonoBehaviour
 
         File.WriteAllText(filePath, json);
     }
+
+    public void UpdateRecord(string json)
+    {
+        File.WriteAllText(filePath, json);
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

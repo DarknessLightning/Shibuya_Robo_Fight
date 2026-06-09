@@ -8,10 +8,17 @@ public class LeaderBoardRow : MonoBehaviour
     public Text timeText;
     public Text resultText;
 
+    public int rank;
+
+    private LeaderBoard lb;
+
     public void Setup(
         int rank,
-        PlayerRecord data)
+        PlayerRecord data, 
+        LeaderBoard leaderboard)
     {
+        lb = leaderboard;
+        this.rank = rank;
         rankText.text = rank.ToString();
 
         nameText.text =
@@ -33,6 +40,11 @@ public class LeaderBoardRow : MonoBehaviour
             : "LOSE";
     }
 
+    public void DeleteRow()
+    {
+        lb.DeleteRow(rank - 1);
+        Destroy(gameObject);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3ca53379febb26459b29edf835632bc, type: 3}
-  m_Name: AC005
+  m_Name: AC020
   m_EditorClassIdentifier: 
-  cost: 5
-  triggerEvent: 0
-  triggerSubject: 0
-  triggerState: 0
+  cost: 9
+  triggerEvent: 2
+  triggerSubject: 1
+  triggerState: 4
   useCondition: 0
   conditionSubject: 0
   conditionState: 0
@@ -23,12 +23,12 @@ MonoBehaviour:
   conditionValue: 0
   effectTarget: 0
   effectType: 0
-  effectState: 0
-  effectValue: 2
-  useForEach: 1
+  effectState: 5
+  effectValue: 1
+  useForEach: 0
   forEachTarget: 0
-  forEachState: 1
-  forEachMax: 4
+  forEachState: 0
+  forEachMax: 0
   tile: {fileID: 0}
-  cardSprite: {fileID: 21300000, guid: ca6303146f5c5d548b2110ea71b9324e, type: 3}
-  cardName: Repair
+  cardSprite: {fileID: 21300000, guid: 26cb6a4fa8c562840877fdfb1d0a063f, type: 3}
+  cardName: Public Meltdown

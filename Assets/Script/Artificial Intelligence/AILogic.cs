@@ -82,6 +82,7 @@ public class AILogic : MonoBehaviour
 
     void DecideDiceLock()
     {
+        lockedDice.Clear();
         Dictionary<DiceFace, float> utility =
             CalculateDiceUtility();
 
@@ -137,12 +138,14 @@ public class AILogic : MonoBehaviour
         // TUG OF WAR MODE
         //---------------------
 
-        if (FightManager.instance.FameIndex >= 12)
+        if (GetStateValue(SubjectTarget.Self, PlayerState.Fame) <= 2 || 
+            GetStateValue(SubjectTarget.Opponent, PlayerState.Fame) <= 2)
         {
             score[DiceFace.Fame] += 90;
         }
 
-        if (FightManager.instance.DestructionIndex >= 12)
+        if (GetStateValue(SubjectTarget.Self, PlayerState.Destruction) <= 2 ||
+            GetStateValue(SubjectTarget.Opponent, PlayerState.Destruction) <= 2)
         {
             score[DiceFace.Destruction] += 90;
         }
@@ -441,6 +444,7 @@ public class AILogic : MonoBehaviour
 
     void DecideBuzzTile()
     {
+        bool kiri = self.EndTileIndex == 0;
         if (options.Count == 0)
         {
             FightManager.instance.EndBuzzTilePlacing();
@@ -449,7 +453,7 @@ public class AILogic : MonoBehaviour
         TilePlacementData selected = options[0];
         foreach(TilePlacementData option in options)
         {
-            if (!selected.kiri)
+            if (selected.kiri == kiri)
             {
                 break;
             }
@@ -457,9 +461,10 @@ public class AILogic : MonoBehaviour
             {
                 continue;
             }
-            if (!option.kiri)
+            if (option.kiri == kiri)
             {
                 selected = option;
+                break;
             }
         }
         FightManager.instance.OnAIBuzzTileDecide(selected, self.Tile);
@@ -504,8 +509,7 @@ public class AILogic : MonoBehaviour
             SubjectTarget.Self
             ? self
             : enemy;
-        int endPoint =
-            actor == FightManager.instance.Player ? 0 : 14;
+        int endPoint = self.EndTileIndex;
         switch (state)
         {
             case PlayerState.HealthPoint:

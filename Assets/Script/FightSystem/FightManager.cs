@@ -33,6 +33,7 @@ public class PlayerData
     public bool isAI;
     public PlayerData opponent;
     public Sprite win;
+    public int EndTileIndex;
 }
 
 public class FightManager : MonoBehaviour
@@ -110,6 +111,9 @@ public class FightManager : MonoBehaviour
     private List<DiceFace> results = new();
     private bool gameOver = false;
     private PlayerData winner = null;
+
+    [Header("Simulasi")]
+    public bool simulasi = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -135,7 +139,14 @@ public class FightManager : MonoBehaviour
         PlayerTurn = Player;
         Player.opponent = AI;
         AI.opponent = Player;
-        StartCoroutine(MoveCameraSequence());
+        if (simulasi)
+        {
+            ActionPhase();
+        }
+        else
+        {
+            StartCoroutine(MoveCameraSequence());
+        }
     }
 
     
@@ -159,7 +170,7 @@ public class FightManager : MonoBehaviour
         }
         switch (GamePhase)
         {
-            case 0: StartDicePhase(); 
+            case 0: StartTurn(); 
                 break;
             case 1: 
                 ResolveDiceEffect(DiceFace.Power); 
@@ -189,6 +200,19 @@ public class FightManager : MonoBehaviour
 
         if (gameOver) yield break;
         yield return NextPhase();
+    }
+
+    public void StartTurn()
+    {
+        TriggerCardEffect(PlayerTurn, TriggerEvent.TurnStart, PlayerState.Turn);
+        Enqueue(startDice());
+    }
+
+    public IEnumerator startDice()
+    {
+        Debug.Log("Start Dice");
+        StartDicePhase();
+        yield return null;
     }
 
     //----------//
@@ -249,6 +273,9 @@ public class FightManager : MonoBehaviour
 
     public void AIReply(List<DiceEvaluate> locked, bool reroll)
     {
+        //Enqueue(AILockDice(locked));
+        //Enqueue(AIRerollOrResolve(locked.Count == PlayerTurn.additionalDice + 6));
+        
         foreach(var dice in locked)
         {
             if (dice.locked) continue;
@@ -266,6 +293,32 @@ public class FightManager : MonoBehaviour
         {
             diceManager.ResolveDice();
         }
+        //*/
+    }
+
+    public IEnumerator AILockDice(List<DiceEvaluate> locked)
+    {
+        foreach(DiceEvaluate dice in locked)
+        {
+            diceManager.lockDice(dice);
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    public IEnumerator AIRerollOrResolve(bool reroll)
+    {
+        if (reroll)
+        {
+            diceManager.Reroll();
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(AIDicePhase());
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+            diceManager.ResolveDice();
+        }
+
     }
 
 
@@ -442,10 +495,17 @@ public class FightManager : MonoBehaviour
     public void HpChange(PlayerData target, int count, bool resolvingDice = false)
     {
         if (count == 0) return;
-        Enqueue(HPBarChange(target, count, resolvingDice));
+        Enqueue(HPBarChange(target, count));
+        if (!resolvingDice)
+        {
+            TriggerCardEffect(target,
+                count > 0 ? TriggerEvent.OnAdd : TriggerEvent.OnSubtract,
+                PlayerState.HealthPoint,
+                Mathf.Abs(count));
+        }
     }
 
-    private IEnumerator HPBarChange(PlayerData target, int deltaHealth, bool resolvingDice)
+    private IEnumerator HPBarChange(PlayerData target, int deltaHealth)
     {
         int currentHealth = target.CurrentHP;
         target.CurrentHP = Mathf.Clamp(target.CurrentHP += deltaHealth, 0, target.character.hp);
@@ -509,22 +569,23 @@ public class FightManager : MonoBehaviour
 
         CheckWinCondition();
 
-        if (!resolvingDice)
-        {
-            TriggerCardEffect(target, 
-                deltaHealth > 0 ? TriggerEvent.OnAdd : TriggerEvent.OnSubtract, 
-                PlayerState.HealthPoint,
-                Mathf.Abs(deltaHealth));
-        }
     }
 
     public void ApChange(PlayerData target, int ApAmount, bool resolvingDice = false)
     {
         if (ApAmount == 0) return;
-        Enqueue(charge(target, ApAmount, resolvingDice));
+        Enqueue(charge(target, ApAmount));
+
+        if (!resolvingDice)
+        {
+            TriggerCardEffect(target,
+                ApAmount > 0 ? TriggerEvent.OnAdd : TriggerEvent.OnSubtract,
+                PlayerState.AbilityPoints,
+                Mathf.Abs(ApAmount));
+        }
     }
 
-    public IEnumerator charge(PlayerData target, int ApAmount, bool resolvingDice)
+    public IEnumerator charge(PlayerData target, int ApAmount)
     {
         if (ApAmount > 0)
         {
@@ -605,14 +666,6 @@ public class FightManager : MonoBehaviour
         SetCameraPos(BirdsEyeView);
         yield return new WaitForSeconds(0.5f);
 
-        if (!resolvingDice)
-        {
-            TriggerCardEffect(target,
-                ApAmount > 0 ? TriggerEvent.OnAdd : TriggerEvent.OnSubtract,
-                PlayerState.AbilityPoints,
-                Mathf.Abs(ApAmount));
-        }
-
     }
 
     public void TrackerMove(PlayerData target, DiceFace face, int delta, bool resolvingDice = false)
@@ -632,11 +685,19 @@ public class FightManager : MonoBehaviour
             DestructionIndex = Mathf.Clamp(DestructionIndex + delta, 0, 14);
         }
         Enqueue(Move(target, face, delta, resolvingDice));
+
+        PlayerState state = face == DiceFace.Fame ? PlayerState.Fame : PlayerState.Destruction;
+        if (!resolvingDice)
+        {
+            TriggerCardEffect(target,
+                TriggerEvent.OnAdd,
+                state,
+                Mathf.Abs(delta));
+        }
     }
 
     public IEnumerator Move(PlayerData target, DiceFace face, int delta, bool resolvingDice)
     {
-        PlayerState state = PlayerState.Fame; 
         PhaseAnnouncePanel.SetActive(false);
         HpPanel.SetActive(false);
 
@@ -645,7 +706,6 @@ public class FightManager : MonoBehaviour
         float waitDuration = 0f;
         if (face == DiceFace.Fame)
         {
-            state = PlayerState.Fame;
             target.ui.ModelAnimator.PlayFame();
             waitDuration = target.ui.ModelAnimator.brag.length - target.ui.ModelAnimator.timingForLaugh;
             yield return new WaitForSeconds(target.character.soundEffects.timingForFame);
@@ -654,7 +714,6 @@ public class FightManager : MonoBehaviour
         }
         else if (face == DiceFace.Destruction)
         {
-            state = PlayerState.Destruction;
             target.ui.ModelAnimator.PlayDestruction();
             waitDuration = target.ui.ModelAnimator.destruction.length - target.ui.ModelAnimator.timingForLaugh;
             yield return new WaitForSeconds(target.character.soundEffects.timingForDestruction);
@@ -673,15 +732,20 @@ public class FightManager : MonoBehaviour
         HpPanel.SetActive(true);
 
         CheckWinCondition();
-
-        if (!resolvingDice)
+        
+        int index =  face == DiceFace.Fame ? FameIndex : DestructionIndex;
+        switch(buzzTilePlacing.GetTileState(index - 1, face == DiceFace.Fame))
         {
-            TriggerCardEffect(target, 
-                TriggerEvent.OnAdd,
-                state,
-                Mathf.Abs(delta));
+            case PlayerState.HealthPoint:
+                yield return HPBarChange(target, 1);
+                break;
+            case PlayerState.AbilityPoints:
+                yield return charge(target, 1); 
+                break;
+            case PlayerState.Dice:
+                target.additionalDice += 1;
+                break;
         }
-
     }
 
     public void CheckWinCondition()
@@ -846,25 +910,37 @@ public class FightManager : MonoBehaviour
     public void OnAISelectedCard(AbilityCard card)
     {
         Enqueue(ShowAIAction(card));
-        cardDraftingSystem.AIBuyCard(card);
-        StartCoroutine(WaitCoroutine());
+        //cardDraftingSystem.AIBuyCard(card);
+        //StartCoroutine(WaitCoroutine());
     }
 
     public IEnumerator ShowAIAction(AbilityCard card)
     {
         selectCardPhase(true);
+
         yield return new WaitForSeconds(1.5f);
 
         selectCardPhase(false);
         buyCardPhase(true);
-        cardDraftingSystem.ChosenCard.sprite = card.cardSprite;
-        SetCameraPos(PlayerTurn == Player ? InFrontOfPlayer : InFrontOfAI);
+
+        cardDraftingSystem.ChosenCard.sprite =
+            card.cardSprite;
+
+        SetCameraPos(
+            PlayerTurn == Player ?
+            InFrontOfPlayer :
+            InFrontOfAI);
+
         yield return new WaitForSeconds(1.5f);
+
+        // BARU BELI DI SINI
+        cardDraftingSystem.AIBuyCard(card);
 
         yield return buyCardAnimation(card);
 
+        StartCoroutine(WaitCoroutine());
     }
-    
+
 
     public void AISkipCardDrafting()
     {
@@ -941,10 +1017,15 @@ public class FightManager : MonoBehaviour
     public void GivePermaCard(AbilityCard card)
     {
         PlayerTurn.Cards.Add(card);
+        TriggerCardEffect(PlayerTurn,
+            TriggerEvent.OnAdd,
+            PlayerState.AbilityCard,
+            1);
     }
 
     public void TriggerCardEffect(PlayerData target, TriggerEvent trig, PlayerState trigState, int value = 0)
     {
+        Debug.Log("Trigger " + trigState.ToString());
         PlayerData opponent = target.opponent;
 
         foreach(AbilityCard permaCard in target.Cards)
@@ -1252,6 +1333,18 @@ public class FightManager : MonoBehaviour
     {
         Player.ui.ModelAnimator.animator.Rebind();
         AI.ui.ModelAnimator.animator.Rebind();
+    }
+
+    public void EndFight(GameObject panel)
+    {
+        if (simulasi)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            panel.SetActive(true);
+        }
     }
 }
 
