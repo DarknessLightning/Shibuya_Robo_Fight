@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum AIState
 {
@@ -450,24 +451,31 @@ public class AILogic : MonoBehaviour
             FightManager.instance.EndBuzzTilePlacing();
             return;
         }
-        TilePlacementData selected = options[0];
+        TilePlacementData selected = new TilePlacementData
+        {
+            isFame = false,
+            index = self.EndTileIndex,
+            kiri = kiri
+        };
+        float lowest = 999;
         foreach(TilePlacementData option in options)
         {
-            if (selected.kiri == kiri)
+            float score = Mathf.Abs(option.index + 1 - self.EndTileIndex) * 10f;
+
+            if(score < lowest)
             {
-                break;
-            }
-            if(option.isFame == selected.isFame && option.index == selected.index)
-            {
-                continue;
-            }
-            if (option.kiri == kiri)
-            {
+                lowest = score;
                 selected = option;
-                break;
             }
         }
-        FightManager.instance.OnAIBuzzTileDecide(selected, self.Tile);
+        if(selected.index != self.EndTileIndex)
+        {
+            FightManager.instance.OnAIBuzzTileDecide(selected, self.Tile);
+        }
+        else
+        {
+            FightManager.instance.EndBuzzTilePlacing();
+        }
         
         
         /*
