@@ -32,3 +32,4 @@ MonoBehaviour:
   tile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: 7a36366c97e291f4b88c18a46e97029e, type: 3}
   cardName: Power Sabotage
+  cardEffect: If opponent buy ability card, add 2 ability point to self

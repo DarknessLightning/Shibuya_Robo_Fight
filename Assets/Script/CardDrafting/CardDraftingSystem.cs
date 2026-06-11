@@ -188,6 +188,11 @@ public class CardDraftingSystem : MonoBehaviour
         {
             FightManager.instance.GivePermaCard(card);
         }
+
+        if(card.tile != null)
+        {
+            FightManager.instance.GiveBuzzTile(card.tile);
+        }
     }
 
     public void ResetPool()

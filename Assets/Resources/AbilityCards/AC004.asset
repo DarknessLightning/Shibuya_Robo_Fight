@@ -32,3 +32,4 @@ MonoBehaviour:
   tile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: 77b3d64650260f2489dce99a200fe591, type: 3}
   cardName: Gain Support
+  cardEffect: Pull fame token 1 tile

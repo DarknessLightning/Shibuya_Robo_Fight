@@ -32,3 +32,4 @@ MonoBehaviour:
   tile: {fileID: 11400000, guid: c953f1473fa177d4da8e2fea222c3efd, type: 2}
   cardSprite: {fileID: 21300000, guid: c66a15130a8e965428e3dd6908940d3b, type: 3}
   cardName: Trapping Damage
+  cardEffect: Deal 2 damage to opponent

@@ -32,3 +32,4 @@ MonoBehaviour:
   tile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: cb4b31aa82d590644bd7faa1b3dcd810, type: 3}
   cardName: Better Chance
+  cardEffect: If opponent add more than 3 health point, add 1 reroll to self

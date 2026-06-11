@@ -51,6 +51,7 @@ public class FightManager : MonoBehaviour
     public GameObject SkillPointPopUp;
     public GameObject PausePanel;
     public GameObject ExitConfirmationPanel;
+    public GameObject PlayerInputBlocker;
 
     [Header("Camera Pivots")]
     public Transform BirdsEyeView;
@@ -204,6 +205,7 @@ public class FightManager : MonoBehaviour
 
     public void StartTurn()
     {
+        PlayerInputBlocker.SetActive(PlayerTurn.isAI);
         TriggerCardEffect(PlayerTurn, TriggerEvent.TurnStart, PlayerState.Turn);
         Enqueue(startDice());
     }
@@ -1017,10 +1019,16 @@ public class FightManager : MonoBehaviour
     public void GivePermaCard(AbilityCard card)
     {
         PlayerTurn.Cards.Add(card);
+        PlayerTurn.ui.CardAmount.text = PlayerTurn.Cards.Count.ToString();
         TriggerCardEffect(PlayerTurn,
             TriggerEvent.OnAdd,
             PlayerState.AbilityCard,
             1);
+    }
+
+    public void GiveBuzzTile(BuzzTile buzzTile)
+    {
+        PlayerTurn.Tile = buzzTile;
     }
 
     public void TriggerCardEffect(PlayerData target, TriggerEvent trig, PlayerState trigState, int value = 0)

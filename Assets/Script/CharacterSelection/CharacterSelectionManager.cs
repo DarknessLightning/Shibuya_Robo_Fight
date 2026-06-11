@@ -101,6 +101,7 @@ public class CharacterSelectionManager : MonoBehaviour
 
     public void selectUI(Transform charaBtn, CharacterSelectionUi selection)
     {
+        if (selection.confirm) return;
         Transform parent = charaBtn.transform.parent;
         foreach (Transform child in parent)
         {

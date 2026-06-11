@@ -29,5 +29,7 @@ MonoBehaviour:
   forEachTarget: 0
   forEachState: 0
   forEachMax: 0
+  tile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: 9bccd0d404e321f4a835947e1fb773e8, type: 3}
   cardName: Tune Up
+  cardEffect: Add 3 health point to self

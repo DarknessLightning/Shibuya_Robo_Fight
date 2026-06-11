@@ -32,3 +32,4 @@ MonoBehaviour:
   tile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: a3346095752fb304c83c316e743bca74, type: 3}
   cardName: Power Over Fame
+  cardEffect: If opponent pull fame token, add 3 ability point to self

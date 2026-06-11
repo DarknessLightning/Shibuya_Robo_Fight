@@ -32,3 +32,5 @@ MonoBehaviour:
   tile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: 1e292ae407e6b714fbe26e3cdc2d6d5e, type: 3}
   cardName: Taking Credits
+  cardEffect: If opponent pull destruction token for more than 1 tile,  self pull
+    fame token for 1 tile

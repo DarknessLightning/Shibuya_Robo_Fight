@@ -32,3 +32,4 @@ MonoBehaviour:
   tile: {fileID: 0}
   cardSprite: {fileID: 21300000, guid: 26cb6a4fa8c562840877fdfb1d0a063f, type: 3}
   cardName: Public Meltdown
+  cardEffect: If opponent pull fame token, self pull destruction token for 1 tile

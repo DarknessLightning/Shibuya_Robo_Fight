@@ -32,3 +32,4 @@ MonoBehaviour:
   tile: {fileID: 11400000, guid: c47131f5510d3f547b6d10178043375a, type: 2}
   cardSprite: {fileID: 21300000, guid: ba00cd46c2681e5439539412c7af1df7, type: 3}
   cardName: My Gain Your Loss
+  cardEffect: If self add any health point, deal 2 damage to opponent
