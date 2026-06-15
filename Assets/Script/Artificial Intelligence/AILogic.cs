@@ -1,21 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public enum AIState
 {
-    Idle,
+    None,
     DiceRoll,
     CardBuy,
-    BuzzTile,
-    EndTurn
+    BuzzTile
 }
 
 public class AILogic : MonoBehaviour
 {
     [Header("AI State")]
-    public AIState currentState = AIState.Idle;
+    public AIState currentState = AIState.None;
 
     public PlayerData self;
     public PlayerData enemy;
@@ -47,8 +45,6 @@ public class AILogic : MonoBehaviour
     {
         switch (currentState)
         {
-            case AIState.Idle:
-                break;
             case AIState.DiceRoll:
                 EvaluateState();
                 break;
@@ -57,9 +53,6 @@ public class AILogic : MonoBehaviour
                 break;
             case AIState.BuzzTile:
                 DecideBuzzTile();
-                break;
-            case AIState.EndTurn:
-                EndTurn();
                 break;
             default:
                 break;
@@ -502,11 +495,6 @@ public class AILogic : MonoBehaviour
         Debug.Log("Place " + tile.name);
     }*/
 
-
-    void EndTurn()
-    {
-        Debug.Log("End Turn");
-    }
 
     int GetStateValue(
     SubjectTarget target,

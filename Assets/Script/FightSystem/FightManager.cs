@@ -36,6 +36,16 @@ public class PlayerData
     public int EndTileIndex;
 }
 
+public enum winCondition
+{
+    None, 
+    Kill, 
+    Fame,
+    Destruction,
+    Spotlight, 
+    Surrender
+}
+
 public class FightManager : MonoBehaviour
 {
     public static FightManager instance;
@@ -112,6 +122,28 @@ public class FightManager : MonoBehaviour
     private List<DiceFace> results = new();
     private bool gameOver = false;
     private PlayerData winner = null;
+    public winCondition win = winCondition.None;
+
+    [Header("Game Over Text and Sprite")]
+    public Sprite PlayerPlayTime;
+    public Sprite EnemyPlayTime;
+    public Sprite PlayerWinCon;
+    public Sprite EnemyWinCon;
+    public Sprite VictorySprite;
+    public Sprite DefeatSprite;
+    //Win Condition Sprite;
+    public Sprite HPWincon; //Attack
+    public Sprite FameWinCon; //Fame
+    public Sprite DestrucWinCon; //Destruction
+    public Sprite SpotLightWinCon; //Fame and Destruction
+
+    [Header("Game Over Panel UI Elements")]
+    public Image PlayTimeBox;
+    public Text PlayTimeText;
+    public Image WinConBox;
+    public Image WinConSymbol;
+    public Text WinConText;
+    public Image PlayerWinState;
 
     [Header("Simulasi")]
     public bool simulasi = false;
@@ -149,9 +181,7 @@ public class FightManager : MonoBehaviour
             StartCoroutine(MoveCameraSequence());
         }
     }
-
     
-
     private void OnDestroy()
     {
         instance = null;
@@ -322,7 +352,6 @@ public class FightManager : MonoBehaviour
         }
 
     }
-
 
     //------------------//
     //DICE RESOLVE PHASE//
@@ -756,34 +785,40 @@ public class FightManager : MonoBehaviour
         {
             gameOver = true;
             winner = AI;
+            win = winCondition.Kill;
         }
         else if (AI.CurrentHP == 0)
         {
             gameOver = true;
             winner = Player;
+            win = winCondition.Kill;
         }
         else if (FameIndex == 0 || DestructionIndex == 0)
         {
             gameOver = true; 
             winner = Player;
+            win = FameIndex == 0 ? winCondition.Fame : winCondition.Destruction;
 
         }
         else if (FameIndex == 14 || DestructionIndex == 14)
         {
             gameOver = true; 
             winner = AI;
+            win = FameIndex == 14 ? winCondition.Fame : winCondition.Destruction;
 
         }
         else if (FameIndex == 2 && DestructionIndex == 2)
         {
             gameOver = true; 
             winner = Player;
+            win = winCondition.Spotlight;
 
         }
         else if(FameIndex == 12 && DestructionIndex == 12)
         {
             gameOver = true; 
             winner = AI;
+            win = winCondition.Spotlight;
 
         }
         if(gameOver)
@@ -820,8 +855,47 @@ public class FightManager : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         GameOverPanel.SetActive(true);
-        GameOver.sprite = winner.win;
         SetCameraPos(winner == Player ? AILost : PlayerLost);
+        OpenGameOverPanel();
+    }
+
+    public void OpenGameOverPanel()
+    {
+        PlayTimeBox.sprite = playerWin ? PlayerPlayTime : EnemyPlayTime;
+        int minutes = Mathf.FloorToInt(playTime / 60);
+        int seconds = Mathf.FloorToInt(playTime % 60);
+        int milliseconds = Mathf.FloorToInt((playTime * 100) % 100);
+        
+        string display =
+            $"{minutes:00} : {seconds:00}.{milliseconds:00}";
+        PlayTimeText.text = display;
+
+        WinConBox.sprite = playerWin ? PlayerWinCon : EnemyWinCon;
+        switch (win)
+        {
+            case winCondition.Kill:
+                WinConSymbol.sprite = HPWincon;
+                WinConText.text = playerWin ? "Defeated Enemy" : "Defeated by Enemy";
+                break;
+            case winCondition.Fame:
+                WinConSymbol.sprite = FameWinCon;
+                WinConText.text = playerWin ? "Ruling Shibuya" : "Enemy Ruling Shibuya";
+                break;
+            case winCondition.Destruction:
+                WinConSymbol.sprite = DestrucWinCon;
+                WinConText.text = playerWin ? "Destroying Shibuya" : "Enemy Destroying Shibuya";
+                break;
+            case winCondition.Spotlight:
+                WinConSymbol.sprite = SpotLightWinCon;
+                WinConText.text = playerWin ? "Entered Spotlight" : "Enemy Entered Spotlight";
+                break;
+            case winCondition.Surrender:
+                WinConSymbol.sprite = HPWincon;
+                WinConText.text = playerWin ? "Enemy Surrendering" : "Surrendering";
+                break;
+        }
+
+        PlayerWinState.sprite = playerWin ? VictorySprite : DefeatSprite;
     }
 
     //-------------------//
@@ -1325,6 +1399,13 @@ public class FightManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void PlayAgain()
+    {
+        Time.timeScale = 1f;
+        AudioManager.instance.PlayMainMenuMusic();
+        SceneManager.LoadScene("CharacterSelection");
+    }
+
     public void Surrender()
     {
         gameOver = true;
@@ -1334,6 +1415,7 @@ public class FightManager : MonoBehaviour
         isRunningCoroutine = false;
         StopAnimation();
         ResumeGame();
+        win = winCondition.Surrender;
         Over();
     }
 

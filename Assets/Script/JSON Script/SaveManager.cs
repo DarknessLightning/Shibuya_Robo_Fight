@@ -9,6 +9,7 @@ public class PlayerRecord
     public string name;
     public float playTime;
     public bool isWin;
+    public winCondition condition;
 }
 
 [Serializable]
@@ -46,11 +47,20 @@ public class SaveManager : MonoBehaviour
         }
 
         string json = File.ReadAllText(filePath);
+        PlayerRecordList list = JsonUtility.FromJson<PlayerRecordList>(json);
 
-        return JsonUtility.FromJson<PlayerRecordList>(json);
+        foreach(PlayerRecord record in list.records ) 
+        {
+            if(record.condition == winCondition.None)
+            {
+                record.condition = winCondition.Kill;
+            }
+        }
+
+        return list;
     }
 
-    public void SaveRecord(string playerName, float playTime, bool playerWon)
+    public void SaveRecord(string playerName, float playTime, bool playerWon, winCondition condition)
     {
         PlayerRecordList data = LoadRecords();
 
@@ -59,6 +69,7 @@ public class SaveManager : MonoBehaviour
         record.name = playerName;
         record.playTime = playTime;
         record.isWin = playerWon;
+        record.condition = condition;
 
         data.records.Add(record);
 

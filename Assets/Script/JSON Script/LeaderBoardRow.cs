@@ -7,6 +7,7 @@ public class LeaderBoardRow : MonoBehaviour
     public Text nameText;
     public Text timeText;
     public Text resultText;
+    public Text winConditionText;
 
     public int rank;
 
@@ -38,6 +39,27 @@ public class LeaderBoardRow : MonoBehaviour
             data.isWin
             ? "WIN"
             : "LOSE";
+
+        string conditionString = "";
+        switch (data.condition)
+        {
+            case winCondition.Kill:
+                conditionString = "Defeat Opponent";
+                break;
+            case winCondition.Fame:
+                conditionString = "Fame";
+                break;
+            case winCondition.Destruction:
+                conditionString = "Destruction";
+                break;
+            case winCondition.Spotlight:
+                conditionString = "Spotlight";
+                break;
+            case winCondition.Surrender:
+                conditionString = "Surrender";
+                break;
+        }
+        winConditionText.text = conditionString;
     }
 
     public void DeleteRow()

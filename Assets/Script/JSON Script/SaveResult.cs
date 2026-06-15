@@ -15,8 +15,9 @@ public class SaveResult : MonoBehaviour
     {
         SaveManager.instance.SaveRecord(inputName.text,
             FightManager.instance.playTime,
-            FightManager.instance.playerWin);
-        FightManager.instance.ExitFight();
+            FightManager.instance.playerWin, 
+            FightManager.instance.win);
+        //FightManager.instance.ExitFight();
     }
 
     public void Preview(GameObject panel)
@@ -39,6 +40,18 @@ public class SaveResult : MonoBehaviour
         dataPreview.text = ": " + inputName.text + "\n: " +
             display + "\n: " +
             win;
+    }
+
+    public void ConfirmSave(GameObject panel)
+    {
+        if(inputName.text == "")
+        {
+            EnterName();
+            return;
+        }
+
+        saveResult();
+        ClosePanel(panel);
     }
 
     public void EnterName()
