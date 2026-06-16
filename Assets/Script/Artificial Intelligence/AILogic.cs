@@ -4,17 +4,16 @@ using UnityEngine;
 
 public enum AIState
 {
-    Idle,
+    None,
     DiceRoll,
     CardBuy,
-    BuzzTile,
-    EndTurn
+    BuzzTile
 }
 
 public class AILogic : MonoBehaviour
 {
     [Header("AI State")]
-    public AIState currentState = AIState.Idle;
+    public AIState currentState = AIState.None;
 
     public PlayerData self;
     public PlayerData enemy;
@@ -46,8 +45,6 @@ public class AILogic : MonoBehaviour
     {
         switch (currentState)
         {
-            case AIState.Idle:
-                break;
             case AIState.DiceRoll:
                 EvaluateState();
                 break;
@@ -56,9 +53,6 @@ public class AILogic : MonoBehaviour
                 break;
             case AIState.BuzzTile:
                 DecideBuzzTile();
-                break;
-            case AIState.EndTurn:
-                EndTurn();
                 break;
             default:
                 break;
@@ -82,6 +76,7 @@ public class AILogic : MonoBehaviour
 
     void DecideDiceLock()
     {
+        lockedDice.Clear();
         Dictionary<DiceFace, float> utility =
             CalculateDiceUtility();
 
@@ -137,12 +132,14 @@ public class AILogic : MonoBehaviour
         // TUG OF WAR MODE
         //---------------------
 
-        if (FightManager.instance.FameIndex >= 12)
+        if (GetStateValue(SubjectTarget.Self, PlayerState.Fame) <= 2 || 
+            GetStateValue(SubjectTarget.Opponent, PlayerState.Fame) <= 2)
         {
             score[DiceFace.Fame] += 90;
         }
 
-        if (FightManager.instance.DestructionIndex >= 12)
+        if (GetStateValue(SubjectTarget.Self, PlayerState.Destruction) <= 2 ||
+            GetStateValue(SubjectTarget.Opponent, PlayerState.Destruction) <= 2)
         {
             score[DiceFace.Destruction] += 90;
         }
@@ -441,28 +438,37 @@ public class AILogic : MonoBehaviour
 
     void DecideBuzzTile()
     {
+        bool kiri = self.EndTileIndex == 0;
         if (options.Count == 0)
         {
             FightManager.instance.EndBuzzTilePlacing();
             return;
         }
-        TilePlacementData selected = options[0];
+        TilePlacementData selected = new TilePlacementData
+        {
+            isFame = false,
+            index = self.EndTileIndex,
+            kiri = kiri
+        };
+        float lowest = 999;
         foreach(TilePlacementData option in options)
         {
-            if (!selected.kiri)
+            float score = Mathf.Abs(option.index + 1 - self.EndTileIndex) * 10f;
+
+            if(score < lowest)
             {
-                break;
-            }
-            if(option.isFame == selected.isFame && option.index == selected.index)
-            {
-                continue;
-            }
-            if (!option.kiri)
-            {
+                lowest = score;
                 selected = option;
             }
         }
-        FightManager.instance.OnAIBuzzTileDecide(selected, self.Tile);
+        if(selected.index != self.EndTileIndex)
+        {
+            FightManager.instance.OnAIBuzzTileDecide(selected, self.Tile);
+        }
+        else
+        {
+            FightManager.instance.EndBuzzTilePlacing();
+        }
         
         
         /*
@@ -490,11 +496,6 @@ public class AILogic : MonoBehaviour
     }*/
 
 
-    void EndTurn()
-    {
-        Debug.Log("End Turn");
-    }
-
     int GetStateValue(
     SubjectTarget target,
     PlayerState state)
@@ -504,8 +505,7 @@ public class AILogic : MonoBehaviour
             SubjectTarget.Self
             ? self
             : enemy;
-        int endPoint =
-            actor == FightManager.instance.Player ? 0 : 14;
+        int endPoint = self.EndTileIndex;
         switch (state)
         {
             case PlayerState.HealthPoint:

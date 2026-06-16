@@ -69,6 +69,7 @@ public class DiceManager : MonoBehaviour
 
     void Update()
     {
+        if (FightManager.instance != null && FightManager.instance.PlayerTurn.isAI) return; 
         // Jika dadu masih menggelinding/bergerak, hentikan pembacaan input
         if (IsMoving()) return;
 
@@ -174,6 +175,10 @@ public class DiceManager : MonoBehaviour
 
     public void ResolveDice()
     {
+        if (IsMoving())
+        {
+            return;
+        }
         result.Clear();
         for (int i = 0; i < allDices.Count; i++)
         {

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ca53379febb26459b29edf835632bc, type: 3}
+  m_Name: AC018
+  m_EditorClassIdentifier: 
+  cost: 7
+  triggerEvent: 2
+  triggerSubject: 0
+  triggerState: 0
+  useCondition: 0
+  conditionSubject: 0
+  conditionState: 0
+  conditionComparative: 0
+  conditionValue: 0
+  effectTarget: 1
+  effectType: 1
+  effectState: 0
+  effectValue: 2
+  useForEach: 0
+  forEachTarget: 0
+  forEachState: 0
+  forEachMax: 0
+  tile: {fileID: 11400000, guid: c47131f5510d3f547b6d10178043375a, type: 2}
+  cardSprite: {fileID: 21300000, guid: ba00cd46c2681e5439539412c7af1df7, type: 3}
+  cardName: My Gain Your Loss
+  cardEffect: If self add any health point, deal 2 damage to opponent

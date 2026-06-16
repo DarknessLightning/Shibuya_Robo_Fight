@@ -46,6 +46,7 @@ public class AbilityCard : ScriptableObject
     [Header("Reference")]
     public Sprite cardSprite;
     public string cardName;
+    public string cardEffect;
 }
 
 public enum TriggerEvent
