@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ca53379febb26459b29edf835632bc, type: 3}
   m_Name: AC024
   m_EditorClassIdentifier: 
-  cost: 9
+  cost: 12
   triggerEvent: 3
   triggerSubject: 0
   triggerState: 1
