@@ -11,6 +11,9 @@ public class SaveResult : MonoBehaviour
     public string placeholder;
     public Color placeholderColor;
 
+    public LeaderBoard board;
+    public Button saveBtn;
+
     public void saveResult()
     {
         SaveManager.instance.SaveRecord(inputName.text,
@@ -52,6 +55,9 @@ public class SaveResult : MonoBehaviour
 
         saveResult();
         ClosePanel(panel);
+        board.OpenAndClose(true);
+        board.UpdateLeaderboard();
+        saveBtn.interactable = false;
     }
 
     public void EnterName()
@@ -80,7 +86,7 @@ public class SaveResult : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        board.Init();
     }
 
     // Update is called once per frame
