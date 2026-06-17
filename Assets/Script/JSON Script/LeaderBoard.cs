@@ -10,8 +10,32 @@ public class LeaderBoard : MonoBehaviour
 
     private void Start()
     {
+
+    }
+
+    public void Init()
+    {
+        leaderboardPanel.SetActive(true);
         ShowLeaderboard();
         leaderboardPanel.SetActive(false);
+    }
+
+    public void OpenAndClose(bool state)
+    {
+        leaderboardPanel.SetActive(state);
+    }
+
+    public void UpdateLeaderboard()
+    {
+        if(content.childCount > 0)
+        {
+            foreach(Transform child in content)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        ShowLeaderboard();
     }
 
     public void ShowLeaderboard()

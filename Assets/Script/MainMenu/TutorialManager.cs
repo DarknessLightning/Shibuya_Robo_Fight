@@ -1,39 +1,34 @@
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
+public class TutorialManager : MonoBehaviour
 {
-    /*
+    public GameObject tutorialPanel;
     public GameObject PrevBtn;
     public GameObject NextBtn;
     public Image panel;
     public Text title;
     public Sprite[] cards;
     public string[] cardsName;
-    //*/
 
-    public LeaderBoard board;
-
-    //private int index = 0;
+    private int index;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //panel.sprite = cards[0];
-        board.Init();
+        panel.sprite = cards[0];
     }
 
-    /*
     public void NextCard()
     {
         index = Mathf.Min(index + 1, cards.Length - 1);
         panel.sprite = cards[index];
         title.text = cardsName[index];
-        if(index == cards.Length - 1)
+        if (index == cards.Length - 1)
         {
             NextBtn.SetActive(false);
         }
-        if(index > 0)
+        if (index > 0)
         {
             PrevBtn.SetActive(true);
         }
@@ -53,40 +48,20 @@ public class MainMenu : MonoBehaviour
             NextBtn.SetActive(true);
         }
     }
-    //*/
 
-    public void ChangeScene(string sceneName)
+    public void OpenPanel()
     {
-        if (sceneName == "")
-        {
-            Debug.Log("Play!");
-            return;
-        }
-        SceneManager.LoadScene(sceneName);
+        tutorialPanel.SetActive(true);
+        panel.sprite = cards[0];
+        title.text = cardsName[0];
+        PrevBtn.SetActive(false);
+        NextBtn.SetActive(true);
+        index = 0;
     }
 
-    public void OpenPanel(GameObject panel = null)
+    public void ClosePanel()
     {
-        if (panel == null)
-        {
-            Debug.Log("Panel Opened!");
-            return;
-        }
-        panel.SetActive(true);
-    }
-
-    public void ClosePanel(GameObject panel)
-    {
-        panel.SetActive(false);
-    }
-
-    public void ExitGame()
-    {
-        Application.Quit();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        tutorialPanel.SetActive(false);
     }
 
     // Update is called once per frame
