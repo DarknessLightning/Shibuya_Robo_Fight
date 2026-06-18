@@ -103,6 +103,7 @@ public class FightManager : MonoBehaviour
     public Text SkillPointText;
     public AudioClip AbilityCardEffect;
     public AudioClip ChangeTurnSfx;
+    public Text TurnAnnounce;
 
     [Header("Player Data")]
     public PlayerData Player;
@@ -216,6 +217,34 @@ public class FightManager : MonoBehaviour
         PhaseAnnounce.sprite = PhaseAnnounceSprite[Mathf.Min(GamePhase, PhaseAnnounceSprite.Length - 1)];
     }
 
+    public IEnumerator TurnAnnouncer()
+    {
+        TurnAnnounce.text = PlayerTurn == Player ? "YOUR TURN" : "ENEMY TURN";
+
+        Color temp = TurnAnnounce.color;
+        temp.a = 0;
+        float elapsed = 0f;
+        while (elapsed < 1)
+        {
+            elapsed += Time.deltaTime;
+            temp.a = elapsed;
+            TurnAnnounce.color = temp;
+            yield return null;
+        }
+        temp.a = 1;
+        TurnAnnounce.color = temp;
+        yield return new WaitForSeconds(1f);
+        while(elapsed > 0)
+        {
+            elapsed -= Time.deltaTime;
+            temp.a = elapsed;
+            TurnAnnounce.color = temp;
+            yield return null;
+        }
+        temp.a = 0;
+        TurnAnnounce.color = temp;
+    }
+
     public IEnumerator NextPhase()
     {
         SetCameraPos(BirdsEyeView);
@@ -244,6 +273,7 @@ public class FightManager : MonoBehaviour
     {
         Debug.Log("Start Dice");
         StartDicePhase();
+        StartCoroutine(TurnAnnouncer());
         yield return null;
     }
 
@@ -283,6 +313,7 @@ public class FightManager : MonoBehaviour
         DicePanel.SetActive(false);
         HpPanel.SetActive(true);
         PlayerTurn.additionalReroll = 0;
+        PlayerTurn.additionalDice = 0;
         StartCoroutine(NextPhase());
         //ActionPhase();
     }
@@ -293,9 +324,11 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator AIDicePhase()
     {
-        yield return new WaitForSeconds(1f);
         yield return new WaitUntil(
-            () => !diceManager.IsMoving()
+            () => !diceManager.ResultReady
+            );
+        yield return new WaitUntil(
+            () => diceManager.ResultReady
             );
         yield return new WaitForSeconds(0.5f);
 
@@ -807,14 +840,14 @@ public class FightManager : MonoBehaviour
             win = FameIndex == 14 ? winCondition.Fame : winCondition.Destruction;
 
         }
-        else if (FameIndex == 2 && DestructionIndex == 2)
+        else if (FameIndex <= 2 && DestructionIndex <= 2)
         {
             gameOver = true; 
             winner = Player;
             win = winCondition.Spotlight;
 
         }
-        else if(FameIndex == 12 && DestructionIndex == 12)
+        else if(FameIndex >= 12 && DestructionIndex >= 12)
         {
             gameOver = true; 
             winner = AI;
@@ -905,6 +938,7 @@ public class FightManager : MonoBehaviour
 
     private void CardDraftingPhase()
     {
+        if (gameOver) return;
         cardDraftingSystem.usablePoints = PlayerTurn.AbilityPoints;
 
         if (!PlayerTurn.isAI)
@@ -1161,12 +1195,14 @@ public class FightManager : MonoBehaviour
 
     private void BuzzTilePhase()
     {
+        if (gameOver) return;
         if (PlayerTurn.Tile == null)
         {
             ActionPhase(); 
             return;
         }
 
+        HpPanel.SetActive(false);
         PlaceTilePanel.SetActive(true);
         buzzTilePlacing.OpenPanel(FameIndex, DestructionIndex, PlayerTurn.Tile);
 

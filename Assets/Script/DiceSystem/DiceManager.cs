@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,6 +57,8 @@ public class DiceManager : MonoBehaviour
 
     public AudioClip DiceRollSfx;
     public AudioClip DiceLockSfx;
+
+    public bool ResultReady = false;
     void Start()
     {
         centerPosition = new Vector3(diceTray.position.x, 5f, diceTray.position.z);
@@ -103,8 +106,9 @@ public class DiceManager : MonoBehaviour
 
     public void startDice()
     {
+        diceAmount = 6 + FightManager.instance.PlayerTurn.additionalDice;
         reroll = 3 + FightManager.instance.PlayerTurn.additionalReroll;
-        if(allDices.Count == 0) 
+        if(allDices.Count < diceAmount) 
         {
 
             for (int i = allDices.Count; i < Mathf.Min(diceAmount, lockedPlaces.Length); i++)
@@ -128,6 +132,20 @@ public class DiceManager : MonoBehaviour
                 newDice.Init();
             }
         }
+        else if(allDices.Count > diceAmount)
+        {
+            List<DiceEvaluate> deleteDices = new();
+            for(int i = allDices.Count - 1; i > diceAmount - 1; i++)
+            {
+                deleteDices.Add(allDices[i]);
+            }
+            foreach(DiceEvaluate dice in deleteDices)
+            {
+                allDices.Remove(dice);
+                Destroy(dice.gameObject);
+            }
+
+        }
         else
         {
             foreach(DiceEvaluate dice in lockedDices)
@@ -143,7 +161,7 @@ public class DiceManager : MonoBehaviour
 
     public void Reroll()
     {
-        if (IsMoving()) return;
+        if (!ResultReady) return;
 
         AudioManager.instance.PlaySfx(DiceRollSfx);
         RollAllDice();
@@ -152,6 +170,8 @@ public class DiceManager : MonoBehaviour
     public void RollAllDice()
     {
         if (reroll <= 0) return;
+
+        ResultReady = false;
         foreach (DiceEvaluate dice in allDices)
         {
             if (dice.locked) continue;
@@ -171,11 +191,19 @@ public class DiceManager : MonoBehaviour
         {
             rerollButton.SetActive(false);
         }
+        StartCoroutine(readyingResult());
+    }
+
+    public IEnumerator readyingResult()
+    {
+        yield return new WaitUntil(() => IsMoving());
+        yield return new WaitUntil(() => !IsMoving());
+        ResultReady = true;
     }
 
     public void ResolveDice()
     {
-        if (IsMoving())
+        if (!ResultReady)
         {
             return;
         }
