@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DiceEvaluate : MonoBehaviour
@@ -9,6 +11,16 @@ public class DiceEvaluate : MonoBehaviour
     [Header("Drop Settings")]
     public float force = 5f;
     public float torque = 10f;
+
+    public List<Vector3> standardRotations = new List<Vector3>
+    {
+        new Vector3(0,0,0),
+        new Vector3(90,0,0),
+        new Vector3(0,-90,90),
+        new Vector3(0,-90,-90),
+        new Vector3(-90,0,0),
+        new Vector3(180,0,0)
+    };
 
     // Variabel baru untuk jangkauan acak posisi jatuh
     public Vector3 centerPosition = new Vector3(0f, 5f, -45f); // Titik tengah di udara (Y=5)
@@ -104,6 +116,104 @@ public class DiceEvaluate : MonoBehaviour
         // Beri efek putaran acak
         Vector3 randomTorque = Random.insideUnitSphere * torque;
         rb.AddTorque(randomTorque, ForceMode.Impulse);
+
+        //StartCoroutine(ForceStopAfter1Second());
+        StartCoroutine(ForceFace());
+    }
+
+    public IEnumerator ForceStopAfter1Second()
+    {
+        yield return new WaitForSeconds(1f);
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.useGravity = false;
+
+        SnapToFace(GetTopNumber());
+    }
+
+    public IEnumerator ForceFace()
+    {
+        yield return new WaitUntil(() => IsMoving());
+        yield return new WaitUntil(() => !IsMoving());
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.useGravity = true;
+
+        if (!isFlatOnGround(GetTopNumber()))
+        {
+            SnapToFace(GetTopNumber());
+        }
+    }
+
+    bool isFlatOnGround(int i)
+    {
+        Vector3 dir = Vector3.zero;
+
+        switch (i)
+        {
+            case 1:
+                dir = transform.up;
+                break;
+
+            case 2:
+                dir = -transform.forward;
+                break;
+
+            case 3:
+                dir = transform.right;
+                break;
+
+            case 4:
+                dir = -transform.right;
+                break;
+
+            case 5:
+                dir = transform.forward;
+                break;
+
+            case 6:
+                dir = -transform.up;
+                break;
+
+        }
+
+        return Vector3.Dot(dir, Vector3.up) > 0.85f;
+    }
+
+    void SnapToFace(int face)
+    {
+        transform.rotation = Quaternion.Euler(standardRotations[face - 1]);
+        return;
+        /*
+        switch (face)
+        {
+            case 1:
+                transform.rotation = Quaternion.Euler(standardRotations[face - 1]);
+                break;
+
+            case 2:
+                transform.rotation = Quaternion.Euler(standardRotations[face - 1]);
+                break;
+
+            case 3:
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
+                break;
+
+            case 4:
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
+                break;
+
+            case 5:
+                transform.rotation = Quaternion.LookRotation(Vector3.up, Vector3.forward);
+                break;
+
+            case 6:
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
+                break;
+        }
+        //*/
     }
 
     // Mengembalikan ke posisi acak baru di atas (bukan posisi awal yang kaku)
