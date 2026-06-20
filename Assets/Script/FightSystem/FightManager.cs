@@ -481,7 +481,7 @@ public class FightManager : MonoBehaviour
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
         SkillPointPopUp.SetActive(true);
         target.ui.ModelAnimator.PlaySpecialSkill(power >= cost);
-        AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
+        //AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
         SkillPointText.text = "0";
 
         int startPower = 0;
@@ -490,14 +490,16 @@ public class FightManager : MonoBehaviour
         float elapsed = 0f;
         float duration = target.ui.ModelAnimator.charge.length;
 
-        bool sfxPlayed = false;
+        //bool sfxPlayed = false;
         while (elapsed < duration)
         {
+            /*
             if (elapsed >= target.character.soundEffects.timingForCharge && !sfxPlayed)
             {
                 AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
                 sfxPlayed = true;
             }
+            //*/
             elapsed += Time.deltaTime;
 
             // Hitung persentase progress (0.0 sampai 1.0)
@@ -518,9 +520,9 @@ public class FightManager : MonoBehaviour
             SpecialSkillPanel.SetActive(true);
             Image specialSkillImage = SpecialSkillPanel.GetComponent<Image>();
             specialSkillImage.sprite = target.character.specialSkill;
-            yield return new WaitForSeconds(target.character.soundEffects.timingForSignal);
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Signal);
-            yield return new WaitForSeconds(duration - target.character.soundEffects.timingForSignal);
+            //yield return new WaitForSeconds(target.character.soundEffects.timingForSignal);
+            //AudioManager.instance.PlaySfx(target.character.soundEffects.Signal);
+            yield return new WaitForSeconds(duration);
 
             switch (PlayerTurn.character.skill)
             {
@@ -577,12 +579,13 @@ public class FightManager : MonoBehaviour
         {
             SetCameraPos(target == Player ? OverAIShoulder : OverPlayerShoulder);
             target.opponent.ui.ModelAnimator.PlayAttack();
-            yield return new WaitForSeconds(target.opponent.character.soundEffects.timingForAttack);
-            AudioManager.instance.PlaySfx(target.opponent.character.soundEffects.Attack);
+            //yield return new WaitForSeconds(target.opponent.character.soundEffects.timingForAttack);
+            //AudioManager.instance.PlaySfx(target.opponent.character.soundEffects.Attack);
             float duration = target.opponent.ui.ModelAnimator.attack.length - target.ui.ModelAnimator.timingForAttack;
-            yield return new WaitForSeconds(duration - target.opponent.character.soundEffects.timingForAttack);
+            yield return new WaitForSeconds(duration);
+                //target.opponent.character.soundEffects.timingForAttack
             target.ui.ModelAnimator.PlayHit();
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Hurt);
+            //AudioManager.instance.PlaySfx(target.character.soundEffects.Hurt);
             //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForHit);
             float fillAmount = (float)target.CurrentHP / target.character.hp;
             target.ui.HPBar.fillAmount = fillAmount;
@@ -597,14 +600,16 @@ public class FightManager : MonoBehaviour
 
             int startAmount = currentHealth;
             float fillAmount;
-            bool sfxPlayed = false;
+            //bool sfxPlayed = false;
             while (elapsed < duration)
             {
+                /*
                 if(elapsed >= target.character.soundEffects.timingForHeal && !sfxPlayed)
                 {
                     AudioManager.instance.PlaySfx(target.character.soundEffects.Heal);
                     sfxPlayed = true;
                 }
+                //*/
                 elapsed += Time.deltaTime;
                 float percentage = elapsed / duration;
 
@@ -668,15 +673,17 @@ public class FightManager : MonoBehaviour
             int startEnergy = currentEnergy;
             int targetEnergy = currentEnergy + totalTambah;
 
-            bool sfxPlayed = false;
+            //bool sfxPlayed = false;
 
             while (elapsed < duration)
             {
+                /*
                 if(elapsed >= target.character.soundEffects.timingForCharge && !sfxPlayed)
                 {
                     AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
                     sfxPlayed = true;
                 }
+                //*/
                 elapsed += Time.deltaTime;
 
                 // Hitung persentase progress (0.0 sampai 1.0)
@@ -772,17 +779,17 @@ public class FightManager : MonoBehaviour
         {
             target.ui.ModelAnimator.PlayFame();
             waitDuration = target.ui.ModelAnimator.brag.length - target.ui.ModelAnimator.timingForLaugh;
-            yield return new WaitForSeconds(target.character.soundEffects.timingForFame);
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Fame);
-            waitDuration -= target.character.soundEffects.timingForFame;
+            //yield return new WaitForSeconds(target.character.soundEffects.timingForFame);
+            //AudioManager.instance.PlaySfx(target.character.soundEffects.Fame);
+            //waitDuration -= target.character.soundEffects.timingForFame;
         }
         else if (face == DiceFace.Destruction)
         {
             target.ui.ModelAnimator.PlayDestruction();
             waitDuration = target.ui.ModelAnimator.destruction.length - target.ui.ModelAnimator.timingForLaugh;
-            yield return new WaitForSeconds(target.character.soundEffects.timingForDestruction);
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Destruction);
-            waitDuration -= target.character.soundEffects.timingForDestruction;
+            //yield return new WaitForSeconds(target.character.soundEffects.timingForDestruction);
+            //AudioManager.instance.PlaySfx(target.character.soundEffects.Destruction);
+            //waitDuration -= target.character.soundEffects.timingForDestruction;
         }
 
         yield return new WaitForSeconds(waitDuration);
