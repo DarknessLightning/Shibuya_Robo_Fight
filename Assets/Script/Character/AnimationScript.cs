@@ -44,18 +44,21 @@ public class AnimationScript : MonoBehaviour
     {
         animator.SetTrigger("Charge");
         animator.SetBool("Signal", activate);
-        StartCoroutine(SpecialSkillSfx());
+        StartCoroutine(SpecialSkillSfx(activate));
         StartCoroutine(PlayVisualEffect(
             VFX.energizeFx,
             ground,
             VFX.energizeDelay));
     }
 
-    public IEnumerator SpecialSkillSfx()
+    public IEnumerator SpecialSkillSfx(bool active)
     {
         yield return PlaySoundEffect(SFX.Energize, SFX.timingForCharge);
-        yield return new WaitForSeconds(charge.length);
-        yield return PlaySoundEffect(SFX.Signal, SFX.timingForSignal);
+        if (active)
+        {
+            yield return new WaitForSeconds(charge.length);
+            yield return PlaySoundEffect(SFX.Signal, SFX.timingForSignal);
+        }
     }
 
     public void EndSpecialSkill()
@@ -125,6 +128,9 @@ public class AnimationScript : MonoBehaviour
     public void PlayBuyCard()
     {
         animator.SetTrigger("Card");
+        StartCoroutine(PlaySoundEffect(
+            SFX.Signal, 
+            SFX.timingForSignal));
     }
 
     public void PlayLose()

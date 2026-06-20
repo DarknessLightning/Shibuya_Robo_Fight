@@ -645,7 +645,7 @@ public class FightManager : MonoBehaviour
         if (ApAmount == 0) return;
         Enqueue(charge(target, ApAmount));
 
-        if (!resolvingDice)
+        if (!resolvingDice || ApAmount < 0)
         {
             TriggerCardEffect(target,
                 ApAmount > 0 ? TriggerEvent.OnAdd : TriggerEvent.OnSubtract,
@@ -1135,10 +1135,12 @@ public class FightManager : MonoBehaviour
     {
         PlayerTurn.Cards.Add(card);
         PlayerTurn.ui.CardAmount.text = PlayerTurn.Cards.Count.ToString();
+        /*
         TriggerCardEffect(PlayerTurn,
             TriggerEvent.OnAdd,
             PlayerState.AbilityCard,
             1);
+        //*/
     }
 
     public void GiveBuzzTile(BuzzTile buzzTile)
