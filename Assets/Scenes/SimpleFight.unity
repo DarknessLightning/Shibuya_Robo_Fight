@@ -31644,7 +31644,7 @@ MonoBehaviour:
   centerPosition: {x: 15, y: 5, z: 0}
   dropRadius: 1.5
   diceTray: {fileID: 849095300}
-  forTest: 1
+  forTest: 0
   targetFace: 050000000200000000000000
   numberOfDiceForFace: 0200000002000000
   DiceRollSfx: {fileID: 8300000, guid: c830890f12518be4b9118f26bd30ea88, type: 3}
