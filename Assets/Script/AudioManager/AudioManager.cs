@@ -31,7 +31,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        PlayMainMenuMusic();
+
     }
 
     public void PlaySfx(AudioClip clip)

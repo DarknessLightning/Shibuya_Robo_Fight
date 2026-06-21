@@ -60,8 +60,10 @@ public class CardDraftingSystem : MonoBehaviour
             {
                 ui[i].sprite = cards[i].cardSprite;
                 Renderer rend = objects[i].GetComponent<Renderer>();
-                rend.material.color = Color.white;
-                rend.material.mainTexture = cards[i].cardSprite.texture;
+                rend.material.SetColor("_BaseColor", Color.white);
+                //rend.material.color = Color.white;
+                rend.material.SetTexture("_BaseMap", cards[i].cardSprite.texture);
+                //rend.material.mainTexture = cards[i].cardSprite.texture;
             }
             setImage(cards[i] != null, ui[i], objects[i]);
         }
@@ -136,7 +138,7 @@ public class CardDraftingSystem : MonoBehaviour
         }
         if (openIsEmpty())
         {
-            refreshCards();
+            //refreshCards();
         }
         showCards(openedCardsUI, openedCards, openedCardsObject);
         closeBuyPanel();

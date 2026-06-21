@@ -62,6 +62,7 @@ public class FightManager : MonoBehaviour
     public GameObject PausePanel;
     public GameObject ExitConfirmationPanel;
     public GameObject PlayerInputBlocker;
+    public GameObject PlayerCardButtonPanel;
 
     [Header("Camera Pivots")]
     public Transform BirdsEyeView;
@@ -795,7 +796,9 @@ public class FightManager : MonoBehaviour
         yield return new WaitForSeconds(waitDuration);
 
         SetCameraPos(target == Player ? BehindPlayer : BehindAI);
+        tokenMovement.duration = target.ui.ModelAnimator.timingForLaugh;
         yield return tokenMovement.Move(face, delta);
+        //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForLaugh - 1);
 
         SetCameraPos(BirdsEyeView);
 
@@ -804,7 +807,7 @@ public class FightManager : MonoBehaviour
 
         CheckWinCondition();
         
-        int index =  face == DiceFace.Fame ? FameIndex : DestructionIndex;
+        int index = face == DiceFace.Fame ? FameIndex : DestructionIndex;
         switch(buzzTilePlacing.GetTileState(index - 1, face == DiceFace.Fame))
         {
             case PlayerState.HealthPoint:
@@ -951,10 +954,12 @@ public class FightManager : MonoBehaviour
         if (!PlayerTurn.isAI)
         {
             selectCardPhase(true);
+            PlayerCardButtonPanel.SetActive(true);
         }
         else
         {
             aiLogic.StartAction(AIState.CardBuy);
+            PlayerCardButtonPanel.SetActive(false);
         }
     }
 

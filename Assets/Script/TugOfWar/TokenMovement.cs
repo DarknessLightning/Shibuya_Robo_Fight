@@ -14,6 +14,8 @@ public class TokenMovement : MonoBehaviour
 
     private int fameIndex = 7;
     private int destructionIndex = 7;
+
+    public float duration = 0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -87,7 +89,7 @@ public class TokenMovement : MonoBehaviour
         Vector3 end = new Vector3(tile.position.x, start.y, tile.position.z);
 
         float elapsed = 0f;
-        float duration = 1f;
+        //float duration = 1f;
 
         while (elapsed < duration)
         {

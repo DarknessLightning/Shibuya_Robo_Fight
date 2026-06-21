@@ -6,16 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/BuildScene/MainMenu.unity
     guid: 7417f8a59925f6940b01c72e9b171f94
   - enabled: 1
-    path: Assets/Scenes/CharacterSelection.unity
+    path: Assets/Scenes/BuildScene/CharacterSelection.unity
     guid: 79b86bc34cedf5f4e9004d378537693d
   - enabled: 1
-    path: Assets/Scenes/SimpleFight.unity
+    path: Assets/Scenes/BuildScene/SimpleFight.unity
     guid: 0fdbb6563d8eb8743b8178ce39a69185
   - enabled: 1
-    path: Assets/Scenes/DiceTesting.unity
+    path: Assets/Scenes/TestScene/DiceTesting.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

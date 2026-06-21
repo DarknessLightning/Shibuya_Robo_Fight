@@ -163,7 +163,6 @@ public class DiceManager : MonoBehaviour
     {
         if (!ResultReady) return;
 
-        AudioManager.instance.PlaySfx(DiceRollSfx);
         RollAllDice();
     }
 
@@ -172,6 +171,7 @@ public class DiceManager : MonoBehaviour
         if (reroll <= 0) return;
 
         ResultReady = false;
+        AudioManager.instance.PlaySfx(DiceRollSfx);
         foreach (DiceEvaluate dice in allDices)
         {
             if (dice.locked) continue;
