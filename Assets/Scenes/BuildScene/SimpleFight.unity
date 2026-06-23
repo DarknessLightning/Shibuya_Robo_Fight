@@ -328,15 +328,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7b237c1764f71e43bca76f738d66db5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7b237c1764f71e43bca76f738d66db5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7b237c1764f71e43bca76f738d66db5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7b237c1764f71e43bca76f738d66db5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -589,6 +589,7 @@ GameObject:
   - component: {fileID: 38191490}
   - component: {fileID: 38191489}
   - component: {fileID: 38191488}
+  - component: {fileID: 38191491}
   m_Layer: 5
   m_Name: Close
   m_TagString: Untagged
@@ -709,6 +710,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38191486}
   m_CullTransparentMesh: 1
+--- !u!114 &38191491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38191486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &38408943
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +876,7 @@ GameObject:
   - component: {fileID: 43578583}
   - component: {fileID: 43578582}
   - component: {fileID: 43578584}
+  - component: {fileID: 43578585}
   m_Layer: 5
   m_Name: DestructionTile (10)
   m_TagString: Untagged
@@ -981,6 +997,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &43578585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43578580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &61415316
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,6 +1023,7 @@ GameObject:
   - component: {fileID: 61415319}
   - component: {fileID: 61415318}
   - component: {fileID: 61415320}
+  - component: {fileID: 61415321}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -1016,9 +1047,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -111, y: 116}
+  m_AnchoredPosition: {x: -261, y: 166}
   m_SizeDelta: {x: 300, y: 100}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &61415318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,6 +1144,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &61415321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61415316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &66298932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,6 +1632,7 @@ GameObject:
   - component: {fileID: 107323347}
   - component: {fileID: 107323346}
   - component: {fileID: 107323345}
+  - component: {fileID: 107323348}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -1708,6 +1754,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 107323343}
   m_CullTransparentMesh: 1
+--- !u!114 &107323348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107323343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &107522252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1981,6 +2041,7 @@ GameObject:
   - component: {fileID: 132914000}
   - component: {fileID: 132913999}
   - component: {fileID: 132914001}
+  - component: {fileID: 132914002}
   m_Layer: 5
   m_Name: FameTile (12)
   m_TagString: Untagged
@@ -2101,6 +2162,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &132914002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132913997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &136381799
 GameObject:
   m_ObjectHideFlags: 0
@@ -2422,6 +2497,7 @@ GameObject:
   - component: {fileID: 154473081}
   - component: {fileID: 154473080}
   - component: {fileID: 154473082}
+  - component: {fileID: 154473083}
   m_Layer: 5
   m_Name: DestructionTile (2)
   m_TagString: Untagged
@@ -2542,6 +2618,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &154473083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154473078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &176816885
 GameObject:
   m_ObjectHideFlags: 0
@@ -3657,6 +3747,7 @@ GameObject:
   - component: {fileID: 226756933}
   - component: {fileID: 226756932}
   - component: {fileID: 226756934}
+  - component: {fileID: 226756935}
   m_Layer: 5
   m_Name: FameTile (7)
   m_TagString: Untagged
@@ -3777,6 +3868,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &226756935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226756930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &237144637
 GameObject:
   m_ObjectHideFlags: 0
@@ -3789,6 +3894,7 @@ GameObject:
   - component: {fileID: 237144640}
   - component: {fileID: 237144639}
   - component: {fileID: 237144641}
+  - component: {fileID: 237144642}
   m_Layer: 5
   m_Name: Buy
   m_TagString: Untagged
@@ -3910,6 +4016,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &237144642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237144637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &240333497
 GameObject:
   m_ObjectHideFlags: 0
@@ -4139,6 +4259,7 @@ GameObject:
   - component: {fileID: 248005693}
   - component: {fileID: 248005692}
   - component: {fileID: 248005694}
+  - component: {fileID: 248005695}
   m_Layer: 5
   m_Name: DestructionTile (13)
   m_TagString: Untagged
@@ -4259,6 +4380,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &248005695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248005690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &249888110
 GameObject:
   m_ObjectHideFlags: 0
@@ -4456,6 +4591,7 @@ GameObject:
   - component: {fileID: 274450597}
   - component: {fileID: 274450596}
   - component: {fileID: 274450598}
+  - component: {fileID: 274450599}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -4480,9 +4616,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 113.5, y: 113.5}
+  m_AnchoredPosition: {x: 163.5, y: 163.5}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &274450596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4577,6 +4713,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &274450599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274450594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &276012888
 GameObject:
   m_ObjectHideFlags: 0
@@ -4826,15 +4976,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6e4ebe4b81527fe4cb13d5e9a2e97f99, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6e4ebe4b81527fe4cb13d5e9a2e97f99, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6e4ebe4b81527fe4cb13d5e9a2e97f99, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6e4ebe4b81527fe4cb13d5e9a2e97f99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5295,6 +5445,7 @@ GameObject:
   - component: {fileID: 314487689}
   - component: {fileID: 314487688}
   - component: {fileID: 314487690}
+  - component: {fileID: 314487691}
   m_Layer: 5
   m_Name: FameTile (9)
   m_TagString: Untagged
@@ -5415,6 +5566,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &314487691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314487686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &316838008
 GameObject:
   m_ObjectHideFlags: 0
@@ -5662,6 +5827,7 @@ GameObject:
   - component: {fileID: 322803693}
   - component: {fileID: 322803692}
   - component: {fileID: 322803691}
+  - component: {fileID: 322803694}
   m_Layer: 5
   m_Name: Pause button
   m_TagString: Untagged
@@ -5685,9 +5851,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: 150}
+  m_AnchoredPosition: {x: 100, y: 150}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &322803691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5782,6 +5948,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322803689}
   m_CullTransparentMesh: 1
+--- !u!114 &322803694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322803689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &340886939
 GameObject:
   m_ObjectHideFlags: 0
@@ -5903,6 +6083,7 @@ GameObject:
   - component: {fileID: 341178379}
   - component: {fileID: 341178378}
   - component: {fileID: 341178380}
+  - component: {fileID: 341178381}
   m_Layer: 5
   m_Name: Play Again
   m_TagString: Untagged
@@ -5926,9 +6107,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -761, y: 116}
+  m_AnchoredPosition: {x: -911, y: 166}
   m_SizeDelta: {x: 300, y: 100}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &341178378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6023,6 +6204,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &341178381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341178376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &355103406
 GameObject:
   m_ObjectHideFlags: 0
@@ -6143,6 +6338,7 @@ GameObject:
   - component: {fileID: 356067006}
   - component: {fileID: 356067005}
   - component: {fileID: 356067007}
+  - component: {fileID: 356067008}
   m_Layer: 5
   m_Name: FameTile (5)
   m_TagString: Untagged
@@ -6263,6 +6459,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &356067008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356067003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &364436530
 GameObject:
   m_ObjectHideFlags: 0
@@ -6500,6 +6710,7 @@ GameObject:
   - component: {fileID: 387828486}
   - component: {fileID: 387828485}
   - component: {fileID: 387828487}
+  - component: {fileID: 387828488}
   m_Layer: 5
   m_Name: DestructionTile (4)
   m_TagString: Untagged
@@ -6620,6 +6831,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &387828488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387828483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &388697825
 GameObject:
   m_ObjectHideFlags: 0
@@ -7033,6 +7258,7 @@ GameObject:
   - component: {fileID: 415461687}
   - component: {fileID: 415461686}
   - component: {fileID: 415461688}
+  - component: {fileID: 415461689}
   m_Layer: 5
   m_Name: Opened Card 3
   m_TagString: Untagged
@@ -7153,6 +7379,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &415461689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415461684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &427105503
 GameObject:
   m_ObjectHideFlags: 0
@@ -7165,6 +7405,7 @@ GameObject:
   - component: {fileID: 427105506}
   - component: {fileID: 427105505}
   - component: {fileID: 427105504}
+  - component: {fileID: 427105508}
   m_Layer: 5
   m_Name: ExitFight
   m_TagString: Untagged
@@ -7285,6 +7526,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -350}
   m_SizeDelta: {x: 317, y: 112}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &427105508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427105503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &428677717
 GameObject:
   m_ObjectHideFlags: 0
@@ -7297,6 +7552,7 @@ GameObject:
   - component: {fileID: 428677720}
   - component: {fileID: 428677719}
   - component: {fileID: 428677721}
+  - component: {fileID: 428677722}
   m_Layer: 5
   m_Name: DestructionTile (7)
   m_TagString: Untagged
@@ -7417,6 +7673,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &428677722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428677717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &434404163
 GameObject:
   m_ObjectHideFlags: 0
@@ -8462,6 +8732,7 @@ GameObject:
   - component: {fileID: 528183426}
   - component: {fileID: 528183425}
   - component: {fileID: 528183427}
+  - component: {fileID: 528183428}
   m_Layer: 5
   m_Name: FameTile (4)
   m_TagString: Untagged
@@ -8582,6 +8853,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &528183428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528183423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &534923144
 GameObject:
   m_ObjectHideFlags: 0
@@ -8943,6 +9228,7 @@ GameObject:
   - component: {fileID: 549097576}
   - component: {fileID: 549097575}
   - component: {fileID: 549097577}
+  - component: {fileID: 549097578}
   m_Layer: 5
   m_Name: FameTile (13)
   m_TagString: Untagged
@@ -9063,6 +9349,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &549097578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549097573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!4 &549734691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7676862100757794908, guid: 8b763bb95729f334a8da4100d4592611, type: 3}
@@ -9154,6 +9454,7 @@ GameObject:
   - component: {fileID: 575883222}
   - component: {fileID: 575883221}
   - component: {fileID: 575883220}
+  - component: {fileID: 575883223}
   m_Layer: 5
   m_Name: Next
   m_TagString: Untagged
@@ -9274,6 +9575,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 575883218}
   m_CullTransparentMesh: 1
+--- !u!114 &575883223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575883218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &577230719
 GameObject:
   m_ObjectHideFlags: 0
@@ -9286,6 +9601,7 @@ GameObject:
   - component: {fileID: 577230723}
   - component: {fileID: 577230722}
   - component: {fileID: 577230721}
+  - component: {fileID: 577230724}
   m_Layer: 5
   m_Name: Reroll
   m_TagString: Untagged
@@ -9407,6 +9723,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 577230719}
   m_CullTransparentMesh: 1
+--- !u!114 &577230724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577230719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &594184473
 GameObject:
   m_ObjectHideFlags: 0
@@ -9784,6 +10114,7 @@ GameObject:
   - component: {fileID: 616403195}
   - component: {fileID: 616403194}
   - component: {fileID: 616403196}
+  - component: {fileID: 616403197}
   m_Layer: 5
   m_Name: FameTile (2)
   m_TagString: Untagged
@@ -9904,6 +10235,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &616403197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616403192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &622906646
 GameObject:
   m_ObjectHideFlags: 0
@@ -10070,6 +10415,7 @@ GameObject:
   - component: {fileID: 637653869}
   - component: {fileID: 637653868}
   - component: {fileID: 637653870}
+  - component: {fileID: 637653871}
   m_Layer: 5
   m_Name: Prev
   m_TagString: Untagged
@@ -10190,6 +10536,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &637653871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637653866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &643220911
 GameObject:
   m_ObjectHideFlags: 0
@@ -10202,6 +10562,7 @@ GameObject:
   - component: {fileID: 643220915}
   - component: {fileID: 643220914}
   - component: {fileID: 643220913}
+  - component: {fileID: 643220916}
   m_Layer: 5
   m_Name: Confirm
   m_TagString: Untagged
@@ -10226,9 +10587,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 30, y: -190}
+  m_AnchoredPosition: {x: 155, y: -190}
   m_SizeDelta: {x: 250, y: 100}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &643220913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10323,6 +10684,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643220911}
   m_CullTransparentMesh: 1
+--- !u!114 &643220916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643220911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &644708590
 GameObject:
   m_ObjectHideFlags: 0
@@ -10583,6 +10958,7 @@ GameObject:
   - component: {fileID: 675909094}
   - component: {fileID: 675909093}
   - component: {fileID: 675909095}
+  - component: {fileID: 675909096}
   m_Layer: 5
   m_Name: DestructionTile (14)
   m_TagString: Untagged
@@ -10703,6 +11079,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &675909096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675909091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &684729000
 GameObject:
   m_ObjectHideFlags: 0
@@ -11406,6 +11796,7 @@ GameObject:
   - component: {fileID: 723701531}
   - component: {fileID: 723701530}
   - component: {fileID: 723701532}
+  - component: {fileID: 723701533}
   m_Layer: 5
   m_Name: FameTile (14)
   m_TagString: Untagged
@@ -11526,6 +11917,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &723701533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723701528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &726106030
 GameObject:
   m_ObjectHideFlags: 0
@@ -11876,6 +12281,7 @@ GameObject:
   - component: {fileID: 758685067}
   - component: {fileID: 758685066}
   - component: {fileID: 758685068}
+  - component: {fileID: 758685069}
   m_Layer: 5
   m_Name: DestructionTile (8)
   m_TagString: Untagged
@@ -11996,6 +12402,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &758685069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758685064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &764045276
 GameObject:
   m_ObjectHideFlags: 0
@@ -12983,6 +13403,7 @@ GameObject:
   - component: {fileID: 815056919}
   - component: {fileID: 815056918}
   - component: {fileID: 815056920}
+  - component: {fileID: 815056921}
   m_Layer: 5
   m_Name: Cancel
   m_TagString: Untagged
@@ -13115,6 +13536,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &815056921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815056916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &821026474
 GameObject:
   m_ObjectHideFlags: 0
@@ -13449,6 +13884,7 @@ GameObject:
   - component: {fileID: 848864462}
   - component: {fileID: 848864461}
   - component: {fileID: 848864463}
+  - component: {fileID: 848864464}
   m_Layer: 5
   m_Name: FameTile (3)
   m_TagString: Untagged
@@ -13569,6 +14005,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &848864464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848864459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &849095299
 GameObject:
   m_ObjectHideFlags: 0
@@ -13922,6 +14372,7 @@ GameObject:
   - component: {fileID: 859994228}
   - component: {fileID: 859994227}
   - component: {fileID: 859994226}
+  - component: {fileID: 859994229}
   m_Layer: 5
   m_Name: Surrender
   m_TagString: Untagged
@@ -14043,6 +14494,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 859994224}
   m_CullTransparentMesh: 1
+--- !u!114 &859994229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859994224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &861825744
 GameObject:
   m_ObjectHideFlags: 0
@@ -14130,6 +14595,7 @@ GameObject:
   - component: {fileID: 863638432}
   - component: {fileID: 863638431}
   - component: {fileID: 863638433}
+  - component: {fileID: 863638434}
   m_Layer: 5
   m_Name: DestructionTile (12)
   m_TagString: Untagged
@@ -14250,6 +14716,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &863638434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863638429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &874278956
 GameObject:
   m_ObjectHideFlags: 0
@@ -14756,6 +15236,7 @@ GameObject:
   - component: {fileID: 886776914}
   - component: {fileID: 886776913}
   - component: {fileID: 886776912}
+  - component: {fileID: 886776915}
   m_Layer: 5
   m_Name: Prev
   m_TagString: Untagged
@@ -14876,6 +15357,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 886776910}
   m_CullTransparentMesh: 1
+--- !u!114 &886776915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886776910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &895207505
 GameObject:
   m_ObjectHideFlags: 0
@@ -15288,6 +15783,7 @@ GameObject:
   - component: {fileID: 959009578}
   - component: {fileID: 959009577}
   - component: {fileID: 959009579}
+  - component: {fileID: 959009580}
   m_Layer: 5
   m_Name: Skip
   m_TagString: Untagged
@@ -15408,6 +15904,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &959009580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959009575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &962346538
 GameObject:
   m_ObjectHideFlags: 0
@@ -15574,6 +16084,7 @@ GameObject:
   - component: {fileID: 979423121}
   - component: {fileID: 979423120}
   - component: {fileID: 979423122}
+  - component: {fileID: 979423123}
   m_Layer: 5
   m_Name: Reset Pool
   m_TagString: Untagged
@@ -15694,6 +16205,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &979423123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979423118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &982442443
 GameObject:
   m_ObjectHideFlags: 0
@@ -16354,6 +16879,7 @@ GameObject:
   - component: {fileID: 1050686107}
   - component: {fileID: 1050686106}
   - component: {fileID: 1050686108}
+  - component: {fileID: 1050686109}
   m_Layer: 5
   m_Name: Nex
   m_TagString: Untagged
@@ -16474,6 +17000,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1050686109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050686104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1057731542
 GameObject:
   m_ObjectHideFlags: 0
@@ -16507,6 +17047,8 @@ MonoBehaviour:
   sfxSource: {fileID: 1638294354}
   MainMenuMusic: {fileID: 8300000, guid: 9b4e96b2f891b3a41969d982aa22a431, type: 3}
   BattleMusic: {fileID: 8300000, guid: 8429a872496227245888aff00fbca774, type: 3}
+  buttonClick: {fileID: 8300000, guid: 6adb7b8bc5f93e24ca08733721ab02d4, type: 3}
+  buttonHover: {fileID: 8300000, guid: e058c41cd84ed2a4e8fd334f92407b73, type: 3}
 --- !u!4 &1057731544
 Transform:
   m_ObjectHideFlags: 0
@@ -17532,6 +18074,7 @@ GameObject:
   - component: {fileID: 1155880286}
   - component: {fileID: 1155880285}
   - component: {fileID: 1155880284}
+  - component: {fileID: 1155880287}
   m_Layer: 5
   m_Name: Tutorial
   m_TagString: Untagged
@@ -17652,6 +18195,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155880282}
   m_CullTransparentMesh: 1
+--- !u!114 &1155880287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155880282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1163134803
 GameObject:
   m_ObjectHideFlags: 0
@@ -19088,6 +19645,7 @@ GameObject:
   - component: {fileID: 1273940189}
   - component: {fileID: 1273940188}
   - component: {fileID: 1273940190}
+  - component: {fileID: 1273940191}
   m_Layer: 5
   m_Name: Opened Card 1
   m_TagString: Untagged
@@ -19208,6 +19766,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1273940191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273940186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1284719487
 GameObject:
   m_ObjectHideFlags: 0
@@ -19588,6 +20160,7 @@ GameObject:
   - component: {fileID: 1306071285}
   - component: {fileID: 1306071284}
   - component: {fileID: 1306071283}
+  - component: {fileID: 1306071286}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -19709,6 +20282,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306071281}
   m_CullTransparentMesh: 1
+--- !u!114 &1306071286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306071281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1306923087
 GameObject:
   m_ObjectHideFlags: 0
@@ -19796,6 +20383,7 @@ GameObject:
   - component: {fileID: 1312655660}
   - component: {fileID: 1312655659}
   - component: {fileID: 1312655661}
+  - component: {fileID: 1312655662}
   m_Layer: 5
   m_Name: DestructionTile (9)
   m_TagString: Untagged
@@ -19916,6 +20504,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1312655662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312655657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &1328433106
 GameObject:
   m_ObjectHideFlags: 0
@@ -20188,6 +20790,7 @@ GameObject:
   - component: {fileID: 1361958651}
   - component: {fileID: 1361958650}
   - component: {fileID: 1361958649}
+  - component: {fileID: 1361958652}
   m_Layer: 5
   m_Name: Continue
   m_TagString: Untagged
@@ -20308,6 +20911,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1361958647}
   m_CullTransparentMesh: 1
+--- !u!114 &1361958652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361958647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1363871171
 GameObject:
   m_ObjectHideFlags: 0
@@ -21814,6 +22431,7 @@ GameObject:
   - component: {fileID: 1430657468}
   - component: {fileID: 1430657467}
   - component: {fileID: 1430657469}
+  - component: {fileID: 1430657470}
   m_Layer: 5
   m_Name: Opened Card 2
   m_TagString: Untagged
@@ -21934,6 +22552,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1430657470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430657465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1437555969
 GameObject:
   m_ObjectHideFlags: 0
@@ -22573,6 +23205,7 @@ GameObject:
   - component: {fileID: 1457335185}
   - component: {fileID: 1457335184}
   - component: {fileID: 1457335183}
+  - component: {fileID: 1457335186}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -22597,9 +23230,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30, y: -190}
+  m_AnchoredPosition: {x: -155, y: -190}
   m_SizeDelta: {x: 250, y: 100}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1457335183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22706,6 +23339,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1457335181}
   m_CullTransparentMesh: 1
+--- !u!114 &1457335186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457335181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1462152548
 GameObject:
   m_ObjectHideFlags: 0
@@ -23390,6 +24037,7 @@ GameObject:
   - component: {fileID: 1536454899}
   - component: {fileID: 1536454898}
   - component: {fileID: 1536454900}
+  - component: {fileID: 1536454901}
   m_Layer: 5
   m_Name: FameTile (11)
   m_TagString: Untagged
@@ -23510,6 +24158,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1536454901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536454896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &1541058359
 GameObject:
   m_ObjectHideFlags: 0
@@ -23674,6 +24336,7 @@ GameObject:
   - component: {fileID: 1551262695}
   - component: {fileID: 1551262694}
   - component: {fileID: 1551262696}
+  - component: {fileID: 1551262697}
   m_Layer: 5
   m_Name: DestructionTile (6)
   m_TagString: Untagged
@@ -23794,6 +24457,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1551262697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551262692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &1551356999
 GameObject:
   m_ObjectHideFlags: 0
@@ -24563,7 +25240,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Effect
+  m_Text: 
 --- !u!222 &1608135042
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25378,6 +26055,7 @@ GameObject:
   - component: {fileID: 1657022668}
   - component: {fileID: 1657022667}
   - component: {fileID: 1657022666}
+  - component: {fileID: 1657022669}
   m_Layer: 5
   m_Name: Resolve
   m_TagString: Untagged
@@ -25499,6 +26177,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1657022664}
   m_CullTransparentMesh: 1
+--- !u!114 &1657022669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657022664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1680634333
 GameObject:
   m_ObjectHideFlags: 0
@@ -25511,6 +26203,7 @@ GameObject:
   - component: {fileID: 1680634336}
   - component: {fileID: 1680634335}
   - component: {fileID: 1680634337}
+  - component: {fileID: 1680634338}
   m_Layer: 5
   m_Name: Save Result
   m_TagString: Untagged
@@ -25534,9 +26227,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -436, y: 116}
+  m_AnchoredPosition: {x: -586, y: 166}
   m_SizeDelta: {x: 300, y: 100}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1680634335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25631,6 +26324,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1680634338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680634333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1681918050
 GameObject:
   m_ObjectHideFlags: 0
@@ -26237,6 +26944,7 @@ GameObject:
   - component: {fileID: 1717197676}
   - component: {fileID: 1717197675}
   - component: {fileID: 1717197677}
+  - component: {fileID: 1717197678}
   m_Layer: 5
   m_Name: DestructionTile (11)
   m_TagString: Untagged
@@ -26357,6 +27065,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1717197678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717197673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &1718824597
 GameObject:
   m_ObjectHideFlags: 0
@@ -26369,6 +27091,7 @@ GameObject:
   - component: {fileID: 1718824600}
   - component: {fileID: 1718824599}
   - component: {fileID: 1718824601}
+  - component: {fileID: 1718824602}
   m_Layer: 5
   m_Name: FameTile (10)
   m_TagString: Untagged
@@ -26489,6 +27212,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1718824602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718824597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &1723020295
 GameObject:
   m_ObjectHideFlags: 0
@@ -26501,6 +27238,7 @@ GameObject:
   - component: {fileID: 1723020298}
   - component: {fileID: 1723020297}
   - component: {fileID: 1723020299}
+  - component: {fileID: 1723020300}
   m_Layer: 5
   m_Name: DestructionTile (3)
   m_TagString: Untagged
@@ -26621,6 +27359,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1723020300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1723020295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &1724223038
 GameObject:
   m_ObjectHideFlags: 0
@@ -29243,6 +29995,7 @@ GameObject:
   - component: {fileID: 1929152996}
   - component: {fileID: 1929152995}
   - component: {fileID: 1929152997}
+  - component: {fileID: 1929152998}
   m_Layer: 5
   m_Name: FameTile (6)
   m_TagString: Untagged
@@ -29363,6 +30116,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1929152998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929152993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &1933279910
 GameObject:
   m_ObjectHideFlags: 0
@@ -29973,6 +30740,7 @@ GameObject:
   - component: {fileID: 1970271474}
   - component: {fileID: 1970271473}
   - component: {fileID: 1970271475}
+  - component: {fileID: 1970271476}
   m_Layer: 5
   m_Name: FameTile (8)
   m_TagString: Untagged
@@ -30093,6 +30861,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1970271476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970271471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1 &1978388523
 GameObject:
   m_ObjectHideFlags: 0
@@ -31528,6 +32310,7 @@ MonoBehaviour:
   ExitConfirmationPanel: {fileID: 1163134803}
   PlayerInputBlocker: {fileID: 849875725}
   PlayerCardButtonPanel: {fileID: 493768436}
+  PlayerBuyButtonPanel: {fileID: 0}
   BirdsEyeView: {fileID: 39343584}
   FacingPlayer: {fileID: 999108288}
   FacingAI: {fileID: 181472121}
@@ -31563,6 +32346,10 @@ MonoBehaviour:
   AbilityCardEffect: {fileID: 8300000, guid: 2c4978bf2ead01f4cb0ce5b787da112b, type: 3}
   ChangeTurnSfx: {fileID: 8300000, guid: 1b0747f4d17e7134fa224c4fd6b529d0, type: 3}
   TurnAnnounce: {fileID: 131120527}
+  PlayerWin: {fileID: 8300000, guid: 4d5d832b309a4d843b8c78b1f50ac822, type: 3}
+  PlayerLose: {fileID: 8300000, guid: 530e8920276443f4e94e36f295fade5f, type: 3}
+  fameSfx: {fileID: 8300000, guid: 81f9f9865dbc69b4db51b85c245fe936, type: 3}
+  destructionSfx: {fileID: 8300000, guid: d9494983b72000c4e9f644384bfb02f2, type: 3}
   Player:
     ui:
       Profile: {fileID: 1884719978}
@@ -31650,6 +32437,7 @@ MonoBehaviour:
   WinConText: {fileID: 808826551}
   PlayerWinState: {fileID: 1864166317}
   simulasi: 0
+  slowDown: 0
 --- !u!114 &2065420430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31715,11 +32503,12 @@ MonoBehaviour:
   dropRadius: 1.5
   diceTray: {fileID: 849095300}
   forTest: 0
-  targetFace: 03000000
-  numberOfDiceForFace: 06000000
+  targetFace: 0300000003000000
+  numberOfDiceForFace: 03000000
   DiceRollSfx: {fileID: 8300000, guid: c830890f12518be4b9118f26bd30ea88, type: 3}
   DiceLockSfx: {fileID: 8300000, guid: 394a64f35623e11479c8dde1f387498e, type: 3}
   ResultReady: 0
+  volume: 0.5
 --- !u!114 &2065420432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32336,6 +33125,7 @@ GameObject:
   - component: {fileID: 2124471685}
   - component: {fileID: 2124471684}
   - component: {fileID: 2124471686}
+  - component: {fileID: 2124471687}
   m_Layer: 5
   m_Name: DestructionTile (5)
   m_TagString: Untagged
@@ -32456,6 +33246,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2124471687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124471682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

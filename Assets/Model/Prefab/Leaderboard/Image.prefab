@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 479682646240082361}
   - component: {fileID: 2260209378681410634}
   - component: {fileID: 4762494757878102366}
+  - component: {fileID: 170258436204526491}
   m_Layer: 5
   m_Name: Delete
   m_TagString: Untagged
@@ -212,6 +213,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &170258436204526491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439976751604537933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &2076933507402538335
 GameObject:
   m_ObjectHideFlags: 0

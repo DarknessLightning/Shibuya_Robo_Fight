@@ -60,6 +60,7 @@ public class DiceManager : MonoBehaviour
     public AudioClip DiceLockSfx;
 
     public bool ResultReady = false;
+    public float volume = 0.5f;
     void Start()
     {
         centerPosition = new Vector3(diceTray.position.x, 5f, diceTray.position.z);
@@ -171,7 +172,7 @@ public class DiceManager : MonoBehaviour
         if (reroll <= 0) return;
 
         ResultReady = false;
-        AudioManager.instance.PlaySfx(DiceRollSfx);
+        AudioManager.instance.PlaySfx(DiceRollSfx, volume);
         foreach (DiceEvaluate dice in allDices)
         {
             if (dice.locked) continue;

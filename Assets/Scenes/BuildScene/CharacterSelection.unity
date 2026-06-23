@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 195651947}
   - component: {fileID: 195651948}
   - component: {fileID: 195651946}
+  - component: {fileID: 195651949}
   m_Layer: 5
   m_Name: Select Aru
   m_TagString: Untagged
@@ -493,6 +494,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &195651949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195651944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &246784244
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +701,7 @@ MonoBehaviour:
   - {fileID: 509599408}
   - {fileID: 293442661}
   - {fileID: 873866923}
+  handlers: []
   selectPanelBtn: {fileID: 1907143123}
   pointer: {fileID: 1975430529}
 --- !u!114 &291077621
@@ -763,6 +779,7 @@ GameObject:
   - component: {fileID: 293442660}
   - component: {fileID: 293442661}
   - component: {fileID: 293442659}
+  - component: {fileID: 293442662}
   m_Layer: 5
   m_Name: Select Ikai
   m_TagString: Untagged
@@ -895,6 +912,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &293442662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293442657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &333758124
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,6 +938,7 @@ GameObject:
   - component: {fileID: 333758127}
   - component: {fileID: 333758126}
   - component: {fileID: 333758128}
+  - component: {fileID: 333758129}
   m_Layer: 5
   m_Name: Select Kame
   m_TagString: Untagged
@@ -1039,6 +1071,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &333758129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333758124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &378436542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,6 +1580,7 @@ GameObject:
   - component: {fileID: 509599407}
   - component: {fileID: 509599408}
   - component: {fileID: 509599406}
+  - component: {fileID: 509599409}
   m_Layer: 5
   m_Name: Select Kame
   m_TagString: Untagged
@@ -1666,6 +1713,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &509599409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509599404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &553382090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1678,6 +1739,7 @@ GameObject:
   - component: {fileID: 553382094}
   - component: {fileID: 553382093}
   - component: {fileID: 553382092}
+  - component: {fileID: 553382095}
   m_Layer: 5
   m_Name: Select Button
   m_TagString: Untagged
@@ -1798,6 +1860,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 553382090}
   m_CullTransparentMesh: 1
+--- !u!114 &553382095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553382090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &555725809
 GameObject:
   m_ObjectHideFlags: 0
@@ -2130,6 +2206,7 @@ GameObject:
   - component: {fileID: 829982640}
   - component: {fileID: 829982639}
   - component: {fileID: 829982641}
+  - component: {fileID: 829982642}
   m_Layer: 5
   m_Name: Select Button
   m_TagString: Untagged
@@ -2250,6 +2327,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &829982642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829982637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &873866922
 GameObject:
   m_ObjectHideFlags: 0
@@ -2262,6 +2353,7 @@ GameObject:
   - component: {fileID: 873866925}
   - component: {fileID: 873866923}
   - component: {fileID: 873866924}
+  - component: {fileID: 873866927}
   m_Layer: 5
   m_Name: Select Saka
   m_TagString: Untagged
@@ -2394,6 +2486,20 @@ RectTransform:
   m_AnchoredPosition: {x: 115, y: -132.5}
   m_SizeDelta: {x: 220, y: 255}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &873866927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873866922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &892664355
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,6 +2512,7 @@ GameObject:
   - component: {fileID: 892664358}
   - component: {fileID: 892664357}
   - component: {fileID: 892664359}
+  - component: {fileID: 892664360}
   m_Layer: 5
   m_Name: Select Aru
   m_TagString: Untagged
@@ -2538,6 +2645,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &892664360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892664355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &940734596
 GameObject:
   m_ObjectHideFlags: 0
@@ -2625,6 +2746,7 @@ GameObject:
   - component: {fileID: 973649074}
   - component: {fileID: 973649073}
   - component: {fileID: 973649075}
+  - component: {fileID: 973649076}
   m_Layer: 5
   m_Name: Select Saka
   m_TagString: Untagged
@@ -2757,6 +2879,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &973649076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973649071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1020383717
 GameObject:
   m_ObjectHideFlags: 0
@@ -3019,6 +3155,7 @@ GameObject:
   - component: {fileID: 1131158607}
   - component: {fileID: 1131158606}
   - component: {fileID: 1131158605}
+  - component: {fileID: 1131158608}
   m_Layer: 5
   m_Name: Back2Menu
   m_TagString: Untagged
@@ -3140,6 +3277,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1131158603}
   m_CullTransparentMesh: 1
+--- !u!114 &1131158608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131158603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1143563073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3699,6 +3850,7 @@ GameObject:
   - component: {fileID: 1715533815}
   - component: {fileID: 1715533814}
   - component: {fileID: 1715533817}
+  - component: {fileID: 1715533818}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -3844,6 +3996,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1715533818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715533812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1716787236
 GameObject:
   m_ObjectHideFlags: 0
@@ -3856,6 +4022,7 @@ GameObject:
   - component: {fileID: 1716787239}
   - component: {fileID: 1716787238}
   - component: {fileID: 1716787240}
+  - component: {fileID: 1716787241}
   m_Layer: 5
   m_Name: Select Ikai
   m_TagString: Untagged
@@ -3988,6 +4155,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1716787241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716787236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1751391018
 GameObject:
   m_ObjectHideFlags: 0
@@ -4326,6 +4507,8 @@ MonoBehaviour:
   sfxSource: {fileID: 459257650}
   MainMenuMusic: {fileID: 8300000, guid: 9b4e96b2f891b3a41969d982aa22a431, type: 3}
   BattleMusic: {fileID: 8300000, guid: 8429a872496227245888aff00fbca774, type: 3}
+  buttonClick: {fileID: 8300000, guid: 6adb7b8bc5f93e24ca08733721ab02d4, type: 3}
+  buttonHover: {fileID: 8300000, guid: e058c41cd84ed2a4e8fd334f92407b73, type: 3}
 --- !u!4 &1884704865
 Transform:
   m_ObjectHideFlags: 0
@@ -4356,6 +4539,7 @@ GameObject:
   - component: {fileID: 1907143124}
   - component: {fileID: 1907143123}
   - component: {fileID: 1907143126}
+  - component: {fileID: 1907143127}
   m_Layer: 5
   m_Name: Enemy
   m_TagString: Untagged
@@ -4501,6 +4685,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1907143127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907143121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a53915b6b5ea4fbc7198f9bf3c68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  hoverable: 1
 --- !u!1 &1975430528
 GameObject:
   m_ObjectHideFlags: 0
@@ -4800,6 +4998,7 @@ MonoBehaviour:
   - {fileID: 333758126}
   - {fileID: 1716787238}
   - {fileID: 973649073}
+  handlers: []
   selectPanelBtn: {fileID: 1715533814}
   pointer: {fileID: 1975430529}
 --- !u!4 &2132575938 stripped

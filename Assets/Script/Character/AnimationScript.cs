@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnimationScript : MonoBehaviour
@@ -32,12 +31,15 @@ public class AnimationScript : MonoBehaviour
 
     public IEnumerator PlayVisualEffect(GameObject FX, Transform titik, float waitAmount)
     {
-        yield return new WaitForSeconds(waitAmount);
-        GameObject partikel = Instantiate(FX, titik.position + FX.transform.position, Quaternion.Euler(Vector3.zero));
-        partikel.transform.rotation = transform.rotation * FX.transform.localRotation;
-        partikel.transform.localScale = Vector3.Scale(transform.lossyScale, partikel.transform.localScale);
-        yield return new WaitForSeconds(3f - waitAmount);
-        Destroy(partikel);
+        if (FX != null)
+        {
+            yield return new WaitForSeconds(waitAmount);
+            GameObject partikel = Instantiate(FX, titik.position + FX.transform.position, Quaternion.Euler(Vector3.zero));
+            partikel.transform.rotation = transform.rotation * FX.transform.localRotation;
+            partikel.transform.localScale = Vector3.Scale(transform.lossyScale, partikel.transform.localScale);
+            yield return new WaitForSeconds(3f - waitAmount);
+            Destroy(partikel);
+        }
     }
 
     public void PlaySpecialSkill(bool activate)

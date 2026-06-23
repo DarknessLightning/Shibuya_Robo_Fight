@@ -63,6 +63,7 @@ public class FightManager : MonoBehaviour
     public GameObject ExitConfirmationPanel;
     public GameObject PlayerInputBlocker;
     public GameObject PlayerCardButtonPanel;
+    public GameObject PlayerBuyButtonPanel;
 
     [Header("Camera Pivots")]
     public Transform BirdsEyeView;
@@ -105,6 +106,10 @@ public class FightManager : MonoBehaviour
     public AudioClip AbilityCardEffect;
     public AudioClip ChangeTurnSfx;
     public Text TurnAnnounce;
+    public AudioClip PlayerWin;
+    public AudioClip PlayerLose;
+    public AudioClip fameSfx;
+    public AudioClip destructionSfx;
 
     [Header("Player Data")]
     public PlayerData Player;
@@ -149,6 +154,7 @@ public class FightManager : MonoBehaviour
 
     [Header("Simulasi")]
     public bool simulasi = false;
+    public bool slowDown = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -175,6 +181,10 @@ public class FightManager : MonoBehaviour
         Player.opponent = AI;
         AI.opponent = Player;
         if (simulasi)
+        {
+            ActionPhase();
+        }
+        else if (slowDown)
         {
             ActionPhase();
         }
@@ -578,6 +588,8 @@ public class FightManager : MonoBehaviour
         target.CurrentHP = Mathf.Clamp(target.CurrentHP += deltaHealth, 0, target.character.hp);
         if (deltaHealth < 0)
         {
+            if(slowDown)
+                Time.timeScale = 0.5f;
             SetCameraPos(target == Player ? OverAIShoulder : OverPlayerShoulder);
             target.opponent.ui.ModelAnimator.PlayAttack();
             //yield return new WaitForSeconds(target.opponent.character.soundEffects.timingForAttack);
@@ -774,11 +786,11 @@ public class FightManager : MonoBehaviour
         HpPanel.SetActive(false);
 
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
-
         float waitDuration = 0f;
         if (face == DiceFace.Fame)
         {
             target.ui.ModelAnimator.PlayFame();
+            AudioManager.instance.PlaySfx(fameSfx);
             waitDuration = target.ui.ModelAnimator.brag.length - target.ui.ModelAnimator.timingForLaugh;
             //yield return new WaitForSeconds(target.character.soundEffects.timingForFame);
             //AudioManager.instance.PlaySfx(target.character.soundEffects.Fame);
@@ -787,6 +799,7 @@ public class FightManager : MonoBehaviour
         else if (face == DiceFace.Destruction)
         {
             target.ui.ModelAnimator.PlayDestruction();
+            AudioManager.instance.PlaySfx(destructionSfx);
             waitDuration = target.ui.ModelAnimator.destruction.length - target.ui.ModelAnimator.timingForLaugh;
             //yield return new WaitForSeconds(target.character.soundEffects.timingForDestruction);
             //AudioManager.instance.PlaySfx(target.character.soundEffects.Destruction);
@@ -900,6 +913,7 @@ public class FightManager : MonoBehaviour
         GameOverPanel.SetActive(true);
         SetCameraPos(winner == Player ? AILost : PlayerLost);
         OpenGameOverPanel();
+        AudioManager.instance.PlaySfx(playerWin ? PlayerWin : PlayerLose);
     }
 
     public void OpenGameOverPanel()
@@ -955,11 +969,13 @@ public class FightManager : MonoBehaviour
         {
             selectCardPhase(true);
             PlayerCardButtonPanel.SetActive(true);
+            PlayerBuyButtonPanel.SetActive(true);
         }
         else
         {
             aiLogic.StartAction(AIState.CardBuy);
             PlayerCardButtonPanel.SetActive(false);
+            PlayerBuyButtonPanel.SetActive(false);
         }
     }
 

@@ -9,6 +9,9 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip MainMenuMusic;
     public AudioClip BattleMusic;
+
+    public AudioClip buttonClick;
+    public AudioClip buttonHover;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
@@ -34,9 +37,20 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    public void PlaySfx(AudioClip clip)
+    public void clickButton()
     {
-        sfxSource.PlayOneShot(clip);
+        sfxSource.PlayOneShot(buttonClick);
+    }
+
+    public void hoverButton()
+    {
+        sfxSource.PlayOneShot(buttonHover);
+    }
+
+    public void PlaySfx(AudioClip clip, float volume = -1)
+    {
+        if (volume < 0) volume = sfxSource.volume;
+        sfxSource.PlayOneShot(clip, volume);
     }
 
     public void PlayBattleMusic()
