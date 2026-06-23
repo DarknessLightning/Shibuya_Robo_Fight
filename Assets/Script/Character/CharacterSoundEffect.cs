@@ -15,7 +15,7 @@ public class CharacterSoundEffect : ScriptableObject
     public AudioClip Heal;
     public float timingForHeal;
 
-    [Header("Hurst")]
+    [Header("Hurt")]
     public AudioClip Hurt;
 
     [Header("Signal")]

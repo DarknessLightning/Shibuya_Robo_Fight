@@ -42,6 +42,10 @@ public class BuzzTilePlacing : MonoBehaviour
     private PlayerState[] selectedField;
     private bool kiri = false;
 
+    public bool forTest;
+    public int[] indexes;
+    public PlayerState[] testStates;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -50,6 +54,15 @@ public class BuzzTilePlacing : MonoBehaviour
             FameStates[i] = PlayerState.None;
             DestructionStates[i] = PlayerState.None;
         }
+
+        if (forTest && Mathf.Min(indexes.Length, testStates.Length) > 0)
+        {
+            for(int i = 0; i < Mathf.Min(indexes.Length, testStates.Length); i++)
+            {
+                DestructionStates[indexes[i]] = testStates[i];
+            }
+        }
+
         UpdateTileSprites();
         if(FightManager.instance != null)
         {
@@ -92,13 +105,13 @@ public class BuzzTilePlacing : MonoBehaviour
         Renderer rend = tileObject.GetComponent<Renderer>();
         if (state == PlayerState.None)
         {
-            rend.material.mainTexture = null;
+            rend.material.SetTexture("_BaseMap", null);
             tileObject.SetActive(false);
         }
         else
         {
             tileObject.SetActive(true);
-            rend.material.mainTexture = TileTexture[states.IndexOf(state) - 1].texture;
+            rend.material.SetTexture("_BaseMap", TileTexture[states.IndexOf(state) - 1].texture);
         }
     }
 

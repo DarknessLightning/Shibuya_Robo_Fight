@@ -62,6 +62,8 @@ public class FightManager : MonoBehaviour
     public GameObject PausePanel;
     public GameObject ExitConfirmationPanel;
     public GameObject PlayerInputBlocker;
+    public GameObject PlayerCardButtonPanel;
+    public GameObject PlayerBuyButtonPanel;
 
     [Header("Camera Pivots")]
     public Transform BirdsEyeView;
@@ -104,6 +106,10 @@ public class FightManager : MonoBehaviour
     public AudioClip AbilityCardEffect;
     public AudioClip ChangeTurnSfx;
     public Text TurnAnnounce;
+    public AudioClip PlayerWin;
+    public AudioClip PlayerLose;
+    public AudioClip fameSfx;
+    public AudioClip destructionSfx;
 
     [Header("Player Data")]
     public PlayerData Player;
@@ -148,6 +154,7 @@ public class FightManager : MonoBehaviour
 
     [Header("Simulasi")]
     public bool simulasi = false;
+    public bool slowDown = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -174,6 +181,10 @@ public class FightManager : MonoBehaviour
         Player.opponent = AI;
         AI.opponent = Player;
         if (simulasi)
+        {
+            ActionPhase();
+        }
+        else if (slowDown)
         {
             ActionPhase();
         }
@@ -481,7 +492,7 @@ public class FightManager : MonoBehaviour
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
         SkillPointPopUp.SetActive(true);
         target.ui.ModelAnimator.PlaySpecialSkill(power >= cost);
-        AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
+        //AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
         SkillPointText.text = "0";
 
         int startPower = 0;
@@ -490,14 +501,16 @@ public class FightManager : MonoBehaviour
         float elapsed = 0f;
         float duration = target.ui.ModelAnimator.charge.length;
 
-        bool sfxPlayed = false;
+        //bool sfxPlayed = false;
         while (elapsed < duration)
         {
+            /*
             if (elapsed >= target.character.soundEffects.timingForCharge && !sfxPlayed)
             {
                 AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
                 sfxPlayed = true;
             }
+            //*/
             elapsed += Time.deltaTime;
 
             // Hitung persentase progress (0.0 sampai 1.0)
@@ -518,9 +531,9 @@ public class FightManager : MonoBehaviour
             SpecialSkillPanel.SetActive(true);
             Image specialSkillImage = SpecialSkillPanel.GetComponent<Image>();
             specialSkillImage.sprite = target.character.specialSkill;
-            yield return new WaitForSeconds(target.character.soundEffects.timingForSignal);
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Signal);
-            yield return new WaitForSeconds(duration - target.character.soundEffects.timingForSignal);
+            //yield return new WaitForSeconds(target.character.soundEffects.timingForSignal);
+            //AudioManager.instance.PlaySfx(target.character.soundEffects.Signal);
+            yield return new WaitForSeconds(duration);
 
             switch (PlayerTurn.character.skill)
             {
@@ -575,14 +588,17 @@ public class FightManager : MonoBehaviour
         target.CurrentHP = Mathf.Clamp(target.CurrentHP += deltaHealth, 0, target.character.hp);
         if (deltaHealth < 0)
         {
+            if(slowDown)
+                Time.timeScale = 0.5f;
             SetCameraPos(target == Player ? OverAIShoulder : OverPlayerShoulder);
             target.opponent.ui.ModelAnimator.PlayAttack();
-            yield return new WaitForSeconds(target.opponent.character.soundEffects.timingForAttack);
-            AudioManager.instance.PlaySfx(target.opponent.character.soundEffects.Attack);
+            //yield return new WaitForSeconds(target.opponent.character.soundEffects.timingForAttack);
+            //AudioManager.instance.PlaySfx(target.opponent.character.soundEffects.Attack);
             float duration = target.opponent.ui.ModelAnimator.attack.length - target.ui.ModelAnimator.timingForAttack;
-            yield return new WaitForSeconds(duration - target.opponent.character.soundEffects.timingForAttack);
+            yield return new WaitForSeconds(duration);
+                //target.opponent.character.soundEffects.timingForAttack
             target.ui.ModelAnimator.PlayHit();
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Hurt);
+            //AudioManager.instance.PlaySfx(target.character.soundEffects.Hurt);
             //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForHit);
             float fillAmount = (float)target.CurrentHP / target.character.hp;
             target.ui.HPBar.fillAmount = fillAmount;
@@ -597,14 +613,16 @@ public class FightManager : MonoBehaviour
 
             int startAmount = currentHealth;
             float fillAmount;
-            bool sfxPlayed = false;
+            //bool sfxPlayed = false;
             while (elapsed < duration)
             {
+                /*
                 if(elapsed >= target.character.soundEffects.timingForHeal && !sfxPlayed)
                 {
                     AudioManager.instance.PlaySfx(target.character.soundEffects.Heal);
                     sfxPlayed = true;
                 }
+                //*/
                 elapsed += Time.deltaTime;
                 float percentage = elapsed / duration;
 
@@ -640,7 +658,7 @@ public class FightManager : MonoBehaviour
         if (ApAmount == 0) return;
         Enqueue(charge(target, ApAmount));
 
-        if (!resolvingDice)
+        if (!resolvingDice || ApAmount < 0)
         {
             TriggerCardEffect(target,
                 ApAmount > 0 ? TriggerEvent.OnAdd : TriggerEvent.OnSubtract,
@@ -668,15 +686,17 @@ public class FightManager : MonoBehaviour
             int startEnergy = currentEnergy;
             int targetEnergy = currentEnergy + totalTambah;
 
-            bool sfxPlayed = false;
+            //bool sfxPlayed = false;
 
             while (elapsed < duration)
             {
+                /*
                 if(elapsed >= target.character.soundEffects.timingForCharge && !sfxPlayed)
                 {
                     AudioManager.instance.PlaySfx(target.character.soundEffects.Energize);
                     sfxPlayed = true;
                 }
+                //*/
                 elapsed += Time.deltaTime;
 
                 // Hitung persentase progress (0.0 sampai 1.0)
@@ -766,29 +786,32 @@ public class FightManager : MonoBehaviour
         HpPanel.SetActive(false);
 
         SetCameraPos(target == Player ? FacingPlayer : FacingAI);
-
         float waitDuration = 0f;
         if (face == DiceFace.Fame)
         {
             target.ui.ModelAnimator.PlayFame();
+            AudioManager.instance.PlaySfx(fameSfx);
             waitDuration = target.ui.ModelAnimator.brag.length - target.ui.ModelAnimator.timingForLaugh;
-            yield return new WaitForSeconds(target.character.soundEffects.timingForFame);
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Fame);
-            waitDuration -= target.character.soundEffects.timingForFame;
+            //yield return new WaitForSeconds(target.character.soundEffects.timingForFame);
+            //AudioManager.instance.PlaySfx(target.character.soundEffects.Fame);
+            //waitDuration -= target.character.soundEffects.timingForFame;
         }
         else if (face == DiceFace.Destruction)
         {
             target.ui.ModelAnimator.PlayDestruction();
+            AudioManager.instance.PlaySfx(destructionSfx);
             waitDuration = target.ui.ModelAnimator.destruction.length - target.ui.ModelAnimator.timingForLaugh;
-            yield return new WaitForSeconds(target.character.soundEffects.timingForDestruction);
-            AudioManager.instance.PlaySfx(target.character.soundEffects.Destruction);
-            waitDuration -= target.character.soundEffects.timingForDestruction;
+            //yield return new WaitForSeconds(target.character.soundEffects.timingForDestruction);
+            //AudioManager.instance.PlaySfx(target.character.soundEffects.Destruction);
+            //waitDuration -= target.character.soundEffects.timingForDestruction;
         }
 
         yield return new WaitForSeconds(waitDuration);
 
         SetCameraPos(target == Player ? BehindPlayer : BehindAI);
+        tokenMovement.duration = target.ui.ModelAnimator.timingForLaugh;
         yield return tokenMovement.Move(face, delta);
+        //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForLaugh - 1);
 
         SetCameraPos(BirdsEyeView);
 
@@ -797,7 +820,7 @@ public class FightManager : MonoBehaviour
 
         CheckWinCondition();
         
-        int index =  face == DiceFace.Fame ? FameIndex : DestructionIndex;
+        int index = face == DiceFace.Fame ? FameIndex : DestructionIndex;
         switch(buzzTilePlacing.GetTileState(index - 1, face == DiceFace.Fame))
         {
             case PlayerState.HealthPoint:
@@ -890,6 +913,7 @@ public class FightManager : MonoBehaviour
         GameOverPanel.SetActive(true);
         SetCameraPos(winner == Player ? AILost : PlayerLost);
         OpenGameOverPanel();
+        AudioManager.instance.PlaySfx(playerWin ? PlayerWin : PlayerLose);
     }
 
     public void OpenGameOverPanel()
@@ -944,10 +968,14 @@ public class FightManager : MonoBehaviour
         if (!PlayerTurn.isAI)
         {
             selectCardPhase(true);
+            PlayerCardButtonPanel.SetActive(true);
+            PlayerBuyButtonPanel.SetActive(true);
         }
         else
         {
             aiLogic.StartAction(AIState.CardBuy);
+            PlayerCardButtonPanel.SetActive(false);
+            PlayerBuyButtonPanel.SetActive(false);
         }
     }
 
@@ -1128,10 +1156,12 @@ public class FightManager : MonoBehaviour
     {
         PlayerTurn.Cards.Add(card);
         PlayerTurn.ui.CardAmount.text = PlayerTurn.Cards.Count.ToString();
+        /*
         TriggerCardEffect(PlayerTurn,
             TriggerEvent.OnAdd,
             PlayerState.AbilityCard,
             1);
+        //*/
     }
 
     public void GiveBuzzTile(BuzzTile buzzTile)

@@ -49,15 +49,20 @@ public class ShowPermanentCards : MonoBehaviour
 
     public void SetSprite()
     {
-        if(cards.Count == 0)
+        if (cards == null || cards.Count == 0)
         {
             middle.gameObject.SetActive(false);
+            left.gameObject.SetActive(false);
+            right.gameObject.SetActive(false);
+            cardEffect.text = "";
+            prevBtn.SetActive(false);
+            nextBtn.SetActive(false);
+            return;
         }
-        else
-        {
-            middle.sprite = cards[index].cardSprite;
-            middle.gameObject.SetActive(true);
-        }
+
+        middle.sprite = cards[index].cardSprite;
+        middle.gameObject.SetActive(true);
+
         if (index <= 0)
         {
             left.gameObject.SetActive(false);
@@ -69,6 +74,7 @@ public class ShowPermanentCards : MonoBehaviour
             left.gameObject.SetActive(true);
             prevBtn.SetActive(true);
         }
+
         if (index >= cards.Count - 1)
         {
             right.gameObject.SetActive(false);
@@ -80,6 +86,7 @@ public class ShowPermanentCards : MonoBehaviour
             right.gameObject.SetActive(true);
             nextBtn.SetActive(true);
         }
+
         cardEffect.text = cards[index].cardEffect;
     }
 

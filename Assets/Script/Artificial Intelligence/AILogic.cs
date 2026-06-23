@@ -292,6 +292,11 @@ public class AILogic : MonoBehaviour
                         score += value * 20;
                     else
                         score += value * 5;
+
+                    if(self.CurrentHP == self.character.hp)
+                    {
+                        return -999;
+                    }
                 }
                 else
                 {

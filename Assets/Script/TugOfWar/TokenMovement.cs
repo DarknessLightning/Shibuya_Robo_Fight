@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TokenMovement : MonoBehaviour
@@ -14,11 +15,13 @@ public class TokenMovement : MonoBehaviour
 
     private int fameIndex = 7;
     private int destructionIndex = 7;
+
+    public float duration = 0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        fameIndex = Mathf.CeilToInt((float)FameTiles.Length/2);
-        destructionIndex = Mathf.CeilToInt((float)DestructionTiles.Length / 2);
+        //fameIndex = Mathf.CeilToInt((float)FameTiles.Length/2);
+        //destructionIndex = Mathf.CeilToInt((float)DestructionTiles.Length / 2);
     }
 
     // Update is called once per frame
@@ -52,34 +55,82 @@ public class TokenMovement : MonoBehaviour
 
     public IEnumerator Move(DiceFace face, int delta)
     {
+        GameObject token = null;
+        List<Transform> target = new();
+        int Start = 0;
         if(face == DiceFace.Fame)
         {
+            Start = fameIndex;
             fameIndex += delta;
+            token = FameToken;
+            for(int i = 1; i <= Mathf.Abs(delta); i++)
+            {
+                int index = Start + i * delta / Mathf.Abs(delta);
+                if (index <= 0 || index >= 14)
+                {
+                    target.Add(EndTiles[index / 14]);
+                    break;
+                }
 
+                target.Add(FameTiles[index - 1]);
+            }
+            duration /= target.Count;
+            foreach(Transform t in target)
+            {
+                yield return MoveToken(FameToken, t);
+            }
+            /*
             if (fameIndex > 0 && fameIndex < 14)
             {
-                yield return MoveToken(FameToken, FameTiles[fameIndex - 1]);
+                //yield return MoveToken(FameToken, FameTiles[fameIndex - 1]);
+                target = FameTiles[fameIndex - 1];
             }
             else
             {
-                yield return MoveToken(FameToken, EndTiles[fameIndex / 14]);
+                //yield return MoveToken(FameToken, EndTiles[fameIndex / 14]);
+                target = EndTiles[fameIndex / 14];
             }
+            //*/
         }
 
         else if(face == DiceFace.Destruction)
         {
+            Start = destructionIndex;
             destructionIndex += delta;
+            token = DestructionToken;
+            for (int i = 1; i <= Mathf.Abs(delta); i++)
+            {
+                int index = Start + i * delta / Mathf.Abs(delta);
+                if (index <= 0 || index >= 14)
+                {
+                    target.Add(EndTiles[index / 14]);
+                    break;
+                }
 
+                target.Add(DestructionTiles[index - 1]);
+            }
+            duration /= target.Count;
+            foreach (Transform t in target)
+            {
+                yield return MoveToken(DestructionToken, t);
+            }
+
+            /*
             if (destructionIndex > 0 && destructionIndex < 14)
             {
-                yield return MoveToken(DestructionToken, DestructionTiles[destructionIndex - 1]);
+                //yield return MoveToken(DestructionToken, DestructionTiles[destructionIndex - 1]);
+                target = FameTiles[destructionIndex - 1];
             }
             else
             {
-                yield return MoveToken(DestructionToken, EndTiles[destructionIndex / 14]);
+                //yield return MoveToken(DestructionToken, EndTiles[destructionIndex / 14]);
+                target = EndTiles[destructionIndex / 14];
             }
+            //*/
         }
     }
+
+
 
     public IEnumerator MoveToken(GameObject token, Transform tile)
     {
@@ -87,7 +138,7 @@ public class TokenMovement : MonoBehaviour
         Vector3 end = new Vector3(tile.position.x, start.y, tile.position.z);
 
         float elapsed = 0f;
-        float duration = 1f;
+        //float duration = 1f;
 
         while (elapsed < duration)
         {

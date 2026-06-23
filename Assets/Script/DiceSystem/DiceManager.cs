@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum DiceFace
@@ -59,6 +60,7 @@ public class DiceManager : MonoBehaviour
     public AudioClip DiceLockSfx;
 
     public bool ResultReady = false;
+    public float volume = 0.5f;
     void Start()
     {
         centerPosition = new Vector3(diceTray.position.x, 5f, diceTray.position.z);
@@ -74,7 +76,7 @@ public class DiceManager : MonoBehaviour
     {
         if (FightManager.instance != null && FightManager.instance.PlayerTurn.isAI) return; 
         // Jika dadu masih menggelinding/bergerak, hentikan pembacaan input
-        if (IsMoving()) return;
+        if (!ResultReady) return;
 
 
         // Deteksi Klik Mouse untuk Lock / Unlock Dadu
@@ -131,11 +133,13 @@ public class DiceManager : MonoBehaviour
                 newDice.centerPosition = centerPosition;
                 newDice.Init();
             }
+
+
         }
         else if(allDices.Count > diceAmount)
         {
             List<DiceEvaluate> deleteDices = new();
-            for(int i = allDices.Count - 1; i > diceAmount - 1; i++)
+            for(int i = allDices.Count - 1; i > diceAmount - 1; i--)
             {
                 deleteDices.Add(allDices[i]);
             }
@@ -144,18 +148,15 @@ public class DiceManager : MonoBehaviour
                 allDices.Remove(dice);
                 Destroy(dice.gameObject);
             }
-
         }
-        else
+        foreach(DiceEvaluate dice in lockedDices)
         {
-            foreach(DiceEvaluate dice in lockedDices)
-            {
-                dice.locked = false;
-                dice.rb.useGravity = true;
-                dice.rb.isKinematic = false;
-            }
-            lockedDices.Clear();
+            dice.locked = false;
+            dice.rb.useGravity = true;
+            dice.rb.isKinematic = false;
         }
+        lockedDices.Clear();
+        
         RollAllDice();
     }
 
@@ -163,7 +164,6 @@ public class DiceManager : MonoBehaviour
     {
         if (!ResultReady) return;
 
-        AudioManager.instance.PlaySfx(DiceRollSfx);
         RollAllDice();
     }
 
@@ -172,6 +172,7 @@ public class DiceManager : MonoBehaviour
         if (reroll <= 0) return;
 
         ResultReady = false;
+        AudioManager.instance.PlaySfx(DiceRollSfx, volume);
         foreach (DiceEvaluate dice in allDices)
         {
             if (dice.locked) continue;
@@ -315,12 +316,16 @@ public class DiceManager : MonoBehaviour
 
     public bool IsMoving()
     {
+        /*
         // Cek apakah masih ada satu saja dadu yang menggelinding di arena pertarungan
         for (int i = 0; i < allDices.Count; i++)
         {
             if (allDices[i].IsMoving()) return true;
         }
         return false;
+        //*/
+
+        return allDices.Any(x => x.IsMoving());
     }
 
     public void addReroll(int n = 0)

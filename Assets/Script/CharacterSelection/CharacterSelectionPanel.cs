@@ -13,6 +13,7 @@ public class CharacterSelectionPanel : MonoBehaviour
     public CharacterData selectedCharacter;
     public bool confirm = false;
     public Image[] selectionButtons;
+    public UIButtonHandler[] handlers;
 
     [Header("Outside Panel Button")]
     public CanvasGroup selectPanelBtn;
@@ -53,29 +54,36 @@ public class CharacterSelectionPanel : MonoBehaviour
     public void SelectButton(int index)
     {
         if (confirm) return;
-        if (index == this.index) 
-        { 
-            return; 
-        }
+        if (index == this.index) return;
 
-        for(int i = 0; i < selectionButtons.Length; i++)
-        {
-            if (i != index && i != this.index)
-            {
-                continue;
-            }
-
-            selectionButtons[i].sprite = i == index ?
-                CharacterSelectionManager.instance.selectedSprite[i] :
-                CharacterSelectionManager.instance.notSelected[i];
-
-            selectionButtons[i].transform.localScale = i == index ? 
-                new Vector2(1.3f, 1.3f) : 
-                new Vector2(1.0f, 1.0f);
-        }
-        selectionButtons[index].transform.SetAsLastSibling();
+        int previousIndex = this.index;
         this.index = index;
 
+        UpdateButton(previousIndex);
+        UpdateButton(index);
+
+        selectionButtons[index].transform.SetAsLastSibling();
+
+    }
+
+    void UpdateButton(int i)
+    {
+        if (i < 0 || i > selectionButtons.Length) return;
+        bool isSelected = (i == index);
+
+        var btn = selectionButtons[i];
+
+        btn.sprite = isSelected
+            ? CharacterSelectionManager.instance.selectedSprite[i]
+            : CharacterSelectionManager.instance.notSelected[i];
+
+        btn.transform.localScale = isSelected
+            ? Vector3.one * 1.3f
+            : Vector3.one;
+
+        var handler = handlers[i];
+
+        handler.hoverable = !isSelected;
     }
 
     public void ConfirmNCancel()
@@ -87,14 +95,31 @@ public class CharacterSelectionPanel : MonoBehaviour
         selectBtn.sprite = confirm ?
             CharacterSelectionManager.instance.cancelBtnSprite :
             CharacterSelectionManager.instance.selectBtnSprite;
+        for(int i = 0; i < handlers.Length; i++)
+        {
+            bool isSelected = (i == index);
+
+            if (confirm)
+            {
+                handlers[i].hoverable = false;
+            }
+            else
+            {
+                handlers[i].hoverable = !isSelected;
+            }
+        }
 
         CharacterSelectionManager.instance.bothPanelConfirmed();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        
+        handlers = new UIButtonHandler[selectionButtons.Length];
+        for(int i = 0; i < selectionButtons.Length; i++)
+        {
+            handlers[i] = selectionButtons[i].GetComponent<UIButtonHandler>();
+        }
     }
 
     // Update is called once per frame
