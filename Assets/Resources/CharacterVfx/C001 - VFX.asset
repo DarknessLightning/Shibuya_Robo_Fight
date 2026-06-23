@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healFx: {fileID: 9210526097859762058, guid: 4c437f00a671859498018107905dbe3b, type: 3}
   healDelay: 0
-  attackFx: {fileID: 0}
-  attackDelay: 0
+  attackFx: {fileID: 1794622535130286832, guid: 3545fd7379929054698b75185992e5fa, type: 3}
+  attackDelay: 0.7
   energizeFx: {fileID: 6012304743035673931, guid: 5b5fa46da04f9e84f87833d76dab31a7, type: 3}
   energizeDelay: 0

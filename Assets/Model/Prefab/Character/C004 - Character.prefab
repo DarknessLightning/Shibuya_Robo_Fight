@@ -198,11 +198,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 2876478910685982695}
   attack: {fileID: -887982601649841707, guid: f6a4cc43656312147b997ce72046ea79, type: 3}
-  heal: {fileID: -887982601649841707, guid: f6a4cc43656312147b997ce72046ea79, type: 3}
-  charge: {fileID: -887982601649841707, guid: f6a4cc43656312147b997ce72046ea79, type: 3}
-  signal: {fileID: -887982601649841707, guid: f6a4cc43656312147b997ce72046ea79, type: 3}
+  heal: {fileID: -887982601649841707, guid: 1e9601a6dff59354ea9d0b07b72a42e5, type: 3}
+  charge: {fileID: -887982601649841707, guid: 6ef212df33cb106418533766de78702e, type: 3}
+  signal: {fileID: -887982601649841707, guid: 56a70024864821248894205f82789308, type: 3}
   destruction: {fileID: -887982601649841707, guid: 461a3064b9363a2498287d9841e724c3, type: 3}
-  brag: {fileID: -887982601649841707, guid: 461a3064b9363a2498287d9841e724c3, type: 3}
+  brag: {fileID: -887982601649841707, guid: b268a89d021304041a054213472362da, type: 3}
   lose: {fileID: -887982601649841707, guid: 8a41a43cce6e7d045980ef9e987b9a00, type: 3}
   timingForAttack: 1.5
   timingForHit: 0.1

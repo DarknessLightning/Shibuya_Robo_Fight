@@ -602,7 +602,7 @@ public class FightManager : MonoBehaviour
             //yield return new WaitForSeconds(target.ui.ModelAnimator.timingForHit);
             float fillAmount = (float)target.CurrentHP / target.character.hp;
             target.ui.HPBar.fillAmount = fillAmount;
-            yield return new WaitForSeconds(PlayerTurn.ui.ModelAnimator.timingForAttack);
+            yield return new WaitForSeconds(1.5f);
         }
         else if (deltaHealth > 0)
         {

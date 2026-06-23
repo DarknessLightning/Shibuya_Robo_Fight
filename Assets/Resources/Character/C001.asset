@@ -17,7 +17,7 @@ MonoBehaviour:
   skill: 0
   skillDescription: When activated, pull destruction and fame token by 1 tile
   characterModel: {fileID: 1025627728392265309, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
-  victoryModel: {fileID: 919132149155446097, guid: 60f24b6bf71f73a418bf1ecf608795f3, type: 3}
+  victoryModel: {fileID: 919132149155446097, guid: facdc758c37b469468ece9a62978b3ac, type: 3}
   characterSprite: {fileID: 21300000, guid: d8d3321f2bd2d874798a2ef2d927cb5d, type: 3}
   icon: {fileID: 21300000, guid: c505995e382927c4d99edab58cd75af3, type: 3}
   info: {fileID: 21300000, guid: 931f9ec4c3f0b3648b92be3db2b975ff, type: 3}
