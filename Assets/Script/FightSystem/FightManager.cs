@@ -906,7 +906,7 @@ public class FightManager : MonoBehaviour
     {
         SetCameraPos(winner == Player ? AILoseShot : PlayerLoseShot);
         winner.opponent.ui.ModelAnimator.PlayLose();
-        AudioManager.instance.PlaySfx(winner.opponent.character.soundEffects.Lose);
+        //AudioManager.instance.PlaySfx(winner.opponent.character.soundEffects.Lose);
         float duration = winner.opponent.ui.ModelAnimator.lose.length;
         yield return new WaitForSeconds(duration);
 

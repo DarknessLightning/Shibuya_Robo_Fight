@@ -138,6 +138,10 @@ public class AnimationScript : MonoBehaviour
     public void PlayLose()
     {
         animator.SetTrigger("Lose");
+
+        StartCoroutine(PlaySoundEffect(
+            SFX.Lose,
+            0));
     }
 
     public void finishAttack()
