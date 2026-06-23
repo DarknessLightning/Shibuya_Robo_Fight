@@ -892,6 +892,7 @@ public class FightManager : MonoBehaviour
         PlaceTilePanel.SetActive(false);
         BuyCardPanel.SetActive(false);
         SkillPointPopUp.SetActive(false);
+        TurnAnnounce.gameObject.SetActive(false);
         WinPose(winner);
         StartCoroutine(GameOverAnimation());
     }
@@ -1298,6 +1299,48 @@ public class FightManager : MonoBehaviour
         player.ui.VictoryModel = VModel;
         VModel.SetActive(false);
         player.ui.ModelAnimator = model.GetComponent<AnimationScript>();
+        if(player == AI && AI.character == Player.character)
+        {
+            shiftModelHue(player);
+        }
+    }
+
+    private void shiftModelHue(PlayerData player)
+    {
+        Renderer mainRend = player.ui.MainModel.GetComponentInChildren<Renderer>();
+        Renderer victoryRend = player.ui.VictoryModel.GetComponentInChildren<Renderer>();
+        Material[] mainMats = mainRend.materials;
+        Material[] vMats = victoryRend.materials;
+        if (player.character.alternativeColors.Length == 0) return;
+
+        Color[] colors = (Color[])player.character.alternativeColors.Clone();
+        for(int i = 0; i < colors.Length; i++)
+        {
+            mainMats[i].SetColor("_BaseColor", colors[i]);
+            //mainMats[i].color = colors[i];
+            vMats[i].SetColor("_BaseColor", colors[i]);
+        }
+
+        /*
+        List<Material> materials = new();
+        Renderer mainRend = player.ui.MainModel.GetComponentInChildren<Renderer>();
+        Renderer victoryRend = player.ui.VictoryModel.GetComponentInChildren<Renderer>();
+
+        foreach(Material mat in mainRend.materials)
+        {
+            float h, s, v;
+            Color color = mat.GetColor("_BaseColor");
+            Color.RGBToHSV(mat.GetColor("_BaseColor"), out h, out s, out v);
+
+            if (s < 0.01f) continue;
+
+            h = (h + 0.5f) % 1f;
+            color = Color.HSVToRGB(h, s, v);
+
+            mat.SetColor("_BaseColor", Color.HSVToRGB(h, s, v));
+        }
+
+        //*/
     }
 
     private void ChangeTurn()

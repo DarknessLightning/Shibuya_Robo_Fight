@@ -208,7 +208,7 @@ MonoBehaviour:
   timingForHit: 0.1
   timingForDestruction: 2
   timingForLaugh: 2
-  SFX: {fileID: 11400000, guid: 7899d9e0d4b72aa4fb67a1f36943787f, type: 2}
+  SFX: {fileID: 11400000, guid: cdb219205b1480f4ab26eea211b9a3e1, type: 2}
   VFX: {fileID: 11400000, guid: d452629e63b48af428ae9e32302d7b96, type: 2}
   ground: {fileID: 4679452010715743338}
   hand: {fileID: 4682771185169994408}

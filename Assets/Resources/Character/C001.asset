@@ -23,3 +23,8 @@ MonoBehaviour:
   info: {fileID: 21300000, guid: 931f9ec4c3f0b3648b92be3db2b975ff, type: 3}
   specialSkill: {fileID: 21300000, guid: 1e0ad5aae6f17f74aa00c1cf19498667, type: 3}
   soundEffects: {fileID: 0}
+  alternativeColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.5254902, g: 0.627451, b: 1, a: 1}
+  - {r: 0.29411766, g: 1, b: 0.6039216, a: 1}
+  - {r: 0.29411766, g: 1, b: 0.6039216, a: 1}

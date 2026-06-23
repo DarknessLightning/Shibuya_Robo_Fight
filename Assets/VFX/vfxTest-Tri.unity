@@ -3605,7 +3605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1025627728392265309, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4593778742634371920, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
       propertyPath: hand
@@ -3625,7 +3625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6228546600307181458, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6228546600307181458, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3633,7 +3633,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6228546600307181458, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6228546600307181458, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
       propertyPath: m_LocalRotation.z
@@ -3645,7 +3645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6228546600307181458, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 6228546600307181458, guid: 3867c3a98abf5854aba40bfdb5d21d2e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4351,8 +4351,8 @@ MonoBehaviour:
   vfx: {fileID: 0}
   shootPoint: {fileID: 0}
   healPoint: {fileID: 0}
-  trigger: Attack
-  fx: {fileID: 1794622535130286832, guid: 3545fd7379929054698b75185992e5fa, type: 3}
+  trigger: Hit
+  fx: {fileID: 0}
   justOneFx: 1
   titik: {fileID: 892251802}
   waitAmount: 0.5
@@ -5779,6 +5779,10 @@ PrefabInstance:
     - target: {fileID: 494083328829070731, guid: 815308d24d4fdb1418f1459797a1f928, type: 3}
       propertyPath: m_Name
       value: C004 - Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 494083328829070731, guid: 815308d24d4fdb1418f1459797a1f928, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7380842167144359178, guid: 815308d24d4fdb1418f1459797a1f928, type: 3}
       propertyPath: m_LocalPosition.x

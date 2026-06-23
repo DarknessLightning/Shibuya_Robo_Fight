@@ -41,6 +41,7 @@ public class TesAnimatorToVFX : MonoBehaviour
     public void PlayOneAnimation()
     {
         animator.SetTrigger(trigger);
+        if (fx == null) return;
         StartCoroutine(playVfx(fx, titik));
     }
 

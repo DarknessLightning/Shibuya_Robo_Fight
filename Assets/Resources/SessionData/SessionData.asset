@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SessionData
   m_EditorClassIdentifier: 
   playerCharacter: {fileID: 11400000, guid: 6d18c6b4cf69e8844845711ff4020ca6, type: 2}
-  enemyCharacter: {fileID: 11400000, guid: 47467780f1236964c8d70d6a1d30df84, type: 2}
+  enemyCharacter: {fileID: 11400000, guid: 6d18c6b4cf69e8844845711ff4020ca6, type: 2}

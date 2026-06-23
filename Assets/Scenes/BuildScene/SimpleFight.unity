@@ -17606,6 +17606,7 @@ RectTransform:
   - {fileID: 880978068}
   - {fileID: 821026475}
   - {fileID: 1244506963}
+  - {fileID: 131120526}
   - {fileID: 849875726}
   - {fileID: 982442444}
   - {fileID: 322803690}
@@ -17616,7 +17617,6 @@ RectTransform:
   - {fileID: 364436531}
   - {fileID: 1681918051}
   - {fileID: 1403290979}
-  - {fileID: 131120526}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -32539,7 +32539,7 @@ MonoBehaviour:
   dropRadius: 1.5
   diceTray: {fileID: 849095300}
   forTest: 0
-  targetFace: 0000000000000000
+  targetFace: 0400000004000000
   numberOfDiceForFace: 03000000
   DiceRollSfx: {fileID: 8300000, guid: c830890f12518be4b9118f26bd30ea88, type: 3}
   DiceLockSfx: {fileID: 8300000, guid: 394a64f35623e11479c8dde1f387498e, type: 3}

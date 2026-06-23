@@ -26,4 +26,5 @@ public class CharacterData : ScriptableObject
     public Sprite specialSkill;
 
     public CharacterSoundEffect soundEffects;
+    public Color[] alternativeColors = System.Array.Empty<Color>();
 }
